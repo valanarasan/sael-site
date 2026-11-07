@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { fillTokens, parseAccent, segmentsToText, type Segment } from '../../src/lib/text';
+import {
+  fillPlain,
+  fillTokens,
+  parseAccent,
+  segmentsToText,
+  type Segment,
+} from '../../src/lib/text';
 
 describe('parseAccent', () => {
   it('splits plain and accent text', () => {
@@ -75,5 +81,18 @@ describe('fillTokens', () => {
 describe('segmentsToText', () => {
   it('joins the visible text', () => {
     expect(segmentsToText(parseAccent('all *around* us.'))).toBe('all around us.');
+  });
+});
+
+describe('fillPlain', () => {
+  it('fills named placeholders with strings and numbers', () => {
+    expect(fillPlain('{minutes} min read', { minutes: 4 })).toBe('4 min read');
+    expect(fillPlain('Hi, I read "{title}"', { title: 'Zero bill' })).toBe(
+      'Hi, I read "Zero bill"',
+    );
+  });
+
+  it('leaves unknown placeholders as written', () => {
+    expect(fillPlain('{count} of {total}', { count: 2 })).toBe('2 of {total}');
   });
 });

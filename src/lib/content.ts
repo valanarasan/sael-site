@@ -2,13 +2,13 @@
  * Content repository. Pages read content only through these functions, never from
  * astro:content directly, so a later move to another CMS changes this file alone.
  */
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
 import type { ChatContent } from './schemas/chat';
 import type { Faq } from './schemas/faqs';
 import type { Sections } from './schemas/sections';
 import type { Settings } from './schemas/settings';
 import type { SubsidyRules } from './schemas/subsidy';
-import { assertUniqueSlugs, sortPosts, type BlogEntry } from './view-models/blog';
+import { assertUniqueSlugs, sortPosts } from './view-models/blog';
 import type { ProjectEntry } from './view-models/projects';
 
 /** Single-file collections use their own name as the entry id (see content.config.ts). */
@@ -44,8 +44,13 @@ export async function getProjects(): Promise<ProjectEntry[]> {
  * Blog posts in display order. Drafts are included by default because the blog page lists them
  * as "coming soon" cards; pass { includeDrafts: false } for article pages, RSS and the sitemap.
  */
-export async function getPosts({ includeDrafts = true } = {}): Promise<BlogEntry[]> {
+export async function getPosts({ includeDrafts = true } = {}): Promise<BlogPost[]> {
   const entries = await getCollection('blog', (e) => includeDrafts || !e.data.draft);
   assertUniqueSlugs(entries.map((e) => e.id));
   return sortPosts(entries);
 }
+
+export type BlogPost = CollectionEntry<'blog'>;
+
+/** Renders an article's Markdown body; returns the <Content /> component and its headings. */
+export const renderPost = (post: BlogPost) => render(post);
