@@ -1,0 +1,360 @@
+---
+/**
+ * 06 · Gallery island: a row of photos that scrolls and snaps natively, with prev/next buttons,
+ * mouse drag-to-scroll and a lightbox. The lightbox is a native modal <dialog>: focus is
+ * trapped, Escape closes it and focus returns to the photo that opened it; arrow keys move.
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import Photo from '../ui/Photo.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['gallery'] & { number: number };
+
+const { number, eyebrow, heading, controls, items } = Astro.props;
+const trackId = 'gallery-track';
+const viewerId = 'gallery-viewer';
+---
+
+<section class="sec flush-top" id="gallery" aria-labelledby="h-g" data-gallery-root>
+  <div class="wrap gal-head">
+    <SectionHeading
+      id="h-g"
+      number={number}
+      eyebrow={eyebrow}
+      heading={heading}
+      layout="inline"
+      class="gal-hd"
+    />
+    <div class="gal-ctl">
+      <button
+        class="rb"
+        type="button"
+        aria-label={controls.previous}
+        aria-controls={trackId}
+        data-gallery-prev
+      >
+        <span aria-hidden="true">←</span>
+      </button>
+      <button
+        class="rb"
+        type="button"
+        aria-label={controls.next}
+        aria-controls={trackId}
+        data-gallery-next
+      >
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+  <ul class="drag" id={trackId} aria-labelledby="h-g" tabindex="0" data-gallery>
+    {items.map((item, i) => (
+      <li class="gi" data-gallery-item data-title={item.title} data-place={item.place}>
+        <figure>
+          <div class="im">
+            <Photo
+              src={item.image}
+              alt={item.alt}
+              sizes="(max-width: 860px) 480px, 57vw"
+              maxWidth={1600}
+            />
+            <button
+              class="open"
+              type="button"
+              aria-label={`${controls.open}: ${item.title}`}
+              aria-haspopup="dialog"
+              aria-controls={viewerId}
+              data-gallery-open={i}
+            />
+          </div>
+          <figcaption class="tx">
+            <b>{item.title}</b>
+            <span>{item.place}</span>
+          </figcaption>
+        </figure>
+      </li>
+    ))}
+  </ul>
+
+  <dialog
+    class="lb"
+    id={viewerId}
+    aria-label={controls.viewer}
+    data-gallery-viewer
+    data-credit={controls.credit}
+  >
+    <button class="rb x" type="button" aria-label={controls.close} data-viewer-close>
+      <span aria-hidden="true">✕</span>
+    </button>
+    <button class="rb pv" type="button" aria-label={controls.previousPhoto} data-viewer-prev>
+      <span aria-hidden="true">←</span>
+    </button>
+    <button class="rb nx" type="button" aria-label={controls.nextPhoto} data-viewer-next>
+      <span aria-hidden="true">→</span>
+    </button>
+    <figure>
+      <div class="lb-img" data-viewer-image></div>
+      <figcaption aria-live="polite">
+        <span data-viewer-title></span>
+        <span data-viewer-credit></span>
+      </figcaption>
+    </figure>
+  </dialog>
+</section>
+
+<script>
+  import { whenVisible } from '../../scripts/hydrate';
+
+  document.querySelectorAll<HTMLElement>('[data-gallery-root]').forEach((root) =>
+    whenVisible(root, () => {
+      void import('../../scripts/islands/gallery').then((m) => m.initGallery(root));
+    }),
+  );
+</script>
+
+<style>
+  .gal-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .gal-head :global(.gal-hd) {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .gal-head :global(.gal-hd h2) {
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 0.98;
+  }
+
+  .gal-ctl {
+    display: flex;
+    gap: 10px;
+  }
+
+  .rb {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    background: none;
+    cursor: pointer;
+    color: var(--ink);
+    font:
+      18px system-ui,
+      sans-serif;
+    transition:
+      background 0.3s ease,
+      color 0.3s ease,
+      transform 0.5s var(--ease);
+  }
+
+  .rb:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: scale(1.06);
+  }
+
+  .drag {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    --pad-l: max(var(--gut-l), calc((100vw - 1320px) / 2 + 40px));
+    --pad-r: max(var(--gut-r), 40px);
+    padding: 0 var(--pad-r) 20px var(--pad-l);
+    /* Snap to the padding, not the edge, so the first photo lines up with the heading.
+       (v5 snapped to the edge, so the row loaded already scrolled.) */
+    scroll-padding-inline: var(--pad-l) var(--pad-r);
+    scrollbar-width: none;
+    cursor: grab;
+  }
+
+  .drag::-webkit-scrollbar {
+    display: none;
+  }
+
+  .drag:global(.down) {
+    cursor: grabbing;
+    scroll-snap-type: none;
+  }
+
+  .gi {
+    flex: none;
+    width: clamp(280px, 34vw, 520px);
+    scroll-snap-align: start;
+  }
+
+  .gi:nth-child(3n + 2) {
+    width: clamp(260px, 26vw, 400px);
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .im {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: var(--paper-2);
+  }
+
+  .gi:nth-child(3n + 2) .im {
+    aspect-ratio: 3 / 4;
+  }
+
+  .im :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.08);
+    transition: transform 1.2s var(--ease);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .gi:hover .im :global(img) {
+    transform: scale(1);
+  }
+
+  .open {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    border: 0;
+    padding: 0;
+    background: none;
+    cursor: zoom-in;
+    border-radius: inherit;
+  }
+
+  .open:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .tx {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .tx b {
+    font: 700 20px var(--f-disp);
+    letter-spacing: -0.02em;
+  }
+
+  .tx span {
+    font: 500 11px var(--f-mono);
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .lb {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgba(11, 31, 34, 0.95);
+    color: var(--paper);
+    place-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .lb[open] {
+    display: grid;
+  }
+
+  .lb::backdrop {
+    background: transparent;
+  }
+
+  .lb:global(.open) {
+    opacity: 1;
+  }
+
+  .lb figure {
+    width: min(1500px, 92vw);
+    transform: scale(0.95);
+    transition: transform 0.7s var(--ease);
+  }
+
+  .lb:global(.open) figure {
+    transform: none;
+  }
+
+  .lb-img :global(img) {
+    width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: 14px;
+  }
+
+  .lb figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 12px;
+    font: 500 12px var(--f-mono);
+    color: rgba(241, 243, 241, 0.75);
+  }
+
+  .lb .rb {
+    position: absolute;
+    z-index: 1;
+    border-color: var(--paper);
+    color: var(--paper);
+  }
+
+  .lb .rb:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .x {
+    right: 28px;
+    top: 28px;
+  }
+
+  .pv {
+    left: 24px;
+    top: 50%;
+    margin-top: -26px;
+  }
+
+  .nx {
+    right: 24px;
+    top: 50%;
+    margin-top: -26px;
+  }
+
+  @media (max-width: 860px) {
+    .drag {
+      --pad-l: var(--gut-l);
+      --pad-r: var(--gut-r);
+    }
+
+    .pv,
+    .nx {
+      top: auto;
+      bottom: 24px;
+      margin-top: 0;
+    }
+  }
+</style>
