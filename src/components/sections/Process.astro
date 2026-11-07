@@ -1,0 +1,162 @@
+---
+/** 03 · How it works: five numbered steps and the installation tracker. */
+import type { Sections } from '../../lib/schemas/sections';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['process'] & { number: number };
+
+const { number, eyebrow, heading, steps, tracker } = Astro.props;
+---
+
+<section class="sec flush-top" id="process" aria-labelledby="h-pro">
+  <div class="wrap">
+    <SectionHeading id="h-pro" number={number} eyebrow={eyebrow} heading={heading} />
+    <ol class="steps">
+      {steps.map((step, i) => (
+        <li>
+          <span class="sn" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </li>
+      ))}
+    </ol>
+    <div class="track">
+      <span class="tk-l" id="tk-label">
+        {tracker.label}
+      </span>
+      <ol class="tk" aria-labelledby="tk-label">
+        {tracker.stages.map((stage, i) => (
+          <li class:list={[i === 0 && 'on']}>{stage}</li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .steps li {
+    position: relative;
+    padding: 26px 20px 28px;
+    border-radius: 24px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .steps li::after {
+    content: '';
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: var(--copper);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.8s var(--ease);
+  }
+
+  .steps li:global(.lit)::after {
+    transform: scaleX(1);
+  }
+
+  .sn {
+    font: 800 46px/1 var(--f-disp);
+    letter-spacing: -0.05em;
+    color: var(--teal-2);
+  }
+
+  h3 {
+    font-size: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .steps p {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .track {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1.5px dashed var(--line);
+  }
+
+  .tk-l {
+    flex: none;
+    font: 500 12px var(--f-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .tk {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tk li {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--paper-2);
+    color: var(--ink-2);
+    transition:
+      background 0.5s var(--ease),
+      color 0.5s var(--ease);
+  }
+
+  .tk li:global(.on) {
+    background: var(--teal);
+    color: #fff;
+  }
+
+  @media (max-width: 1240px) {
+    .steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 1020px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 860px) {
+    .track {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

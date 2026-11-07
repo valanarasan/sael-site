@@ -1,0 +1,145 @@
+---
+/** 04 · Why SAEL: bento grid. Tiles still waiting on SAEL keep a dashed border and a tag. */
+import type { Sections } from '../../lib/schemas/sections';
+import Photo from '../ui/Photo.astro';
+import PlaceholderTag from '../ui/PlaceholderTag.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['why'] & { number: number };
+
+const { number, eyebrow, heading, feature, tiles } = Astro.props;
+---
+
+<section class="sec flush-top" id="capabilities" aria-labelledby="h-c">
+  <div class="wrap">
+    <SectionHeading id="h-c" number={number} eyebrow={eyebrow} heading={heading} />
+    <div class="bento">
+      <div class="bx big">
+        <Photo
+          src={feature.image}
+          alt={feature.alt}
+          sizes="(max-width: 860px) 140vw, 50vw"
+          class="feat-img"
+        />
+        <span class="n">{feature.credit}</span>
+        <h3>{feature.title}</h3>
+      </div>
+      {tiles.map((tile, i) => (
+        <div class:list={['bx', i === 1 && 'teal', tile.placeholder && 'todo']}>
+          {tile.placeholder && <PlaceholderTag />}
+          <div>
+            <h3>{tile.title}</h3>
+            <p>{tile.text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(240px, auto);
+    gap: 16px;
+  }
+
+  .bx {
+    position: relative;
+    border-radius: 24px;
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    transition:
+      transform 0.7s var(--ease),
+      box-shadow 0.7s var(--ease);
+  }
+
+  .bx:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px rgba(11, 31, 34, 0.1);
+  }
+
+  .bx.todo {
+    border-style: dashed;
+  }
+
+  .big {
+    grid-row: span 2;
+    color: #fff;
+    background: var(--ink);
+    justify-content: flex-end;
+  }
+
+  .big :global(.feat-img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 20% 100%;
+    transition: transform 1.4s var(--ease);
+  }
+
+  .big:hover :global(.feat-img) {
+    transform: scale(1.06);
+  }
+
+  .big::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11, 31, 34, 0) 35%, rgba(11, 31, 34, 0.85));
+  }
+
+  .big > :not(:global(img)) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .teal {
+    background: var(--teal);
+    color: var(--paper);
+    border-color: var(--teal);
+  }
+
+  .n {
+    font: 500 12px var(--f-mono);
+    letter-spacing: 0.14em;
+    color: var(--copper);
+  }
+
+  h3 {
+    font-size: 30px;
+    line-height: 1.05;
+  }
+
+  .bx p {
+    font-size: 15px;
+    color: inherit;
+    opacity: 0.82;
+  }
+
+  @media (max-width: 1020px) {
+    .bento {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 860px) {
+    .bento {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .big {
+      min-height: 380px;
+      grid-row: auto;
+    }
+  }
+</style>

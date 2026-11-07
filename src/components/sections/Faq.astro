@@ -1,0 +1,133 @@
+---
+/** 09 · FAQs: native <details> accordions; the first is open. */
+import type { Faq as FaqItem } from '../../lib/schemas/faqs';
+import type { Segment } from '../../lib/text';
+import RichText from '../ui/RichText.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  number: number;
+  eyebrow: string;
+  heading: string;
+  intro: Segment[];
+  items: FaqItem[];
+}
+
+const { number, eyebrow, heading, intro, items } = Astro.props;
+---
+
+<section class="sec flush-top" id="faq" aria-labelledby="h-faq">
+  <div class="wrap faq">
+    <div>
+      <SectionHeading
+        id="h-faq"
+        number={number}
+        eyebrow={eyebrow}
+        heading={heading}
+        layout="inline"
+        class="faq-hd"
+      />
+      <p class="faq-in">
+        <RichText segments={intro} />
+      </p>
+    </div>
+    <div class="qa">
+      {items.map((item, i) => (
+        <details name="faq" open={i === 0}>
+          <summary>{item.question}</summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: start;
+  }
+
+  .faq :global(.faq-hd) {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .faq :global(.faq-hd h2) {
+    font-size: clamp(40px, 4.6vw, 70px);
+    line-height: 0.98;
+  }
+
+  .faq-in {
+    margin-top: 20px;
+    color: var(--ink-2);
+    max-width: 40ch;
+  }
+
+  .qa {
+    border-top: 1px solid var(--line);
+  }
+
+  details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    padding: 22px 0;
+    font: 700 19px/1.35 var(--f-disp);
+    letter-spacing: -0.015em;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: '+';
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--paper-2);
+    color: var(--teal);
+    font-size: 20px;
+    transition:
+      transform 0.5s var(--ease),
+      background 0.4s ease,
+      color 0.4s ease;
+  }
+
+  details[open] summary::after {
+    transform: rotate(45deg);
+    background: var(--copper);
+    color: #fff;
+  }
+
+  details p {
+    padding: 0 54px 24px 0;
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 860px) {
+    .faq {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    details p {
+      padding-right: 0;
+    }
+  }
+</style>

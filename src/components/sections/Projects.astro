@@ -1,0 +1,244 @@
+---
+/**
+ * 07 · Selected work: one feature card, side cards and one-line minis.
+ * Cards are articles, not links: in v5 they all pointed at the contact form, which read
+ * oddly to screen readers. Hover styles are unchanged.
+ */
+import type { ProjectsView } from '../../lib/view-models/projects';
+import Photo from '../ui/Photo.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = ProjectsView & { number: number; eyebrow: string; heading: string };
+
+const { number, eyebrow, heading, feature, cards, minis } = Astro.props;
+---
+
+<section class="sec" id="work" aria-labelledby="h-w">
+  <div class="wrap">
+    <SectionHeading id="h-w" number={number} eyebrow={eyebrow} heading={heading} />
+    <div class="pj">
+      {feature && (
+        <article class="feat">
+          {feature.image && (
+            <Photo
+              src={feature.image.src}
+              alt={feature.image.alt}
+              sizes="(max-width: 860px) 200vw, 77vw"
+              class="bg"
+            />
+          )}
+          <span class="sz">{feature.tags}</span>
+          <h3>{feature.title}</h3>
+          {feature.summary && (
+            <p>
+              {feature.summary}
+              {feature.credit && ` ${feature.credit}.`}
+            </p>
+          )}
+        </article>
+      )}
+      <div class="pj-r">
+        {cards.map((card) => (
+          <article class:list={['pc', !card.image && 'no-photo']}>
+            {card.image && (
+              <div class="im">
+                <Photo src={card.image.src} alt={card.image.alt} sizes="225px" maxWidth={480} />
+              </div>
+            )}
+            <div>
+              <span class="sz">{card.tags}</span>
+              <h3>{card.title}</h3>
+              {card.summary && <p>{card.summary}</p>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+    {minis.length > 0 && (
+      <ul class="mini">
+        {minis.map((m) => (
+          <li>
+            <b>{m.figure}</b>
+            <span>{m.text}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</section>
+
+<style>
+  .pj {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .feat {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    min-height: 620px;
+    color: #fff;
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+  }
+
+  .feat :global(.bg) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.6s var(--ease);
+  }
+
+  .feat:hover :global(.bg) {
+    transform: scale(1.05);
+  }
+
+  .feat::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11, 31, 34, 0) 30%, rgba(11, 31, 34, 0.88));
+  }
+
+  .feat > :not(:global(img)) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sz {
+    font: 500 11px var(--f-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--copper-text);
+  }
+
+  .feat .sz {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--copper-2);
+  }
+
+  .feat h3 {
+    font-size: clamp(34px, 3.6vw, 54px);
+    line-height: 1;
+    margin-top: 10px;
+  }
+
+  .feat p {
+    max-width: 46ch;
+    opacity: 0.86;
+    margin-top: 10px;
+  }
+
+  .pj-r {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .pc {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 22px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    transition:
+      transform 0.6s var(--ease),
+      box-shadow 0.6s var(--ease);
+  }
+
+  .pc.no-photo {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 20px;
+  }
+
+  .pc:hover {
+    transform: translateX(8px);
+    box-shadow: -12px 20px 40px rgba(11, 31, 34, 0.08);
+  }
+
+  .im {
+    aspect-ratio: 1;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .im :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease);
+  }
+
+  .pc:hover .im :global(img) {
+    transform: scale(1.1);
+  }
+
+  .pc h3 {
+    font-size: 22px;
+    line-height: 1.15;
+    margin-top: 6px;
+  }
+
+  .pc p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .mini {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 18px 0 0;
+  }
+
+  .mini li {
+    padding: 20px;
+    border-radius: 18px;
+    border: 1.5px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .mini b {
+    font: 800 22px var(--f-disp);
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+
+  .mini span {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  @media (max-width: 860px) {
+    .pj,
+    .mini {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .feat {
+      min-height: 440px;
+    }
+
+    .pc {
+      grid-template-columns: 96px minmax(0, 1fr);
+    }
+  }
+</style>

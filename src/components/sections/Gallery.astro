@@ -1,0 +1,147 @@
+---
+/**
+ * 06 · Gallery: a horizontal row of photos that scrolls and snaps natively.
+ * Step 6 adds the prev/next buttons, drag-to-scroll and the lightbox.
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import Photo from '../ui/Photo.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['gallery'] & { number: number };
+
+const { number, eyebrow, heading, items } = Astro.props;
+---
+
+<section class="sec flush-top" id="gallery" aria-labelledby="h-g">
+  <div class="wrap gal-head">
+    <SectionHeading
+      id="h-g"
+      number={number}
+      eyebrow={eyebrow}
+      heading={heading}
+      layout="inline"
+      class="gal-hd"
+    />
+  </div>
+  <ul class="drag" data-gallery aria-labelledby="h-g" tabindex="0">
+    {items.map((item) => (
+      <li class="gi">
+        <figure>
+          <div class="im">
+            <Photo
+              src={item.image}
+              alt={item.alt}
+              sizes="(max-width: 860px) 480px, 57vw"
+              maxWidth={1600}
+            />
+          </div>
+          <figcaption class="tx">
+            <b>{item.title}</b>
+            <span>{item.place}</span>
+          </figcaption>
+        </figure>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .gal-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .gal-head :global(.gal-hd) {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .gal-head :global(.gal-hd h2) {
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 0.98;
+  }
+
+  .drag {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0 max(var(--gut-r), 40px) 20px max(var(--gut-l), calc((100vw - 1320px) / 2 + 40px));
+    scrollbar-width: none;
+  }
+
+  .drag::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gi {
+    flex: none;
+    width: clamp(280px, 34vw, 520px);
+    scroll-snap-align: start;
+  }
+
+  .gi:nth-child(3n + 2) {
+    width: clamp(260px, 26vw, 400px);
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .im {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: var(--paper-2);
+  }
+
+  .gi:nth-child(3n + 2) .im {
+    aspect-ratio: 3 / 4;
+  }
+
+  .im :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.08);
+    transition: transform 1.2s var(--ease);
+  }
+
+  .gi:hover .im :global(img) {
+    transform: scale(1);
+  }
+
+  .tx {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .tx b {
+    font: 700 20px var(--f-disp);
+    letter-spacing: -0.02em;
+  }
+
+  .tx span {
+    font: 500 11px var(--f-mono);
+    color: var(--muted);
+    text-align: right;
+  }
+
+  @media (max-width: 860px) {
+    .drag {
+      padding-left: var(--gut-l);
+      padding-right: var(--gut-r);
+    }
+  }
+</style>

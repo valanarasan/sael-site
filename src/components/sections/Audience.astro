@@ -1,0 +1,212 @@
+---
+/**
+ * 08 · Who it's for: tabs (Homes, Shops & offices, Farms, Industries) with a photo and line each.
+ * WAI-ARIA tabs: arrow keys, Home and End move between tabs. Without JavaScript, the first
+ * tab's panel shows.
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import Photo from '../ui/Photo.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['audience'] & { number: number };
+
+const { number, eyebrow, heading, label, tabs } = Astro.props;
+const tabId = (i: number) => `aud-tab-${i}`;
+const panelId = (i: number) => `aud-panel-${i}`;
+---
+
+<section class="sec flush-top" id="audience" aria-labelledby="h-a">
+  <div class="wrap aud" data-tabs>
+    <div>
+      <SectionHeading
+        id="h-a"
+        number={number}
+        eyebrow={eyebrow}
+        heading={heading}
+        layout="inline"
+        class="aud-hd"
+      />
+      <div class="tabs" role="tablist" aria-label={label}>
+        {tabs.map((tab, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={tabId(i)}
+            aria-controls={panelId(i)}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            {tab.label} <i aria-hidden="true">→</i>
+          </button>
+        ))}
+      </div>
+    </div>
+    <div class="aud-pane">
+      {tabs.map((tab, i) => (
+        <div
+          class:list={['panel', i !== 0 && 'off']}
+          role="tabpanel"
+          id={panelId(i)}
+          aria-labelledby={tabId(i)}
+          hidden={i !== 0}
+        >
+          <Photo
+            src={tab.image}
+            alt={tab.alt}
+            sizes="(max-width: 860px) 160vw, 85vw"
+            maxWidth={1800}
+          />
+          <p class="q">{tab.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls') ?? ''));
+
+    const select = (index: number, focus: boolean) => {
+      tabs.forEach((tab, i) => {
+        const on = i === index;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        const panel = panels[i];
+        if (panel) {
+          panel.hidden = !on;
+          panel.classList.toggle('off', !on);
+        }
+      });
+      if (focus) tabs[index]?.focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i, false));
+      tab.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        const next =
+          e.key === 'ArrowDown' || e.key === 'ArrowRight'
+            ? (i + 1) % tabs.length
+            : e.key === 'ArrowUp' || e.key === 'ArrowLeft'
+              ? (i - 1 + tabs.length) % tabs.length
+              : e.key === 'Home'
+                ? 0
+                : e.key === 'End'
+                  ? last
+                  : -1;
+        if (next >= 0) {
+          e.preventDefault();
+          select(next, true);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .aud {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .aud :global(.aud-hd) {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .aud :global(.aud-hd h2) {
+    font-size: clamp(40px, 4.6vw, 70px);
+    line-height: 0.98;
+  }
+
+  .tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .tabs button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 64px;
+    padding: 0 22px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: transparent;
+    cursor: pointer;
+    font: 600 19px var(--f-disp);
+    color: var(--ink);
+    text-align: left;
+    transition:
+      background 0.4s ease,
+      color 0.4s ease,
+      border-color 0.4s ease;
+  }
+
+  .tabs button i {
+    font-style: normal;
+    font-family: system-ui, sans-serif;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .tabs button[aria-selected='true'] {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .tabs button[aria-selected='true'] i {
+    transform: rotate(-45deg);
+  }
+
+  .aud-pane {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    aspect-ratio: 5 / 4;
+    background: var(--paper-2);
+  }
+
+  .panel {
+    position: absolute;
+    inset: 0;
+  }
+
+  .panel :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition:
+      opacity 0.8s ease,
+      transform 1.4s var(--ease);
+  }
+
+  .q {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    padding: 22px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 17px;
+  }
+
+  @media (max-width: 860px) {
+    .aud {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

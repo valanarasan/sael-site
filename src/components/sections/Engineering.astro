@@ -1,0 +1,164 @@
+---
+/**
+ * 05 · Engineering: photo, text, three figures and a strip of field photos.
+ * The strip is static for now; step 7 turns it into the v5 marquee.
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import Photo from '../ui/Photo.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['engineering'] & { number: number };
+
+const { number, eyebrow, heading, body, photo, stats, stripLabel, strip } = Astro.props;
+---
+
+<section class="sec flush-top" id="engineering" aria-labelledby="h-e">
+  <div class="wrap eng">
+    <div class="pic" data-eng-photo>
+      <Photo
+        src={photo.image}
+        alt={photo.alt}
+        sizes="(max-width: 860px) 100vw, 50vw"
+        maxWidth={1600}
+      />
+    </div>
+    <div>
+      <SectionHeading
+        id="h-e"
+        number={number}
+        eyebrow={eyebrow}
+        heading={heading}
+        layout="inline"
+        class="eng-hd"
+      />
+      <p class="body">{body}</p>
+      <dl class="rows">
+        {stats.map((stat) => (
+          <div class:list={[stat.placeholder && 'todo']}>
+            <dt>{stat.label}</dt>
+            <dd>{stat.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+  <ul class="strip" aria-label={stripLabel} data-strip>
+    {strip.map((item) => (
+      <li>
+        <Photo src={item.image} alt={item.alt} sizes="300px" maxWidth={600} />
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .eng {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: center;
+  }
+
+  .pic {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+  }
+
+  .pic :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .eng :global(.eng-hd) {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .eng :global(.eng-hd h2) {
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 0.98;
+  }
+
+  .body {
+    margin-top: 22px;
+    max-width: 48ch;
+    color: var(--ink-2);
+  }
+
+  .rows {
+    margin: 30px 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .rows div {
+    padding: 20px 16px 0 0;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .rows dd {
+    margin: 0;
+    font: 800 clamp(30px, 3vw, 44px) / 1 var(--f-disp);
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .rows dt {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .rows .todo dd {
+    color: var(--muted);
+  }
+
+  .strip {
+    list-style: none;
+    margin: clamp(56px, 7vw, 96px) 0 0;
+    padding: 0;
+    display: flex;
+    gap: 14px;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .strip li {
+    width: 300px;
+    aspect-ratio: 3 / 2;
+    border-radius: 16px;
+    overflow: hidden;
+    flex: none;
+    position: relative;
+  }
+
+  .strip :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85);
+    transition:
+      filter 0.5s ease,
+      transform 1s var(--ease);
+  }
+
+  .strip li:hover :global(img) {
+    filter: none;
+    transform: scale(1.06);
+  }
+
+  @media (max-width: 860px) {
+    .eng,
+    .rows {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

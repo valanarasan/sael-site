@@ -1,0 +1,337 @@
+---
+/**
+ * Split hero: copy on the left, a photo window on the right holding the slides.
+ * Static for now: the window shows slide 1 with its caption. Step 7 adds the pinned
+ * expand-and-slide animation. On phones the slides are a swipeable scroll-snap row.
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import { parseAccent } from '../../lib/text';
+import Button from '../ui/Button.astro';
+import Photo from '../ui/Photo.astro';
+import RichText from '../ui/RichText.astro';
+
+type Props = Sections['hero'];
+
+const { eyebrow, headline, intro, primaryCta, secondaryCta, fact, slidesLabel, slides } =
+  Astro.props;
+const [first] = slides;
+---
+
+<section class="hero" id="home" aria-labelledby="h-hero" data-hero>
+  <div class="h-copy" data-hero-copy>
+    <p class="lbl">
+      <b aria-hidden="true">●</b> {eyebrow}
+    </p>
+    <h1 id="h-hero">
+      {headline.map((line, i) => (
+        <>
+          {i > 0 && <br />}
+          <span class="line">
+            <RichText segments={parseAccent(line)} />
+          </span>
+        </>
+      ))}
+    </h1>
+    <p class="intro">{intro}</p>
+    <div class="h-row">
+      <Button href={primaryCta.href} variant="cop" arrow>
+        {primaryCta.label}
+      </Button>
+      <Button href={secondaryCta.href} variant="line">
+        {secondaryCta.label}
+      </Button>
+    </div>
+    <div class="h-meta">
+      <div>
+        <b>{fact.value}</b>
+        <span>{fact.label}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-win" data-hero-window>
+    <div class="h-track" data-hero-track role="region" aria-label={slidesLabel} tabindex="0">
+      {slides.map((slide, i) => (
+        <div class="h-slide" data-hero-slide>
+          <Photo
+            src={slide.image}
+            alt={slide.alt}
+            sizes="(max-width: 860px) 110vh, 100vw"
+            priority={i === 0}
+            maxWidth={2560}
+          />
+        </div>
+      ))}
+    </div>
+    <div class="h-idx" aria-hidden="true" data-hero-index>
+      01
+    </div>
+  </div>
+
+  {first && (
+    <div class="h-cap" data-hero-caption>
+      <div class="r1">
+        <span class="tg" data-hero-tag>
+          {first.tag}
+        </span>
+        <span class="ticks" aria-hidden="true">
+          {slides.map((_, i) => (
+            <i class:list={[i === 0 && 'on']} />
+          ))}
+        </span>
+      </div>
+      <p class="cap-title" data-hero-title>
+        {first.title}
+      </p>
+      <span class="cr" data-hero-credit>
+        Photo · {first.credit}
+      </span>
+    </div>
+  )}
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  .h-copy {
+    position: absolute;
+    left: max(var(--gut-l), 40px);
+    top: 0;
+    bottom: 0;
+    width: min(46vw, 640px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 26px;
+    padding-top: 70px;
+    z-index: 3;
+  }
+
+  h1 {
+    font-size: clamp(48px, 6.4vw, 104px);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+  }
+
+  .line {
+    display: inline-block;
+  }
+
+  /* In v5 the hero's paragraph rule also sizes the eyebrow: 18px, ink-2. */
+  .h-copy > .lbl {
+    max-width: 44ch;
+    font-size: 18px;
+    color: var(--ink-2);
+  }
+
+  .intro {
+    max-width: 44ch;
+    color: var(--ink-2);
+    font-size: 18px;
+  }
+
+  .h-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .h-meta {
+    display: flex;
+    gap: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .h-meta div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .h-meta b {
+    font: 700 26px var(--f-disp);
+    letter-spacing: -0.03em;
+  }
+
+  .h-meta span {
+    font: 500 11px var(--f-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .h-win {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    clip-path: inset(13vh 4vw 9vh 52vw round 28px);
+    background: var(--ink);
+  }
+
+  .h-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+  }
+
+  .h-slide {
+    position: relative;
+    width: 100vw;
+    height: 100%;
+    flex: none;
+    overflow: hidden;
+  }
+
+  .h-slide :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .h-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(11, 31, 34, 0.55), rgba(11, 31, 34, 0) 45%),
+      linear-gradient(0deg, rgba(11, 31, 34, 0.55), rgba(11, 31, 34, 0) 40%);
+    opacity: var(--o, 0);
+    transition: opacity 0.4s ease;
+  }
+
+  .h-cap {
+    position: absolute;
+    right: max(var(--gut-r), 40px);
+    bottom: clamp(28px, 6vh, 64px);
+    z-index: 4;
+    width: min(420px, 40vw);
+    padding: 22px 24px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 20px 50px rgba(11, 31, 34, 0.2);
+  }
+
+  .r1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .tg {
+    font: 500 11px var(--f-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper-text);
+  }
+
+  .cap-title {
+    margin-top: 8px;
+    font: 700 26px/1.1 var(--f-disp);
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .cr {
+    display: block;
+    margin-top: 10px;
+    font: 500 11px var(--f-mono);
+    color: var(--muted);
+  }
+
+  .ticks {
+    display: flex;
+    gap: 4px;
+  }
+
+  .ticks i {
+    width: 16px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--line);
+    transition:
+      background 0.4s ease,
+      width 0.5s var(--ease);
+  }
+
+  .ticks i:global(.on) {
+    background: var(--copper);
+    width: 28px;
+  }
+
+  .h-idx {
+    position: absolute;
+    left: max(var(--gut-l), 40px);
+    bottom: clamp(28px, 6vh, 64px);
+    z-index: 4;
+    color: #fff;
+    font: 700 clamp(80px, 12vw, 180px) / 0.8 var(--f-disp);
+    letter-spacing: -0.06em;
+    opacity: 0;
+    mix-blend-mode: overlay;
+  }
+
+  @media (max-width: 860px) {
+    .hero {
+      height: auto;
+      min-height: 0;
+      padding-top: 96px;
+    }
+
+    .h-copy {
+      position: relative;
+      left: auto;
+      width: auto;
+      padding: 24px var(--gut-r) 28px var(--gut-l);
+    }
+
+    .h-win {
+      position: relative;
+      clip-path: none;
+      height: 62vh;
+      margin: 0 var(--gut-r) 0 var(--gut-l);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .h-track {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      width: 100%;
+      scrollbar-width: none;
+    }
+
+    .h-slide {
+      width: 100%;
+      scroll-snap-align: start;
+    }
+
+    .h-slide::after {
+      opacity: 1;
+    }
+
+    .h-cap {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: auto;
+      margin: 14px var(--gut-r) 0 var(--gut-l);
+    }
+
+    .h-idx {
+      display: none;
+    }
+  }
+</style>

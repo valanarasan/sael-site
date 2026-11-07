@@ -1,0 +1,372 @@
+---
+/**
+ * 10 · Book with us: video background and the enquiry form.
+ * The video is not autoplayed yet (step 7 starts it when near, and never with reduced motion);
+ * its poster shows meanwhile. Submission is wired up in step 9.
+ */
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import { HONEYPOT_FIELD } from '../../lib/leads';
+import type { Sections } from '../../lib/schemas/sections';
+import Button from '../ui/Button.astro';
+import PlaceholderTag from '../ui/PlaceholderTag.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Form = Sections['contact']['form'];
+
+interface Props {
+  number: number;
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  poster: ImageMetadata;
+  videoSrc: string;
+  form: Form;
+  offices: { name: string; phone?: { label: string; href: string } }[];
+  email: { label: string; href: string };
+  /** wa.me link with the thank-you prefill, for "Continue on WhatsApp". */
+  whatsappLink: string;
+}
+
+const { number, eyebrow, heading, intro, poster, videoSrc, form, offices, email, whatsappLink } =
+  Astro.props;
+const posterImage = await getImage({ src: poster, width: 1920, format: 'webp' });
+---
+
+<section class="cta on-dark" id="contact" aria-labelledby="h-cta" data-mbar-hide>
+  <video
+    class="bg"
+    muted
+    loop
+    playsinline
+    preload="none"
+    poster={posterImage.src}
+    aria-hidden="true"
+    data-contact-video
+  >
+    <source src={videoSrc} type="video/mp4" />
+  </video>
+  <div class="wrap">
+    <div class="cta-box">
+      <SectionHeading
+        id="h-cta"
+        number={number}
+        eyebrow={eyebrow}
+        heading={heading}
+        layout="inline"
+        class="cta-hd"
+      />
+      <p class="intro">{intro}</p>
+
+      <form class="qf" method="post" action="/api/enquiry" data-enquiry-form>
+        <div class="f">
+          <label for="q-name">{form.name}</label>
+          <input
+            id="q-name"
+            name="name"
+            placeholder={form.placeholders.name}
+            autocomplete="name"
+            required
+            maxlength="80"
+          />
+        </div>
+        <div class="f">
+          <label for="q-phone">{form.phone}</label>
+          <input
+            id="q-phone"
+            name="phone"
+            type="tel"
+            inputmode="tel"
+            placeholder={form.placeholders.phone}
+            autocomplete="tel"
+            required
+            maxlength="20"
+          />
+        </div>
+        <div class="f">
+          <label for="q-district">{form.place}</label>
+          <input
+            id="q-district"
+            name="district"
+            placeholder={form.placeholders.place}
+            autocomplete="postal-code"
+            maxlength="80"
+          />
+        </div>
+        <div class="f">
+          <label for="q-bill">{form.bill}</label>
+          <select id="q-bill" name="bill">
+            <option value="">{form.placeholders.bill}</option>
+            {form.billOptions.map((o) => (
+              <option>{o}</option>
+            ))}
+          </select>
+        </div>
+        <div class="f full">
+          <label for="q-interest">{form.interest}</label>
+          <select id="q-interest" name="interest" required>
+            {form.interests.map((o) => (
+              <option>{o}</option>
+            ))}
+          </select>
+        </div>
+        <div class="f full">
+          <label for="q-message">{form.message}</label>
+          <textarea
+            id="q-message"
+            name="message"
+            placeholder={form.placeholders.message}
+            rows="2"
+            maxlength="1000"
+          ></textarea>
+        </div>
+        <div class="hp" aria-hidden="true">
+          <label for="q-hp">Leave this field empty</label>
+          <input id="q-hp" name={HONEYPOT_FIELD} tabindex="-1" autocomplete="off" />
+        </div>
+        <label class="consent full">
+          <input type="checkbox" name="consent" value="on" required />
+          <span>{form.consent}</span>
+        </label>
+        <p class="privacy full">
+          {form.privacy.placeholder && <PlaceholderTag />}
+          {form.privacy.text}
+        </p>
+        <p class="err full" role="alert" data-form-error></p>
+        <Button type="submit" variant="cop" arrow class="full">
+          {form.submit}
+        </Button>
+      </form>
+
+      <div class="ok" hidden data-form-ok>
+        <p>{form.thankYou}</p>
+        <Button href={whatsappLink} variant="paper" target="_blank" rel="noopener noreferrer">
+          {form.whatsappLabel}
+        </Button>
+      </div>
+
+      <ul class="offs">
+        {offices.map((o) =>
+          o.phone ? (
+            <li>
+              {o.name} <a href={o.phone.href}>{o.phone.label}</a>
+            </li>
+          ) : null,
+        )}
+        <li>
+          <a href={email.href}>{email.label}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
+    background: var(--ink);
+    padding-block: 32px;
+  }
+
+  .bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 120%;
+    object-fit: cover;
+  }
+
+  .cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(11, 31, 34, 0.85),
+      rgba(11, 31, 34, 0.35) 60%,
+      rgba(11, 31, 34, 0.15)
+    );
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .cta-box {
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .cta-box :global(.cta-hd) {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .cta-box :global(.cta-hd .lbl) {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 18px;
+  }
+
+  .cta-box :global(.cta-hd h2) {
+    font-size: clamp(46px, 6vw, 96px);
+    line-height: 0.95;
+  }
+
+  .intro {
+    font-size: 18px;
+    opacity: 0.86;
+    max-width: 46ch;
+  }
+
+  .qf {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 16px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .qf :global(.full) {
+    grid-column: 1 / -1;
+  }
+
+  /* v5 shows the label text as the placeholder; the real label stays for screen readers. */
+  .f label,
+  .hp label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  input:not([type='checkbox']),
+  select,
+  textarea {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(11, 31, 34, 0.45);
+    color: #fff;
+    font: 400 16px var(--f-disp);
+  }
+
+  textarea {
+    padding-block: 14px;
+    resize: vertical;
+  }
+
+  select option {
+    color: var(--ink);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2.5px solid var(--copper-2);
+    outline-offset: 2px;
+    border-color: var(--copper-2);
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .consent input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    accent-color: var(--copper);
+  }
+
+  .privacy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .err {
+    font: 500 12px var(--f-mono);
+    color: #ffc2a6;
+  }
+
+  .err:empty {
+    display: none;
+  }
+
+  .ok {
+    padding: 22px;
+    border-radius: 22px;
+    background: var(--copper);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    font-weight: 600;
+  }
+
+  .offs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+
+  .offs a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .offs a:hover {
+    color: var(--copper-2);
+  }
+
+  @media (max-width: 860px) {
+    .qf {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
