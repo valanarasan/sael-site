@@ -4,11 +4,11 @@ Nov 7, 2026 · @Team
 
 ## Summary
 
-Build the production site in **Astro 6 with TypeScript**, as a static site with all content in files. SAEL then edits that content through **Pages CMS**, a free browser editor, so nobody touches code after handover. Hosting and the domain will be decided later. Translation into other languages is out of scope for now.
+Build the production site in **Astro 7 with TypeScript**, as a static site with all content in files. SAEL then edits that content through **Pages CMS**, a free browser editor, so nobody touches code after handover. Hosting and the domain will be decided later. Translation into other languages is out of scope for now.
 
 | Decision | Choice | Why |
 | --- | --- | --- |
-| Framework | Astro 6 + TypeScript (strict) | Static pages with no JavaScript by default. Interactive parts load only where needed. |
+| Framework | Astro 7 + TypeScript (strict) | Static pages with no JavaScript by default. Interactive parts load only where needed. |
 | Interactive parts | Small TypeScript "islands": calculator, chat, gallery, menu | No React needed; keeps the home page light. |
 | Animation | GSAP + ScrollTrigger and Lenis, installed from npm | Same effects as v5, bundled and self-hosted instead of loaded from public CDNs. |
 | Content | Astro content collections: Markdown for blog posts, JSON for settings, projects, FAQs and subsidy rules | Content sits apart from code, and a schema checks every file at build time. |
@@ -22,7 +22,7 @@ The v5 HTML stays as the visual reference. The build splits it into components a
 
 Astro fits best because the SAEL site is mostly content with a few interactive pieces. Most of the page needs no JavaScript at all.
 
-|  | Astro 6 (recommended) | Next.js | Plain HTML + Vite (v5 as is) |
+|  | Astro 7 (recommended) | Next.js | Plain HTML + Vite (v5 as is) |
 | --- | --- | --- | --- |
 | Built for | Content sites: marketing pages, blogs | Web apps with logins, dashboards, live data | Single pages and prototypes |
 | JavaScript sent to visitors | None by default; only the islands you mark | A React runtime on every page | Whatever you write |
@@ -31,7 +31,7 @@ Astro fits best because the SAEL site is mostly content with a few interactive p
 | Security features | Built-in Content Security Policy API | Middleware and headers | Headers set at the host only |
 | Fit for SAEL | Strong | Heavier than needed | Hard to maintain beyond one page |
 
-Astro 6 needs Node 22 or newer. It adds a built-in Fonts API for self-hosted fonts and a stable Content Security Policy API, both used in this plan.
+Astro 7 needs Node 22.23 or newer. It keeps the built-in Fonts API for self-hosted fonts and the stable Content Security Policy API introduced in Astro 6, both used in this plan. (The plan first named Astro 6; the build moved to Astro 7 because the last Astro 6 release has security advisories that are fixed only in 7.x, including one in AVIF image optimisation.)
 
 ## Architecture
 
@@ -329,7 +329,7 @@ Layout, new sections, animations and the form's logic stay with the developer.
 
 The work runs in this order. Each step ends with a preview link and passing checks. The dates follow the client-facing plan, with the production build from 16 to 28 November 2026.
 
-1. **Set-up.** Astro 6 + TypeScript project, ESLint, Prettier, Husky, Vitest, Playwright, GitHub Actions, host connected with preview links.
+1. **Set-up.** Astro 7 + TypeScript project, ESLint, Prettier, Husky, Vitest, Playwright, GitHub Actions, host connected with preview links.
 2. **Foundations.** Design tokens, fonts, `BaseLayout`, header, menu, footer, mobile action bar, `settings.json`.
 3. **Content model.** Zod schemas and content files for settings, projects, FAQs, subsidy rules, chat intents and blog posts. Move v5 text into them.
 4. **Logic and unit tests.** `subsidy.ts`, chat matcher, lead validation, each written with its Vitest tests.

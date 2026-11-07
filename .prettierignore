@@ -1,0 +1,13 @@
+dist/
+.astro/
+node_modules/
+coverage/
+playwright-report/
+test-results/
+package-lock.json
+
+# Read-only inputs: never reformat.
+reference/
+docs/
+CLAUDE.md
+KICKOFF.md

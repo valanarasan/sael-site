@@ -4,7 +4,7 @@ Open this folder in Claude Code and paste one prompt per step. Review and commit
 
 ## Before you start (one time)
 
-1. Install Node 22 or newer (`node -v`).
+1. Install Node 22.23 or newer (24 recommended) (`node -v`).
 2. Create an empty GitHub repo (e.g. `valanarasan/sael-site`) and clone it, or `git init` inside this folder.
 3. Keep `reference/` and `docs/` in the repo; they are read-only inputs.
 4. Start Claude Code in this folder: `claude`.
@@ -12,7 +12,7 @@ Open this folder in Claude Code and paste one prompt per step. Review and commit
 ## Step prompts
 
 **1 · Set-up**
-> Read CLAUDE.md and docs/technical-plan.md. Scaffold the Astro 6 + TypeScript strict project in this folder (keep reference/ and docs/). Add ESLint, Prettier, Husky + lint-staged, Vitest, Playwright with @axe-core/playwright, and a GitHub Actions workflow running check, lint, test and build. Add the npm scripts named in CLAUDE.md and a .env.example. Don't build any pages yet. Stop and show me the file tree and a passing `npm run check && npm run lint && npm test`.
+> Read CLAUDE.md and docs/technical-plan.md. Scaffold the Astro 7 + TypeScript strict project in this folder (keep reference/ and docs/). Add ESLint, Prettier, Husky + lint-staged, Vitest, Playwright with @axe-core/playwright, and a GitHub Actions workflow running check, lint, test and build. Add the npm scripts named in CLAUDE.md and a .env.example. Don't build any pages yet. Stop and show me the file tree and a passing `npm run check && npm run lint && npm test`.
 
 **2 · Foundations**
 > Build styles/tokens.css from the v5 tokens, self-hosted fonts via the Astro Fonts API, BaseLayout (head, meta, favicon), header, mobile menu sheet, footer and mobile action bar, matching reference/v5/index.html. All contact details come from src/content/settings.json. Screenshot at 1440 and 390 and compare with v5.

@@ -9,7 +9,7 @@ When this file and the plans disagree, this file wins.
 
 ## Stack
 
-- Astro 6, TypeScript strict, Node 22+. Static output; one server route for the enquiry form.
+- Astro 7 (7.4.x), TypeScript strict, Node 22.23+ (24 recommended). Astro 6 was dropped: its last release has unpatched security advisories. Static output; one server route for the enquiry form.
 - Interactive parts are small vanilla-TS islands (no React): subsidy calculator, system finder, gallery + lightbox, chat assistant, mobile menu.
 - GSAP + ScrollTrigger and Lenis from npm, wrapped in one `src/lib/motion.ts`. Always respect `prefers-reduced-motion`.
 - Content in Astro content collections, validated by Zod in `src/content.config.ts`.
