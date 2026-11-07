@@ -1,0 +1,171 @@
+---
+/**
+ * System finder island: two questions suggest on-grid, hybrid or off-grid, and the suggested
+ * column is highlighted in the comparison table of the enclosing [data-systems] section.
+ * Toggle buttons use aria-pressed; the result is announced politely.
+ */
+import { toIslandJson } from '../../lib/island-data';
+import type { Sections } from '../../lib/schemas/sections';
+import Button from '../ui/Button.astro';
+
+type Props = Sections['systems']['finder'];
+
+const {
+  label,
+  gridQuestion,
+  cutsQuestion,
+  yes,
+  no,
+  rarely,
+  often,
+  resultLabel,
+  results,
+  more,
+  cta,
+} = Astro.props;
+---
+
+<div class="finder on-dark" data-finder>
+  <script type="application/json" data-island="finder" set:html={toIslandJson(results)} />
+  <p class="lbl">{label}</p>
+  <div class="fq">
+    <p id="fq-grid">{gridQuestion}</p>
+    <div class="seg" role="group" aria-labelledby="fq-grid" data-question="grid">
+      <button type="button" aria-pressed="true" data-value="yes">
+        {yes}
+      </button>
+      <button type="button" aria-pressed="false" data-value="no">
+        {no}
+      </button>
+    </div>
+  </div>
+  <div class="fq" data-cuts>
+    <p id="fq-cuts">{cutsQuestion}</p>
+    <div class="seg" role="group" aria-labelledby="fq-cuts" data-question="cuts">
+      <button type="button" aria-pressed="true" data-value="rare">
+        {rarely}
+      </button>
+      <button type="button" aria-pressed="false" data-value="often">
+        {often}
+      </button>
+    </div>
+  </div>
+  <div class="fres" aria-live="polite">
+    <span class="lbl">{resultLabel}</span>
+    <b data-result-name>{results.onGrid.name}</b>
+    <p data-result-why>{results.onGrid.why}</p>
+  </div>
+  <p class="fmore">
+    {more.text} <a href={more.link.href}>{more.link.label}</a>
+  </p>
+  <Button href={cta.href} variant="cop" arrow class="go">
+    {cta.label}
+  </Button>
+</div>
+
+<script>
+  import { whenVisible } from '../../scripts/hydrate';
+
+  document.querySelectorAll<HTMLElement>('[data-finder]').forEach((root) =>
+    whenVisible(root, () => {
+      void import('../../scripts/islands/finder').then((m) => m.initFinder(root));
+    }),
+  );
+</script>
+
+<style>
+  .finder {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 28px;
+    padding: clamp(24px, 3vw, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .finder > .lbl {
+    color: rgba(241, 243, 241, 0.6);
+  }
+
+  .fq p {
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+
+  .fq:global(.off) {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 14px;
+    background: rgba(241, 243, 241, 0.08);
+  }
+
+  .seg button {
+    min-height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: rgba(241, 243, 241, 0.75);
+    font: 600 14px var(--f-disp);
+    cursor: pointer;
+    transition:
+      background 0.4s var(--ease),
+      color 0.4s var(--ease);
+  }
+
+  .seg button[aria-pressed='true'] {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .fres {
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(241, 243, 241, 0.06);
+    border: 1px solid var(--line-d);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fres .lbl {
+    color: rgba(241, 243, 241, 0.55);
+  }
+
+  .fres b {
+    font: 800 clamp(30px, 3vw, 40px) / 1.05 var(--f-disp);
+    letter-spacing: -0.03em;
+    color: var(--copper-2);
+  }
+
+  .fres p {
+    margin: 0;
+    color: rgba(241, 243, 241, 0.72);
+    font-size: 15px;
+  }
+
+  .fmore {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(241, 243, 241, 0.65);
+  }
+
+  .fmore a {
+    color: var(--mint);
+  }
+
+  .finder :global(.go) {
+    align-self: flex-start;
+  }
+
+  .seg button:disabled {
+    cursor: default;
+  }
+</style>
