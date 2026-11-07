@@ -1,6 +1,7 @@
 /** Display adapters for subsidy rules. The maths itself lives in lib/subsidy.ts (step 4). */
 import { formatInr } from '../format';
 import type { Slab, SubsidyRules } from '../schemas/subsidy';
+import { calculateSubsidy } from '../subsidy';
 
 export interface SlabRow {
   label: string;
@@ -49,4 +50,40 @@ export function toStateOptions(rules: SubsidyRules): StateOption[] {
     label: s.name,
     selected: s.id === rules.defaultStateId,
   }));
+}
+
+export interface CalculatorView {
+  kw: number;
+  /** One row per central slab: label and the amount it pays at this size. */
+  slabRows: { label: string; value: string; dim: boolean }[];
+  /** `name` is the state's name; left out for "Other states" and unknown ids. */
+  state: { value: string; dim: boolean; name?: string };
+  total: { value: string; combined: boolean };
+  note?: string;
+}
+
+/**
+ * The calculator's numbers for a size and state, formatted for display. The island (step 6)
+ * recomputes this in the browser on every change; the page renders the default server-side.
+ */
+export function toCalculatorView(kw: number, stateId: string, rules: SubsidyRules): CalculatorView {
+  const result = calculateSubsidy(kw, stateId, rules);
+  const slabRows = rules.central.slabs.map((slab) => {
+    const kwInSlab = Math.min(Math.max(kw - slab.fromKw, 0), slab.toKw - slab.fromKw);
+    const amount = Math.round(kwInSlab * slab.perKw);
+    return { label: slabLabel(slab), value: amount ? formatInr(amount) : '—', dim: amount === 0 };
+  });
+  const id = stateId.trim().toUpperCase();
+  const named = rules.states.find((s) => s.id === id && s.id !== rules.fallbackStateId);
+  return {
+    kw,
+    slabRows,
+    state: {
+      value: result.state ? `+ ${formatInr(result.state)}` : '—',
+      dim: result.state === 0,
+      ...(named ? { name: named.name } : {}),
+    },
+    total: { value: formatInr(result.total), combined: result.state > 0 },
+    ...(result.note ? { note: result.note } : {}),
+  };
 }

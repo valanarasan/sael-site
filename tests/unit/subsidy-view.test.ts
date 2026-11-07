@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toSlabRows, toStateOptions } from '../../src/lib/view-models/subsidy';
+import { toCalculatorView, toSlabRows, toStateOptions } from '../../src/lib/view-models/subsidy';
 import { subsidyFixture } from '../fixtures/content';
 
 describe('toSlabRows', () => {
@@ -52,5 +52,39 @@ describe('toStateOptions', () => {
       { value: 'BB', label: 'Beta', selected: false },
       { value: 'ZZ', label: 'Other states', selected: false },
     ]);
+  });
+});
+
+describe('toCalculatorView', () => {
+  it('shows each slab, a dash for no state top-up, and the central total', () => {
+    expect(toCalculatorView(3, 'AA', subsidyFixture)).toEqual({
+      kw: 3,
+      slabRows: [
+        { label: 'First 2 kW', value: '₹40,000', dim: false },
+        { label: '3rd kW', value: '₹10,000', dim: false },
+      ],
+      state: { value: '—', dim: true, name: 'Alpha' },
+      total: { value: '₹50,000', combined: false },
+      note: 'No top-up.',
+    });
+  });
+
+  it('dims slabs a small system does not reach', () => {
+    expect(toCalculatorView(1, 'AA', subsidyFixture).slabRows).toEqual([
+      { label: 'First 2 kW', value: '₹20,000', dim: false },
+      { label: '3rd kW', value: '—', dim: true },
+    ]);
+  });
+
+  it('adds a state top-up to the total and marks it combined', () => {
+    const view = toCalculatorView(3, 'BB', subsidyFixture);
+    expect(view.state).toEqual({ value: '+ ₹8,000', dim: false, name: 'Beta' });
+    expect(view.total).toEqual({ value: '₹58,000', combined: true });
+    expect(view).not.toHaveProperty('note');
+  });
+
+  it('leaves out the state name for "Other states" and unknown states', () => {
+    expect(toCalculatorView(3, 'ZZ', subsidyFixture).state).not.toHaveProperty('name');
+    expect(toCalculatorView(3, 'QQ', subsidyFixture).state).not.toHaveProperty('name');
   });
 });
