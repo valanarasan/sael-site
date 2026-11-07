@@ -1,0 +1,64 @@
+---
+/** "More from the blog": up to three other published articles under an article. */
+import { parseAccent } from '../../lib/text';
+import type { PostCardProps } from '../../lib/view-models/blog';
+import PostCard from '../ui/PostCard.astro';
+import RichText from '../ui/RichText.astro';
+
+interface Props {
+  heading: string;
+  posts: PostCardProps[];
+  comingSoonLabel: string;
+  readingTimeLabel: string;
+}
+
+const { heading, posts, comingSoonLabel, readingTimeLabel } = Astro.props;
+---
+
+{posts.length > 0 && (
+  <section class="wrap rel" aria-labelledby="related-title">
+    <h2 id="related-title">
+      <RichText segments={parseAccent(heading)} />
+    </h2>
+    <div class="grid">
+      {posts.map((post) => (
+        <PostCard
+          post={post}
+          level={3}
+          comingSoonLabel={comingSoonLabel}
+          readingTimeLabel={readingTimeLabel}
+          sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1020px) 46vw, 30vw"
+        />
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .rel {
+    margin-top: clamp(80px, 9vw, 130px);
+  }
+
+  h2 {
+    font-size: clamp(32px, 3.6vw, 50px);
+    margin-bottom: 32px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1020px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
