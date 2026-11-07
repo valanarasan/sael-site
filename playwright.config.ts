@@ -39,6 +39,9 @@ export default defineConfig({
           url: baseURL,
           reuseExistingServer: !process.env.CI,
           timeout: 180_000,
+          // The enquiry endpoint runs with in-memory stand-ins: nothing is emailed or written to
+          // the real sheet. The rate limit is raised so tests don't trip it (it's unit-tested).
+          env: { LEADS_DRIVER: 'memory', ENQUIRY_RATE_LIMIT_MAX: '1000' },
         },
       }),
 });
