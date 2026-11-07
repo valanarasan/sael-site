@@ -1,0 +1,78 @@
+---
+/**
+ * Page shell: <head> (meta, fonts, favicon), skip link, header, menu sheet, footer and mobile bar.
+ * Reads settings through the content repository and maps them to the chrome components' props.
+ */
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import Footer from '../components/sections/Footer.astro';
+import Header from '../components/sections/Header.astro';
+import MobileBar from '../components/sections/MobileBar.astro';
+import MenuSheet from '../components/islands/MenuSheet.astro';
+import { getSettings } from '../lib/content';
+import { toChrome } from '../lib/view-models/chrome';
+
+interface Props {
+  /** Page title; the site name is appended. Omit on the home page to use the default title. */
+  title?: string;
+  /** Meta description; defaults to the site description from settings. */
+  description?: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+
+const settings = await getSettings();
+const chrome = toChrome(settings, Astro.url.pathname, new Date().getFullYear());
+
+const pageTitle = title ? `${title} · ${settings.company.name}` : settings.seo.title;
+const pageDescription = description ?? settings.seo.description;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const menuId = 'menu-sheet';
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#F1F3F1" />
+
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={settings.company.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content="en_IN" />
+
+    <Font
+      cssVariable="--font-jakarta"
+      preload={[
+        { weight: 400, subset: 'latin' },
+        { weight: 700, subset: 'latin' },
+      ]}
+    />
+    <Font cssVariable="--font-newsreader" />
+    <Font cssVariable="--font-plex-mono" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip" href="#main">
+      Skip to content
+    </a>
+    <Header {...chrome.header} menuId={menuId} />
+    <MenuSheet {...chrome.menu} id={menuId} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer {...chrome.footer} />
+    <MobileBar {...chrome.mobileBar} />
+  </body>
+</html>

@@ -82,6 +82,7 @@ Fonts: Plus Jakarta Sans 400–800 (display/body), Newsreader italic 400/500 (ac
 ```
 Self-host fonts via Astro's Fonts API. Logo: `reference/v5/assets/img/sael-logo.png` (vector logo still to come from SAEL).
 Open question: re-theme accents to the logo's green (#88C038) and blue (#20A8E0)? Don't change until SAEL decides.
+Known issue, kept by decision until then: white text on copper fills (#E8692E) is 3.23:1, below WCAG AA 4.5:1. The axe tests skip only that rule for copper buttons (`tests/e2e/axe.ts`); fix it with the colour decision.
 
 ## Page content (home, in order)
 

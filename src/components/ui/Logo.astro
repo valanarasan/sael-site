@@ -1,0 +1,42 @@
+---
+/** SAEL logo linking home. PNG until SAEL sends the vector logo. */
+import { Image } from 'astro:assets';
+import logo from '../../assets/brand/sael-logo.png';
+
+interface Props {
+  href: string;
+  alt: string;
+  /** Rendered height in CSS pixels (v5: 54 in the header, 72 in the footer). */
+  height: number;
+  eager?: boolean;
+}
+
+const { href, alt, height, eager = false } = Astro.props;
+---
+
+<a class="logo" href={href} aria-label={`${alt}, home`}>
+  <Image
+    src={logo}
+    alt={alt}
+    height={height}
+    densities={[1, 2]}
+    loading={eager ? 'eager' : 'lazy'}
+    style={`height:${height}px`}
+  />
+</a>
+
+<style>
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    text-decoration: none;
+    width: max-content;
+  }
+
+  .logo :global(img) {
+    display: block;
+    width: auto;
+  }
+</style>

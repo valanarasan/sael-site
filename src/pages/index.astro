@@ -1,18 +1,29 @@
 ---
-// Placeholder until step 2 (foundations) and step 5 (sections) build the real page.
+// Home page. The sections arrive in step 5; until then this placeholder keeps the layout testable.
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>SAEL Energy</title>
-  </head>
-  <body>
-    <main>
-      <h1>SAEL Energy</h1>
-      <p>Site under construction.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout noindex>
+  <section class="placeholder wrap" aria-labelledby="h-home">
+    <p class="lbl">
+      <b>●</b> Build in progress
+    </p>
+    <h1 id="h-home">SAEL Energy</h1>
+    <p>The home-page sections are added in build step 5.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .placeholder {
+    min-height: 120vh;
+    padding-top: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  h1 {
+    font-size: clamp(48px, 7vw, 104px);
+    line-height: 0.95;
+  }
+</style>

@@ -1,5 +1,5 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { expectNoSeriousA11yViolations } from './axe';
 
 test('home page loads', async ({ page }) => {
   await page.goto('/');
@@ -9,9 +9,5 @@ test('home page loads', async ({ page }) => {
 
 test('home page has no serious accessibility violations', async ({ page }) => {
   await page.goto('/');
-  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-  const serious = results.violations.filter(
-    (v) => v.impact === 'serious' || v.impact === 'critical',
-  );
-  expect(serious, JSON.stringify(serious, null, 2)).toEqual([]);
+  await expectNoSeriousA11yViolations(page);
 });

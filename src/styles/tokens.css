@@ -1,0 +1,32 @@
+/* Design tokens from the approved v5 design (reference/v5/index.html). Keep values exactly. */
+:root {
+  /* colour */
+  --paper: #f1f3f1;
+  --paper-2: #e5eae8;
+  --white: #ffffff;
+  --ink: #0b1f22;
+  --ink-2: #2b4145;
+  --muted: #5d7376;
+  --teal: #0e4a4f;
+  --teal-2: #13606a;
+  --mint: #bfe6df;
+  --copper: #e8692e;
+  --copper-2: #f59a5b;
+  --line: rgba(11, 31, 34, 0.12);
+  --line-d: rgba(241, 243, 241, 0.16);
+
+  /* type: families come from the Astro Fonts API (astro.config.mjs) */
+  --f-disp: var(--font-jakarta);
+  --f-ser: var(--font-newsreader);
+  --f-mono: var(--font-plex-mono);
+
+  /* motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* layout */
+  --wrap-max: 1320px;
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+
+  color-scheme: light;
+}
