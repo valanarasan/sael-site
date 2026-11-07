@@ -1,14 +1,7 @@
 import { z } from 'astro/zod';
+import { linkSchema } from './common';
 
-/** A link to a page or a section on the home page: "/blog", "/#contact", "#faq". */
-export const internalHref = z
-  .string()
-  .regex(/^(\/|#)[\w\-/#]*$/, 'Use a site path like "/blog" or a section link like "/#contact"');
-
-export const linkSchema = z.object({
-  label: z.string().min(1).max(40),
-  href: internalHref,
-});
+export { internalHref, linkSchema } from './common';
 
 export const phoneSchema = z.object({
   /** How the number is shown, e.g. "+91 98807 03083". */
