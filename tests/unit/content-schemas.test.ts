@@ -162,6 +162,10 @@ describe('chatSchema', () => {
     inputPlaceholder: 'Type…',
     note: 'General answers.',
     whatsappLabel: 'Continue on WhatsApp',
+    closeLabel: 'Close chat',
+    sendLabel: 'Send',
+    chipsLabel: 'Suggested questions',
+    readLabel: 'Read:',
     fallback: { answer: 'Not sure.', whatsapp: 'Hi, {question}' },
     whatsappChip: { answer: 'Tap below.', whatsapp: 'Hi', buttonLabel: 'Open' },
     subsidyFollowUp: {

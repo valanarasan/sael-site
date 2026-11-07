@@ -92,6 +92,16 @@ export const sectionsFixture = {
   gallery: {
     eyebrow: 'Gallery',
     heading: 'Work',
+    controls: {
+      previous: 'Prev',
+      next: 'Next',
+      open: 'Open',
+      viewer: 'Viewer',
+      close: 'Close',
+      previousPhoto: 'Prev photo',
+      nextPhoto: 'Next photo',
+      credit: 'Photo',
+    },
     items: [{ ...pic('g'), title: 'G', place: 'Here' }],
   },
   numbers: { label: 'Numbers', stats: [{ value: '3', label: 'offices' }], ticker: ['EPC'] },

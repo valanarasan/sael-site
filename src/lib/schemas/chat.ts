@@ -41,6 +41,11 @@ export const chatSchema = (blogRef: BlogRefField) =>
       inputPlaceholder: z.string().max(40),
       note: z.string().max(200),
       whatsappLabel: z.string().min(1).max(40),
+      closeLabel: z.string().min(1).max(30),
+      sendLabel: z.string().min(1).max(20),
+      chipsLabel: z.string().min(1).max(40),
+      /** Prefix for related-article links, e.g. "Read:". */
+      readLabel: z.string().min(1).max(20),
       /** Reply when nothing matches; always offers WhatsApp with the visitor's question. */
       fallback: z.object({ answer: tokenText.max(300), whatsapp: prefill }),
       /** Reply for chips with no message. */

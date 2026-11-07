@@ -70,6 +70,10 @@ export const chatFixture: ChatContent = {
   inputPlaceholder: 'Type…',
   note: 'General answers.',
   whatsappLabel: 'Continue on WhatsApp',
+  closeLabel: 'Close chat',
+  sendLabel: 'Send',
+  chipsLabel: 'Suggested questions',
+  readLabel: 'Read:',
   fallback: { answer: 'Not sure about that one.', whatsapp: 'Hi, I have a question: {question}' },
   whatsappChip: {
     answer: 'Tap below.',

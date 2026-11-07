@@ -7,6 +7,10 @@
   "inputPlaceholder": "Type your question…",
   "note": "Answers are general. Your exact quote and subsidy are confirmed at the free site survey.",
   "whatsappLabel": "Continue on WhatsApp",
+  "closeLabel": "Close chat",
+  "sendLabel": "Send",
+  "chipsLabel": "Suggested questions",
+  "readLabel": "Read:",
   "fallback": {
     "answer": "I'm not sure about that one, but our team can help on WhatsApp.",
     "whatsapp": "Hi SAEL, I have a question: {question}"
@@ -25,14 +29,37 @@
     "buttonLabel": "Check on WhatsApp"
   },
   "chips": [
-    { "label": "Subsidy amount", "message": "How much subsidy can I get?" },
-    { "label": "Which system?", "message": "Which system should I choose?" },
-    { "label": "Power cuts", "message": "What happens in a power cut?" },
-    { "label": "Price", "message": "How much does it cost?" },
-    { "label": "Low output", "message": "My solar output has dropped" },
-    { "label": "Solar pump", "message": "Tell me about solar pumps" },
-    { "label": "Book a survey", "message": "I want to book a site survey" },
-    { "label": "Talk on WhatsApp" }
+    {
+      "label": "Subsidy amount",
+      "message": "How much subsidy can I get?"
+    },
+    {
+      "label": "Which system?",
+      "message": "Which system should I choose?"
+    },
+    {
+      "label": "Power cuts",
+      "message": "What happens in a power cut?"
+    },
+    {
+      "label": "Price",
+      "message": "How much does it cost?"
+    },
+    {
+      "label": "Low output",
+      "message": "My solar output has dropped"
+    },
+    {
+      "label": "Solar pump",
+      "message": "Tell me about solar pumps"
+    },
+    {
+      "label": "Book a survey",
+      "message": "I want to book a site survey"
+    },
+    {
+      "label": "Talk on WhatsApp"
+    }
   ],
   "intents": [
     {
@@ -72,7 +99,12 @@
         "suitable"
       ],
       "answer": "On-grid suits homes, shops and offices with a reliable grid: lowest cost, no battery. Hybrid adds a battery for homes with frequent power cuts. Off-grid is for places with no grid connection.",
-      "links": [{ "label": "Compare systems", "href": "/#systems" }],
+      "links": [
+        {
+          "label": "Compare systems",
+          "href": "/#systems"
+        }
+      ],
       "related": ["types-of-solar-plants"],
       "whatsapp": "Hi SAEL, which solar system is right for my home?"
     },
@@ -143,7 +175,12 @@
       "id": "blog",
       "keywords": ["blog", "article", "read", "learn", "guide", "tips"],
       "answer": "Our blog explains solar in plain words: subsidies, monsoon output, cleaning and more.",
-      "links": [{ "label": "Open the SAEL blog", "href": "/blog" }]
+      "links": [
+        {
+          "label": "Open the SAEL blog",
+          "href": "/blog"
+        }
+      ]
     },
     {
       "id": "price",
@@ -180,7 +217,12 @@
         "inspection"
       ],
       "answer": "The site survey is free: a consultant checks your roof, shading and power bills. Book it on WhatsApp, or use the callback form.",
-      "links": [{ "label": "Callback form", "href": "/#contact" }],
+      "links": [
+        {
+          "label": "Callback form",
+          "href": "/#contact"
+        }
+      ],
       "whatsapp": "Hi SAEL, I'd like to book a free site survey."
     },
     {
@@ -216,7 +258,12 @@
         "company"
       ],
       "answer": "Beyond homes, SAEL builds rooftop and ground-mount systems across South India, and facilitates power for industrial and corporate buyers.",
-      "links": [{ "label": "See our projects", "href": "/#work" }],
+      "links": [
+        {
+          "label": "See our projects",
+          "href": "/#work"
+        }
+      ],
       "whatsapp": "Hi SAEL, I'd like to discuss a commercial or industrial project."
     }
   ]
