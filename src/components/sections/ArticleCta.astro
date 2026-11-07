@@ -1,0 +1,66 @@
+---
+/** End-of-article call to action: book the free site survey, or ask on WhatsApp. */
+import { parseAccent } from '../../lib/text';
+import Button from '../ui/Button.astro';
+import RichText from '../ui/RichText.astro';
+
+interface Props {
+  heading: string;
+  text: string;
+  primary: { label: string; href: string };
+  whatsapp: { label: string; href: string };
+}
+
+const { heading, text, primary, whatsapp } = Astro.props;
+---
+
+<aside class="wrap" aria-labelledby="article-cta">
+  <div class="box on-dark">
+    <h2 id="article-cta">
+      <RichText segments={parseAccent(heading)} />
+    </h2>
+    <p>{text}</p>
+    <div class="acts">
+      <Button href={primary.href} variant="cop" arrow>
+        {primary.label}
+      </Button>
+      <Button href={whatsapp.href} variant="paper" target="_blank" rel="noopener noreferrer">
+        {whatsapp.label}
+      </Button>
+    </div>
+  </div>
+</aside>
+
+<style>
+  aside {
+    margin-top: clamp(64px, 8vw, 110px);
+  }
+
+  .box {
+    max-width: 920px;
+    margin-inline: auto;
+    padding: clamp(32px, 5vw, 56px);
+    border-radius: 28px;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  h2 {
+    font-size: clamp(32px, 3.6vw, 50px);
+    line-height: 1.02;
+    max-width: 16ch;
+  }
+
+  p {
+    margin-top: 16px;
+    max-width: 52ch;
+    color: rgba(241, 243, 241, 0.78);
+  }
+
+  .acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+</style>

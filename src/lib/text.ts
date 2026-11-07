@@ -57,3 +57,13 @@ export function fillTokens(template: string, values: TokenValues): Segment[] {
 export function segmentsToText(segments: Segment[]): string {
   return segments.map((s) => s.text).join('');
 }
+
+/**
+ * Fills {name} placeholders in a plain string, e.g. "{minutes} min read" with { minutes: 4 }.
+ * Unknown placeholders are left as written.
+ */
+export function fillPlain(template: string, values: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (whole, name: string) =>
+    name in values ? String(values[name]) : whole,
+  );
+}

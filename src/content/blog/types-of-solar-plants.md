@@ -1,6 +1,7 @@
 ---
 title: 'A practical guide to the different types of solar plants'
 topic: 'Solar basics'
+order: 3
 cover: ../../assets/images/b-roof.jpg
 coverAlt: 'Solar panels on a raised frame above a rooftop room'
 draft: true

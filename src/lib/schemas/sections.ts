@@ -243,13 +243,36 @@ export const sectionsSchema = (image: ImageField) => {
       .array(z.object({ id: z.string().regex(/^[a-z][a-z-]*$/), label: z.string().min(1).max(24) }))
       .min(1),
 
+    /** The /blog page, article pages and the RSS feed. */
     blog: z.object({
+      /** Browser tab and search result title of /blog (the site name is added). */
+      seoTitle: z.string().min(1).max(60),
+      seoDescription: z.string().min(50).max(170),
+      feedTitle: z.string().min(1).max(80),
       eyebrow,
       heading,
       intro: paragraph,
       filterLabel: z.string().min(1),
       allLabel: z.string().min(1),
       comingSoon: z.string().min(1),
+      /** Must contain {minutes}. */
+      readingTime: z.string().includes('{minutes}', { message: 'Keep {minutes} in the text' }),
+      /** Read out by screen readers when a filter changes. */
+      filterStatus: z.object({
+        one: z.string().min(1),
+        other: z.string().includes('{count}', { message: 'Keep {count} in the text' }),
+      }),
+      article: z.object({
+        backLabel: z.string().min(1).max(40),
+        byLabel: z.string().min(1).max(20),
+        publishedLabel: z.string().min(1).max(30),
+        updatedLabel: z.string().min(1).max(30),
+        draftNotice: z.string().min(1).max(200),
+        relatedHeading: heading,
+        whatsappLabel: z.string().min(1).max(40),
+        /** Prefilled WhatsApp text; {title} becomes the article title. */
+        whatsappMessage: z.string().min(1).max(300),
+      }),
     }),
   });
 };

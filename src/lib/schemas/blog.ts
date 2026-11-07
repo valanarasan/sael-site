@@ -21,6 +21,8 @@ export const blogSchema = (image: ImageField) =>
       title: z.string().min(5).max(110),
       description: z.string().min(50).max(170).optional(),
       topic: z.enum(BLOG_TOPICS),
+      /** Position among the "coming soon" cards of the same topic (1 first). Published posts sort by date. */
+      order: z.number().int().min(1).max(99).optional(),
       cover: image(),
       coverAlt: z.string().min(3).max(200),
       publishDate: z.coerce.date().optional(),

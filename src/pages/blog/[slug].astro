@@ -1,0 +1,148 @@
+---
+/**
+ * /blog/<slug>: one article. Only published posts get a page in the build; on the dev server
+ * drafts get one too (marked "Draft preview" and noindex) so writers can check them.
+ */
+import type { GetStaticPaths } from 'astro';
+import { getImage } from 'astro:assets';
+import logo from '../../assets/brand/sael-logo.png';
+import ArticleBody from '../../components/sections/ArticleBody.astro';
+import ArticleCta from '../../components/sections/ArticleCta.astro';
+import ArticleHeader from '../../components/sections/ArticleHeader.astro';
+import RelatedPosts from '../../components/sections/RelatedPosts.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { whatsappHref } from '../../lib/contact';
+import { getPosts, getSections, getSettings, renderPost, type BlogPost } from '../../lib/content';
+import { jsonLdString, toBlogPostingJsonLd } from '../../lib/json-ld';
+import { SHARE_IMAGE } from '../../lib/share-image';
+import { fillPlain } from '../../lib/text';
+import { postHref, relatedPosts, toArticleView, toPostCard } from '../../lib/view-models/blog';
+
+export const getStaticPaths = (async () => {
+  const posts = await getPosts({ includeDrafts: import.meta.env.DEV });
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const [sections, settings, published, { Content }, shareImage, logoImage] = await Promise.all([
+  getSections(),
+  getSettings(),
+  getPosts({ includeDrafts: false }),
+  renderPost(post),
+  getImage({ src: post.data.cover, ...SHARE_IMAGE }),
+  getImage({ src: logo, width: 120, format: 'png' }),
+]);
+
+const { blog, contact } = sections;
+const labels = blog.article;
+const article = toArticleView(post);
+const related = relatedPosts(post, published).map(toPostCard);
+const readingTime = fillPlain(blog.readingTime, { minutes: article.readingMinutes });
+
+const base = Astro.site ?? Astro.url;
+const url = new URL(postHref(article.slug), base).href;
+const jsonLd =
+  !article.draft && post.data.publishDate
+    ? jsonLdString(
+        toBlogPostingJsonLd({
+          url,
+          title: article.title,
+          ...(article.description ? { description: article.description } : {}),
+          imageUrl: new URL(shareImage.src, base).href,
+          published: post.data.publishDate,
+          ...(post.data.updatedDate ? { updated: post.data.updatedDate } : {}),
+          ...(article.author ? { author: article.author } : {}),
+          topic: article.topic,
+          publisher: { name: settings.company.name, logoUrl: new URL(logoImage.src, base).href },
+        }),
+      )
+    : undefined;
+---
+
+<BaseLayout
+  title={article.title}
+  {...(article.description ? { description: article.description } : {})}
+  image={article.cover}
+  ogType="article"
+  noindex={article.draft}
+>
+  <Fragment slot="head">
+    <link rel="alternate" type="application/rss+xml" title={blog.feedTitle} href="/rss.xml" />
+    {post.data.publishDate && (
+      <meta property="article:published_time" content={post.data.publishDate.toISOString()} />
+    )}
+    {post.data.updatedDate && (
+      <meta property="article:modified_time" content={post.data.updatedDate.toISOString()} />
+    )}
+    <meta property="article:section" content={article.topic} />
+    {jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd} />}
+  </Fragment>
+
+  {article.draft && (
+    <p class="draft" role="note">
+      {labels.draftNotice}
+    </p>
+  )}
+  <article>
+    <ArticleHeader
+      article={article}
+      backHref="/blog"
+      readingTime={readingTime}
+      labels={{
+        back: labels.backLabel,
+        by: labels.byLabel,
+        published: labels.publishedLabel,
+        updated: labels.updatedLabel,
+      }}
+    />
+    <ArticleBody>
+      <Content />
+    </ArticleBody>
+  </article>
+  <ArticleCta
+    heading={contact.heading}
+    text={contact.intro}
+    primary={settings.primaryCta}
+    whatsapp={{
+      label: labels.whatsappLabel,
+      href: whatsappHref(
+        settings.contact.whatsapp,
+        fillPlain(labels.whatsappMessage, { title: article.title }),
+      ),
+    }}
+  />
+  <RelatedPosts
+    heading={labels.relatedHeading}
+    posts={related}
+    comingSoonLabel={blog.comingSoon}
+    readingTimeLabel={blog.readingTime}
+  />
+  <div class="end" aria-hidden="true"></div>
+</BaseLayout>
+
+<style>
+  .draft {
+    position: fixed;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 90px);
+    z-index: 95;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font: 500 12px var(--f-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .end {
+    height: clamp(80px, 9vw, 130px);
+  }
+</style>

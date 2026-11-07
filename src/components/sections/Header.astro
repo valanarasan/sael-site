@@ -133,6 +133,11 @@ const { homeHref, logoAlt, links, cta, menuId } = Astro.props;
     transition: transform 0.5s var(--ease);
   }
 
+  /* v5 colours the current page's link copper; the darker copper keeps it readable (AA). */
+  .links a[aria-current] {
+    color: var(--copper-text);
+  }
+
   .links a:hover::after,
   .links a:global(.act)::after,
   .links a[aria-current]::after {

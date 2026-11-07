@@ -1,0 +1,134 @@
+---
+/**
+ * Article page header: back link, topic, title, description, byline with dates and reading time,
+ * and the cover photo (the page's main image, so it loads first).
+ */
+import type { ArticleView } from '../../lib/view-models/blog';
+import Photo from '../ui/Photo.astro';
+
+interface Props {
+  article: ArticleView;
+  backHref: string;
+  /** Already filled, e.g. "4 min read". */
+  readingTime: string;
+  labels: { back: string; by: string; published: string; updated: string };
+}
+
+const { article, backHref, readingTime, labels } = Astro.props;
+---
+
+<header class="ah">
+  <div class="wrap">
+    <a class="back" href={backHref}>
+      <span aria-hidden="true">←</span> {labels.back}
+    </a>
+    <p class="lbl">
+      <b aria-hidden="true">●</b> {article.topic}
+    </p>
+    <h1>{article.title}</h1>
+    {article.description && <p class="lede">{article.description}</p>}
+    <p class="meta">
+      {article.author && (
+        <span>
+          {labels.by} {article.author}
+        </span>
+      )}
+      {article.published && (
+        <span>
+          {labels.published} <time datetime={article.published.iso}>{article.published.label}</time>
+        </span>
+      )}
+      {article.updated && (
+        <span>
+          {labels.updated} <time datetime={article.updated.iso}>{article.updated.label}</time>
+        </span>
+      )}
+      <span>{readingTime}</span>
+    </p>
+  </div>
+  <div class="wrap cover-wrap">
+    <div class="cover">
+      <Photo
+        src={article.cover.src}
+        alt={article.cover.alt}
+        sizes="(max-width: 860px) calc(100vw - 32px), (max-width: 1440px) calc(100vw - 80px), 1360px"
+        priority
+      />
+    </div>
+  </div>
+</header>
+
+<style>
+  .ah {
+    padding-top: clamp(120px, 13vw, 170px);
+  }
+
+  /* Same 720px column as the article text below, so their left edges line up. */
+  .ah .wrap:first-child {
+    max-width: calc(720px + 80px);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-bottom: 18px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--copper-text);
+  }
+
+  h1 {
+    margin-top: 16px;
+    font: 800 clamp(38px, 5.2vw, 72px) / 1 var(--f-disp);
+    letter-spacing: -0.045em;
+  }
+
+  .lede {
+    margin-top: 22px;
+    font-size: clamp(18px, 1.6vw, 21px);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 26px;
+    font: 500 12px var(--f-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .cover-wrap {
+    margin-top: clamp(36px, 4vw, 56px);
+  }
+
+  .cover {
+    aspect-ratio: 16 / 8;
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--line);
+  }
+
+  .cover :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 640px) {
+    .cover {
+      aspect-ratio: 4 / 3;
+      border-radius: 20px;
+    }
+  }
+</style>

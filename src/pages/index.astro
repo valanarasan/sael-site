@@ -42,9 +42,10 @@ const next = () => ++sectionNumber;
 
 const tokens = tokenValues(settings);
 const { contact } = sections;
+const [mainSlide] = sections.hero.slides;
 ---
 
-<BaseLayout>
+<BaseLayout image={mainSlide && { src: mainSlide.image, alt: mainSlide.alt }}>
   <Hero {...sections.hero} />
   <Highlights {...sections.highlights} />
   <Systems number={next()} {...sections.systems} />

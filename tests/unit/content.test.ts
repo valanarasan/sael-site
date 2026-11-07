@@ -10,7 +10,8 @@ const getCollection = vi.fn(async (name: string, filter?: (e: Entry) => boolean)
   const all = collections[name] ?? [];
   return filter ? all.filter(filter) : all;
 });
-vi.mock('astro:content', () => ({ getEntry, getCollection }));
+const render = vi.fn(async () => ({ Content: 'Rendered', headings: [] }));
+vi.mock('astro:content', () => ({ getEntry, getCollection, render }));
 
 const repo = await import('../../src/lib/content');
 
@@ -80,5 +81,13 @@ describe('getPosts', () => {
     if (!first) throw new Error('fixture missing');
     collections.blog = [first, { ...first, id: first.id.toUpperCase() }];
     await expect(repo.getPosts()).rejects.toThrow(/share the URL/);
+  });
+});
+
+describe('renderPost', () => {
+  it('renders the given post through astro:content', async () => {
+    const post = { id: 'om-amc', collection: 'blog', data: {} };
+    await expect(repo.renderPost(post as never)).resolves.toMatchObject({ Content: 'Rendered' });
+    expect(render).toHaveBeenCalledWith(post);
   });
 });
