@@ -3,9 +3,19 @@
     "eyebrow": "Solar Architects® · Bangalore & Kerala",
     "headline": ["Energy is", "all *around* us."],
     "intro": "SAEL designs, installs and maintains on-grid, off-grid and hybrid solar for homes, businesses and industry across South India. We handle your PM Surya Ghar subsidy end to end.",
-    "primaryCta": { "label": "Check my subsidy", "href": "/#subsidy" },
-    "secondaryCta": { "label": "Free site survey", "href": "/#contact" },
-    "fact": { "value": "₹78,000", "label": "Max central home subsidy" },
+    "primaryCta": {
+      "label": "Check my subsidy",
+      "href": "/#subsidy"
+    },
+    "secondaryCta": {
+      "label": "Free site survey",
+      "href": "/#contact"
+    },
+    "fact": {
+      "value": "₹78,000",
+      "label": "Max central home subsidy"
+    },
+    "slidesLabel": "Photos of SAEL installations",
     "slides": [
       {
         "image": "../assets/images/why-main.jpg",
@@ -47,7 +57,11 @@
   "highlights": {
     "label": "What every SAEL installation includes",
     "items": [
-      { "icon": "home", "title": "Free site survey", "text": "Roof, shading and bills checked" },
+      {
+        "icon": "home",
+        "title": "Free site survey",
+        "text": "Roof, shading and bills checked"
+      },
       {
         "icon": "rupee",
         "title": "Subsidy support",
@@ -58,7 +72,11 @@
         "title": "Professional installation",
         "text": "Designed, installed and tested"
       },
-      { "icon": "clock", "title": "AMC & service", "text": "Maintenance after installation" }
+      {
+        "icon": "clock",
+        "title": "AMC & service",
+        "text": "Maintenance after installation"
+      }
     ]
   },
   "systems": {
@@ -66,7 +84,11 @@
     "heading": "On-grid, off-grid *or hybrid?*",
     "table": {
       "label": "Solar systems compared",
-      "columns": { "onGrid": "On-grid", "offGrid": "Off-grid", "hybrid": "Hybrid" },
+      "columns": {
+        "onGrid": "On-grid",
+        "offGrid": "Off-grid",
+        "hybrid": "Hybrid"
+      },
       "rows": [
         {
           "label": "Battery",
@@ -93,7 +115,12 @@
           "hybrid": "Homes",
           "tick": true
         },
-        { "label": "Typical size", "onGrid": "2–10 kW", "offGrid": "1–15 kW", "hybrid": "3–15 kW" },
+        {
+          "label": "Typical size",
+          "onGrid": "2–10 kW",
+          "offGrid": "1–15 kW",
+          "hybrid": "3–15 kW"
+        },
         {
           "label": "Best for",
           "onGrid": "Homes, shops, offices",
@@ -127,9 +154,15 @@
       },
       "more": {
         "text": "Running a business or factory?",
-        "link": { "label": "Ask about commercial & industrial solar", "href": "/#contact" }
+        "link": {
+          "label": "Ask about commercial & industrial solar",
+          "href": "/#contact"
+        }
       },
-      "cta": { "label": "Get this quoted", "href": "/#contact" }
+      "cta": {
+        "label": "Get this quoted",
+        "href": "/#contact"
+      }
     }
   },
   "subsidy": {
@@ -147,10 +180,14 @@
       "sizeLabel": "Home rooftop system size",
       "stateLabel": "Your state",
       "stateTopUpLabel": "State top-up",
+      "namedStateTopUpLabel": "{state} top-up",
       "centralTotalLabel": "Central subsidy",
       "combinedTotalLabel": "Central + state",
       "note": "Residential rooftop only. State top-ups change often: SAEL confirms the final amount at your free consultation.",
-      "cta": { "label": "Check my eligibility", "href": "/#contact" }
+      "cta": {
+        "label": "Check my eligibility",
+        "href": "/#contact"
+      }
     }
   },
   "process": {
@@ -230,14 +267,31 @@
       "alt": "An elevated solar structure built by SAEL"
     },
     "stats": [
-      { "value": "3", "label": "Offices" },
-      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
-      { "value": "—", "label": "Figure from SAEL", "placeholder": true }
+      {
+        "value": "3",
+        "label": "Offices"
+      },
+      {
+        "value": "—",
+        "label": "Figure from SAEL",
+        "placeholder": true
+      },
+      {
+        "value": "—",
+        "label": "Figure from SAEL",
+        "placeholder": true
+      }
     ],
     "stripLabel": "Field photos from SAEL installations",
     "strip": [
-      { "image": "../assets/images/s-monitor.jpg", "alt": "An inverter Wi-Fi monitoring dongle" },
-      { "image": "../assets/images/s-inverter.jpg", "alt": "A wall-mounted solar inverter" },
+      {
+        "image": "../assets/images/s-monitor.jpg",
+        "alt": "An inverter Wi-Fi monitoring dongle"
+      },
+      {
+        "image": "../assets/images/s-inverter.jpg",
+        "alt": "A wall-mounted solar inverter"
+      },
       {
         "image": "../assets/images/s-controller.jpg",
         "alt": "A solar pump controller in the field"
@@ -246,8 +300,14 @@
         "image": "../assets/images/s-cleaning.jpg",
         "alt": "Cleaning a solar panel with a soft brush"
       },
-      { "image": "../assets/images/s-tilt.jpg", "alt": "Tilted solar panels on a rooftop" },
-      { "image": "../assets/images/s-roof.jpg", "alt": "A solar array on a sloping roof" }
+      {
+        "image": "../assets/images/s-tilt.jpg",
+        "alt": "Tilted solar panels on a rooftop"
+      },
+      {
+        "image": "../assets/images/s-roof.jpg",
+        "alt": "A solar array on a sloping roof"
+      }
     ]
   },
   "gallery": {
@@ -295,10 +355,25 @@
   "numbers": {
     "label": "SAEL in numbers",
     "stats": [
-      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
-      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
-      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
-      { "value": "3", "label": "offices · Bangalore, Kerala, NZ" }
+      {
+        "value": "—",
+        "label": "Figure from SAEL",
+        "placeholder": true
+      },
+      {
+        "value": "—",
+        "label": "Figure from SAEL",
+        "placeholder": true
+      },
+      {
+        "value": "—",
+        "label": "Figure from SAEL",
+        "placeholder": true
+      },
+      {
+        "value": "3",
+        "label": "offices · Bangalore, Kerala, NZ"
+      }
     ],
     "ticker": ["Rooftop", "Ground-mount", "EPC", "O&M", "AMC", "Power purchase"]
   },
@@ -363,6 +438,13 @@
         "Commercial or industrial project"
       ],
       "message": "Message (optional)",
+      "placeholders": {
+        "name": "Your name",
+        "phone": "Mobile number",
+        "place": "City or PIN code",
+        "bill": "Monthly bill",
+        "message": "Anything we should know? (optional)"
+      },
       "consent": "SAEL may contact me about my enquiry.",
       "privacy": {
         "text": "We use your name, number and details only to reply to your enquiry and arrange your site survey. How long we keep them is to be confirmed by SAEL.",
@@ -380,11 +462,13 @@
     "text": "Homes and shops with a steady grid go on-grid. Homes with frequent power cuts go hybrid, and the battery carries them through.",
     "sliderLabel": "Compare day and night",
     "day": {
+      "image": "../assets/images/day-home.jpg",
       "alt": "A two-storey Indian home with a front lawn in daylight",
       "tag": "☀ Day · On-grid",
       "text": "Panels run your load; net metering credits the surplus."
     },
     "night": {
+      "image": "../assets/images/night-home.jpg",
       "alt": "A modern Indian home lit up in the evening",
       "tag": "☾ Power cut · Hybrid",
       "text": "The battery keeps essentials running."

@@ -5,5 +5,8 @@
   "location": "Karnataka",
   "summary": "Power facilitation for a manufacturer.",
   "layout": "card",
-  "order": 10
+  "order": 10,
+  "image": "../../assets/images/pj-dimo.jpg",
+  "alt": "Rows of solar panels in front of a glass building at sunset",
+  "credit": "Photo: Unsplash"
 }
