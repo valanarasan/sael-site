@@ -1,29 +1,88 @@
 ---
-// Home page. The sections arrive in step 5; until then this placeholder keeps the layout testable.
+/**
+ * Home page. Fetches content through the repository, maps it with the view models and passes
+ * each section only the props it renders. Section numbers follow page order.
+ */
+import Audience from '../components/sections/Audience.astro';
+import Contact from '../components/sections/Contact.astro';
+import DayNight from '../components/sections/DayNight.astro';
+import Engineering from '../components/sections/Engineering.astro';
+import Faq from '../components/sections/Faq.astro';
+import Gallery from '../components/sections/Gallery.astro';
+import Hero from '../components/sections/Hero.astro';
+import Highlights from '../components/sections/Highlights.astro';
+import Numbers from '../components/sections/Numbers.astro';
+import Process from '../components/sections/Process.astro';
+import Projects from '../components/sections/Projects.astro';
+import Subsidy from '../components/sections/Subsidy.astro';
+import Systems from '../components/sections/Systems.astro';
+import Why from '../components/sections/Why.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { MAX_KW, MIN_KW } from '../lib/chat';
+import { mailtoHref, telHref, whatsappHref } from '../lib/contact';
+import { getFaqs, getProjects, getSections, getSettings, getSubsidyRules } from '../lib/content';
+import { fillTokens } from '../lib/text';
+import { toProjectsView } from '../lib/view-models/projects';
+import { toCalculatorView, toSlabRows, toStateOptions } from '../lib/view-models/subsidy';
+import { tokenValues } from '../lib/view-models/tokens';
+
+const [sections, settings, rules, faqs, projects] = await Promise.all([
+  getSections(),
+  getSettings(),
+  getSubsidyRules(),
+  getFaqs(),
+  getProjects(),
+]);
+
+const DEFAULT_KW = 3;
+let sectionNumber = 0;
+const next = () => ++sectionNumber;
+
+const tokens = tokenValues(settings);
+const { contact } = sections;
 ---
 
-<BaseLayout noindex>
-  <section class="placeholder wrap" aria-labelledby="h-home">
-    <p class="lbl">
-      <b>●</b> Build in progress
-    </p>
-    <h1 id="h-home">SAEL Energy</h1>
-    <p>The home-page sections are added in build step 5.</p>
-  </section>
+<BaseLayout>
+  <Hero {...sections.hero} />
+  <Highlights {...sections.highlights} />
+  <Systems number={next()} {...sections.systems} />
+  <Subsidy
+    number={next()}
+    {...sections.subsidy}
+    slabs={toSlabRows(rules)}
+    states={toStateOptions(rules)}
+    view={toCalculatorView(DEFAULT_KW, rules.defaultStateId, rules)}
+    minKw={MIN_KW}
+    maxKw={MAX_KW}
+  />
+  <Process number={next()} {...sections.process} />
+  <Why number={next()} {...sections.why} />
+  <Engineering number={next()} {...sections.engineering} />
+  <Gallery number={next()} {...sections.gallery} />
+  <Numbers {...sections.numbers} />
+  <Projects number={next()} {...sections.projects} {...toProjectsView(projects)} />
+  <Audience number={next()} {...sections.audience} />
+  <Faq
+    number={next()}
+    eyebrow={sections.faq.eyebrow}
+    heading={sections.faq.heading}
+    intro={fillTokens(sections.faq.intro, tokens)}
+    items={faqs}
+  />
+  <Contact
+    number={next()}
+    eyebrow={contact.eyebrow}
+    heading={contact.heading}
+    intro={contact.intro}
+    poster={contact.background.image}
+    videoSrc="/video/rooftop-loop.mp4"
+    form={contact.form}
+    offices={settings.offices.map((o) => ({
+      name: o.name,
+      ...(o.phone ? { phone: { label: o.phone.display, href: telHref(o.phone.e164) } } : {}),
+    }))}
+    email={{ label: settings.contact.email, href: mailtoHref(settings.contact.email) }}
+    whatsappLink={whatsappHref(settings.contact.whatsapp, contact.form.whatsappMessage)}
+  />
+  <DayNight number={next()} {...sections.dayNight} />
 </BaseLayout>
-
-<style>
-  .placeholder {
-    min-height: 120vh;
-    padding-top: 160px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  h1 {
-    font-size: clamp(48px, 7vw, 104px);
-    line-height: 0.95;
-  }
-</style>

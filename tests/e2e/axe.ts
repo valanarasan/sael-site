@@ -3,8 +3,9 @@ import { expect, type Page } from '@playwright/test';
 
 /**
  * Known exception, kept on purpose until SAEL decides on brand colours (see CLAUDE.md):
- * white text on the v5 copper fill (#E8692E) is 3.23:1, below the 4.5:1 AA minimum.
- * Only the colour-contrast rule is skipped, and only for these elements.
+ * white text on the v5 copper button fill (#E8692E) is 3.23:1, below the 4.5:1 AA minimum.
+ * Only the colour-contrast rule is skipped, and only for copper buttons. Copper text on light
+ * backgrounds uses --copper-text instead and is checked like everything else.
  */
 const COPPER_FILLS = ['.mbar .go', '.b-cop'];
 

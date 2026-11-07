@@ -1,0 +1,192 @@
+---
+/**
+ * 11 · Day & night: before/after photos split at 50%. Step 7 makes the handle draggable
+ * (pointer and arrow keys).
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import Photo from '../ui/Photo.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['dayNight'] & { number: number };
+
+const { number, eyebrow, heading, text, sliderLabel, day, night, credit } = Astro.props;
+---
+
+<section class="sec" id="compare" aria-labelledby="h-dn">
+  <div class="wrap">
+    <div class="cmp-head">
+      <SectionHeading
+        id="h-dn"
+        number={number}
+        eyebrow={eyebrow}
+        heading={heading}
+        layout="inline"
+        class="dn-hd"
+      />
+      <p>{text}</p>
+    </div>
+    <div class="cmp" data-compare>
+      <Photo
+        src={day.image}
+        alt={day.alt}
+        sizes="(max-width: 860px) 205vw, (max-width: 1400px) 100vw, 1320px"
+        maxWidth={2640}
+      />
+      <div class="nt">
+        <Photo
+          src={night.image}
+          alt={night.alt}
+          sizes="(max-width: 860px) 205vw, (max-width: 1400px) 100vw, 1320px"
+          maxWidth={2640}
+        />
+      </div>
+      <p class="tg l">
+        <b>{day.tag}</b>
+        {day.text}
+      </p>
+      <p class="tg r">
+        <b>{night.tag}</b>
+        {night.text}
+      </p>
+      <div class="hd">
+        <button
+          type="button"
+          role="slider"
+          aria-label={sliderLabel}
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="50"
+          data-compare-handle
+        >
+          <span aria-hidden="true">⇆</span>
+        </button>
+      </div>
+    </div>
+    <p class="cmp-cr">{credit}</p>
+  </div>
+</section>
+
+<style>
+  .cmp-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+
+  .cmp-head :global(.dn-hd) {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cmp-head :global(.dn-hd h2) {
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 0.98;
+    max-width: 14ch;
+  }
+
+  .cmp-head > p {
+    max-width: 44ch;
+    color: var(--ink-2);
+  }
+
+  .cmp {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    aspect-ratio: 16 / 8;
+    background: var(--ink);
+    user-select: none;
+    touch-action: pan-y;
+    --p: 50%;
+  }
+
+  .cmp :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .nt {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 0 0 var(--p));
+  }
+
+  .hd {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--p);
+    width: 2px;
+    margin-left: -1px;
+    background: #fff;
+  }
+
+  .hd button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    border-radius: 50%;
+    border: 0;
+    background: #fff;
+    color: var(--ink);
+    font-size: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    cursor: ew-resize;
+    transition: transform 0.4s var(--ease);
+  }
+
+  .hd button:hover {
+    transform: scale(1.1);
+  }
+
+  .tg {
+    position: absolute;
+    top: 18px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    font: 500 12px var(--f-mono);
+    letter-spacing: 0.08em;
+    max-width: min(320px, 40%);
+  }
+
+  .tg b {
+    display: block;
+    font: 700 15px var(--f-disp);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+
+  .l {
+    left: 18px;
+  }
+
+  .r {
+    right: 18px;
+    background: rgba(11, 31, 34, 0.85);
+    color: var(--paper);
+  }
+
+  .cmp-cr {
+    margin-top: 12px;
+    font: 500 11px var(--f-mono);
+    color: var(--muted);
+  }
+
+  @media (max-width: 860px) {
+    .cmp {
+      aspect-ratio: 4 / 5;
+    }
+  }
+</style>

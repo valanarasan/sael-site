@@ -94,6 +94,20 @@ em.s {
   }
 }
 
+/* Vertical rhythm for content sections */
+.sec {
+  padding-block: clamp(90px, 10vw, 150px);
+}
+
+.sec.flush-top {
+  padding-top: 0;
+}
+
+/* <Photo> wraps <img> in <picture>; this lets the <img> be styled as if it stood alone. */
+.pic-contents {
+  display: contents;
+}
+
 /* Mono eyebrow label */
 .lbl {
   font: 500 12px var(--f-mono);
@@ -103,8 +117,12 @@ em.s {
 }
 
 .lbl b {
-  color: var(--copper);
+  color: var(--copper-text);
   font-weight: 500;
+}
+
+.on-dark .lbl b {
+  color: var(--copper);
 }
 
 /* Visually hidden but available to screen readers */

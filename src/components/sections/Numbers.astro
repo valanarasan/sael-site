@@ -1,0 +1,121 @@
+---
+/** Teal numbers band with the outlined ticker. The ticker is static until step 7. */
+import type { Sections } from '../../lib/schemas/sections';
+
+type Props = Sections['numbers'];
+
+const { label, stats, ticker } = Astro.props;
+---
+
+<section class="band on-dark" aria-label={label}>
+  <dl class="wrap nums">
+    {stats.map((stat) => (
+      <div class:list={[stat.placeholder && 'todo']}>
+        <dt>{stat.label}</dt>
+        <dd>{stat.value}</dd>
+      </div>
+    ))}
+  </dl>
+  <div class="ticker" aria-hidden="true" data-ticker>
+    <span>
+      {ticker.map((word) => (
+        <>
+          {word} <em>·</em>{' '}
+        </>
+      ))}
+    </span>
+  </div>
+</section>
+
+<style>
+  .band {
+    background: var(--teal);
+    color: var(--paper);
+    padding-block: clamp(70px, 8vw, 110px);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .nums {
+    margin-block: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .nums div {
+    padding: 0 24px;
+    border-left: 1px solid var(--line-d);
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .nums div:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  dd {
+    margin: 0;
+    font: 800 clamp(52px, 6.4vw, 104px) / 0.9 var(--f-disp);
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  dt {
+    font-size: 15px;
+    color: rgba(241, 243, 241, 0.75);
+  }
+
+  .todo dd {
+    opacity: 0.45;
+  }
+
+  .ticker {
+    margin-top: clamp(56px, 7vw, 90px);
+    display: flex;
+    width: max-content;
+    font: 700 clamp(36px, 5vw, 76px) var(--f-disp);
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(191, 230, 223, 0.45);
+  }
+
+  .ticker span {
+    padding-right: 40px;
+  }
+
+  .ticker em {
+    font-family: var(--f-ser);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--copper-2);
+    -webkit-text-stroke: 0;
+  }
+
+  @media (max-width: 1020px) {
+    .nums {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 36px;
+    }
+
+    .nums div:nth-child(3) {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .nums {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .nums div {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+</style>

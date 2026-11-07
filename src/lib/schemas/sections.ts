@@ -22,6 +22,8 @@ export const sectionsSchema = (image: ImageField) => {
       primaryCta: linkSchema,
       secondaryCta: linkSchema,
       fact: z.object({ value: z.string().min(1).max(20), label: z.string().min(1).max(60) }),
+      /** Accessible name for the row of photos (it scrolls sideways on phones). */
+      slidesLabel: z.string().min(1).max(60),
       /** The first slide is the page's main image and loads first. */
       slides: z
         .array(
@@ -97,7 +99,10 @@ export const sectionsSchema = (image: ImageField) => {
         label: z.string().min(1),
         sizeLabel: z.string().min(1),
         stateLabel: z.string().min(1),
+        /** Used for "Other states". */
         stateTopUpLabel: z.string().min(1),
+        /** Used for a named state; {state} is replaced with its name. */
+        namedStateTopUpLabel: z.string().includes('{state}'),
         centralTotalLabel: z.string().min(1),
         combinedTotalLabel: z.string().min(1),
         note: z.string().max(240),
@@ -191,6 +196,14 @@ export const sectionsSchema = (image: ImageField) => {
         /** Must stay in step with the enquiry endpoint's allowed values. */
         interests: z.array(z.string().min(1).max(60)).min(1),
         message: z.string().min(1),
+        /** Hint text inside the fields (v5 shows these instead of visible labels). */
+        placeholders: z.object({
+          name: z.string().max(40),
+          phone: z.string().max(40),
+          place: z.string().max(40),
+          bill: z.string().max(40),
+          message: z.string().max(60),
+        }),
         consent: z.string().min(1).max(200),
         privacy: z.object({
           text: z.string().min(1).max(600),
@@ -208,19 +221,8 @@ export const sectionsSchema = (image: ImageField) => {
       heading,
       text: paragraph,
       sliderLabel: z.string().min(1),
-      /** Photos are optional until the stock day/night pair is downloaded into the repo. */
-      day: z.object({
-        image: image().optional(),
-        alt: z.string().min(3),
-        tag: z.string().min(1),
-        text: z.string().min(1),
-      }),
-      night: z.object({
-        image: image().optional(),
-        alt: z.string().min(3),
-        tag: z.string().min(1),
-        text: z.string().min(1),
-      }),
+      day: pic.extend({ tag: z.string().min(1), text: z.string().min(1) }),
+      night: pic.extend({ tag: z.string().min(1), text: z.string().min(1) }),
       credit: z.string().max(120),
     }),
 

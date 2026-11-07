@@ -1,0 +1,263 @@
+---
+/**
+ * 01 · Compare systems: comparison table plus the system finder.
+ * The finder shows its default answer (on-grid); step 6 makes the buttons work.
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type Props = Sections['systems'] & { number: number };
+
+const { number, eyebrow, heading, table, finder } = Astro.props;
+const keys = ['onGrid', 'offGrid', 'hybrid'] as const;
+---
+
+<section class="sec flush-top" id="systems" aria-labelledby="h-sys">
+  <div class="wrap">
+    <SectionHeading id="h-sys" number={number} eyebrow={eyebrow} heading={heading} />
+    <div class="cmpx">
+      <div class="cmp-t" role="table" aria-label={table.label}>
+        <div class="r h" role="row">
+          <span role="columnheader">
+            <span class="sr-only">Feature</span>
+          </span>
+          {keys.map((k) => (
+            <span role="columnheader" data-system={k} class:list={[k === 'onGrid' && 'pick']}>
+              {table.columns[k]}
+            </span>
+          ))}
+        </div>
+        {table.rows.map((row) => (
+          <div class="r" role="row">
+            <span role="rowheader">{row.label}</span>
+            {keys.map((k) => (
+              <span role="cell" data-system={k} class:list={[k === 'onGrid' && 'pick']}>
+                {row.tick && row[k] !== '—' && (
+                  <i class="y" aria-hidden="true">
+                    ✓
+                  </i>
+                )}
+                {row[k]}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <div class="finder on-dark" data-finder>
+        <p class="lbl">{finder.label}</p>
+        <div class="fq">
+          <p id="fq-grid">{finder.gridQuestion}</p>
+          <div class="seg" role="group" aria-labelledby="fq-grid" data-question="grid">
+            <button type="button" aria-pressed="true" data-value="yes">
+              {finder.yes}
+            </button>
+            <button type="button" aria-pressed="false" data-value="no">
+              {finder.no}
+            </button>
+          </div>
+        </div>
+        <div class="fq" data-cuts>
+          <p id="fq-cuts">{finder.cutsQuestion}</p>
+          <div class="seg" role="group" aria-labelledby="fq-cuts" data-question="cuts">
+            <button type="button" aria-pressed="true" data-value="rare">
+              {finder.rarely}
+            </button>
+            <button type="button" aria-pressed="false" data-value="often">
+              {finder.often}
+            </button>
+          </div>
+        </div>
+        <div class="fres" aria-live="polite">
+          <span class="lbl">{finder.resultLabel}</span>
+          <b data-result-name>{finder.results.onGrid.name}</b>
+          <p data-result-why>{finder.results.onGrid.why}</p>
+        </div>
+        <p class="fmore">
+          {finder.more.text} <a href={finder.more.link.href}>{finder.more.link.label}</a>
+        </p>
+        <Button href={finder.cta.href} variant="cop" arrow class="go">
+          {finder.cta.label}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cmpx {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .cmp-t {
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .r {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) repeat(3, minmax(0, 1fr));
+    align-items: center;
+    border-top: 1px solid var(--line);
+  }
+
+  .r:first-child {
+    border-top: 0;
+  }
+
+  .r > span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 16px 18px;
+    font-size: 15px;
+    transition:
+      background 0.5s var(--ease),
+      color 0.5s var(--ease);
+  }
+
+  .r > span[role='rowheader'] {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .h > span {
+    font: 600 12px var(--f-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    padding-block: 20px;
+  }
+
+  .r > span:global(.pick) {
+    background: rgba(232, 105, 46, 0.08);
+  }
+
+  .h > span:global(.pick) {
+    background: var(--copper);
+    color: var(--ink);
+  }
+
+  .y {
+    font-style: normal;
+    color: var(--teal-2);
+    font-weight: 800;
+    margin-right: 6px;
+  }
+
+  .finder {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 28px;
+    padding: clamp(24px, 3vw, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .finder > .lbl {
+    color: rgba(241, 243, 241, 0.6);
+  }
+
+  .fq p {
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+
+  .fq:global(.off) {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 14px;
+    background: rgba(241, 243, 241, 0.08);
+  }
+
+  .seg button {
+    min-height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: rgba(241, 243, 241, 0.75);
+    font: 600 14px var(--f-disp);
+    cursor: pointer;
+    transition:
+      background 0.4s var(--ease),
+      color 0.4s var(--ease);
+  }
+
+  .seg button[aria-pressed='true'] {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .fres {
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(241, 243, 241, 0.06);
+    border: 1px solid var(--line-d);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fres .lbl {
+    color: rgba(241, 243, 241, 0.55);
+  }
+
+  .fres b {
+    font: 800 clamp(30px, 3vw, 40px) / 1.05 var(--f-disp);
+    letter-spacing: -0.03em;
+    color: var(--copper-2);
+  }
+
+  .fres p {
+    margin: 0;
+    color: rgba(241, 243, 241, 0.72);
+    font-size: 15px;
+  }
+
+  .fmore {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(241, 243, 241, 0.65);
+  }
+
+  .fmore a {
+    color: var(--mint);
+  }
+
+  .finder :global(.go) {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 860px) {
+    .cmpx {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .r > span {
+      padding: 12px 10px;
+      font-size: 13px;
+    }
+
+    .h > span {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+  }
+</style>

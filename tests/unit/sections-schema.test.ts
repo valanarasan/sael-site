@@ -48,9 +48,9 @@ describe('sectionsSchema', () => {
     expect(withChange((s) => (s.faq.intro = 'Call {mobile}.')).success).toBe(false);
   });
 
-  it('allows a day/night photo to be missing until the stock pair is in the repo', () => {
+  it('needs both day/night photos', () => {
     expect(withChange((s) => delete (s.dayNight.night as { image?: unknown }).image).success).toBe(
-      true,
+      false,
     );
   });
 

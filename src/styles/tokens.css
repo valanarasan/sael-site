@@ -12,6 +12,9 @@
   --mint: #bfe6df;
   --copper: #e8692e;
   --copper-2: #f59a5b;
+  /* Added in the build (not in v5): copper for small text on light backgrounds, 5:1 on paper.
+     --copper itself is 2.9:1 there, below WCAG AA. Fills and dark backgrounds keep --copper. */
+  --copper-text: #a84c21;
   --line: rgba(11, 31, 34, 0.12);
   --line-d: rgba(241, 243, 241, 0.16);
 
