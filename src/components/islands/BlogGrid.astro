@@ -1,0 +1,152 @@
+---
+/**
+ * The /blog card grid with v5's topic filter buttons. Without JavaScript every card shows; the
+ * script hides cards outside the chosen topic and tells screen readers how many remain. Opening
+ * /blog#<slug> (the chat links drafts this way) clears a filter that would hide that card.
+ */
+import type { BlogTopic } from '../../lib/schemas/blog';
+import type { PostCardProps } from '../../lib/view-models/blog';
+import PostCard from '../ui/PostCard.astro';
+
+interface Props {
+  posts: PostCardProps[];
+  topics: BlogTopic[];
+  labels: {
+    filter: string;
+    all: string;
+    comingSoon: string;
+    readingTime: string;
+    status: { one: string; other: string };
+  };
+}
+
+const { posts, topics, labels } = Astro.props;
+---
+
+<section data-blog-grid>
+  <div class="wrap">
+    {topics.length > 1 && (
+      <div class="bf" role="group" aria-label={labels.filter}>
+        <button type="button" aria-pressed="true" data-topic="">
+          {labels.all}
+        </button>
+        {topics.map((topic) => (
+          <button type="button" aria-pressed="false" data-topic={topic}>
+            {topic}
+          </button>
+        ))}
+      </div>
+    )}
+    <p
+      class="sr-only"
+      aria-live="polite"
+      data-blog-status
+      data-one={labels.status.one}
+      data-other={labels.status.other}
+    ></p>
+    <div class="bgrid">
+      {posts.map((post, i) => (
+        <PostCard
+          post={post}
+          comingSoonLabel={labels.comingSoon}
+          readingTimeLabel={labels.readingTime}
+          featured={i === 0}
+          priority={i === 0}
+          sizes={
+            i === 0
+              ? '(max-width: 640px) calc(100vw - 32px), (max-width: 1020px) 52vw, 40vw'
+              : '(max-width: 640px) calc(100vw - 32px), (max-width: 1020px) 46vw, 30vw'
+          }
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { fillPlain } from '../../lib/text';
+
+  document.querySelectorAll<HTMLElement>('[data-blog-grid]').forEach((root) => {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('.bf button')];
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-post-card]')];
+    const status = root.querySelector<HTMLElement>('[data-blog-status]');
+
+    const show = (topic: string, announce = true) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.topic === topic)));
+      let count = 0;
+      for (const card of cards) {
+        card.hidden = topic !== '' && card.dataset.topic !== topic;
+        if (!card.hidden) count++;
+      }
+      if (status && announce) {
+        status.textContent =
+          count === 1
+            ? (status.dataset.one ?? '')
+            : fillPlain(status.dataset.other ?? '', { count });
+      }
+    };
+
+    buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.topic ?? '')));
+
+    const revealTarget = () => {
+      const id = decodeURIComponent(location.hash.slice(1));
+      const target = id ? document.getElementById(id) : null;
+      if (target && target.hidden && cards.includes(target)) show('', false);
+    };
+    window.addEventListener('hashchange', revealTarget);
+    root.dataset.ready = 'true';
+  });
+</script>
+
+<style>
+  .bf {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .bf button {
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--ink);
+    /* v5's rule here named an undefined font variable, so its buttons render in the body font. */
+    font: inherit;
+    cursor: pointer;
+    transition:
+      background 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .bf button[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .bgrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding-bottom: clamp(80px, 9vw, 120px);
+  }
+
+  .bgrid :global([data-post-card][hidden]) {
+    display: none;
+  }
+
+  @media (max-width: 1020px) {
+    .bgrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bgrid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

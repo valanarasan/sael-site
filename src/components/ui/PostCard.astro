@@ -1,0 +1,190 @@
+---
+/**
+ * v5 blog card (.bp). Published posts link to their article (the whole card is clickable through
+ * the title link); drafts show "Article coming soon" and don't link anywhere yet.
+ */
+import { fillPlain } from '../../lib/text';
+import type { PostCardProps } from '../../lib/view-models/blog';
+import Photo from './Photo.astro';
+
+interface Props {
+  post: PostCardProps;
+  comingSoonLabel: string;
+  /** "{minutes} min read" */
+  readingTimeLabel: string;
+  /** h2 on the blog page, h3 under an article's "More from the blog" heading. */
+  level?: 2 | 3;
+  /** The big first card on the blog page. */
+  featured?: boolean;
+  /** The page's main image: loads first (the featured card on /blog). */
+  priority?: boolean;
+  sizes: string;
+}
+
+const {
+  post,
+  comingSoonLabel,
+  readingTimeLabel,
+  level = 2,
+  featured = false,
+  priority = false,
+  sizes,
+} = Astro.props;
+const Heading = level === 2 ? 'h2' : 'h3';
+const linked = !post.comingSoon;
+---
+
+<article
+  class:list={['bp', { feat: featured, linked }]}
+  id={post.slug}
+  data-topic={post.topic}
+  data-post-card
+>
+  <div class="bp-im">
+    <Photo
+      src={post.cover.src}
+      alt={post.cover.alt}
+      sizes={sizes}
+      maxWidth={1280}
+      priority={priority}
+    />
+  </div>
+  <div class="bp-tx">
+    <span class="bp-c">{post.topic}</span>
+    <Heading>{linked ? <a href={post.href}>{post.title}</a> : post.title}</Heading>
+    <span class="bp-s">
+      {post.comingSoon || !post.date ? (
+        comingSoonLabel
+      ) : (
+        <>
+          <time datetime={post.date.iso}>{post.date.label}</time>
+          {post.readingMinutes !== undefined &&
+            ` · ${fillPlain(readingTimeLabel, { minutes: post.readingMinutes })}`}
+        </>
+      )}
+    </span>
+  </div>
+</article>
+
+<style>
+  .bp {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--line);
+    scroll-margin-top: 110px;
+    transition:
+      transform 0.6s var(--ease),
+      box-shadow 0.6s var(--ease);
+  }
+
+  .bp:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 60px -36px rgba(11, 31, 34, 0.35);
+  }
+
+  .bp:target {
+    outline: 3px solid var(--copper);
+    outline-offset: 3px;
+  }
+
+  .bp-im {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--line);
+  }
+
+  .bp-im :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease);
+  }
+
+  .bp:hover .bp-im :global(img) {
+    transform: scale(1.05);
+  }
+
+  .bp-tx {
+    padding: 22px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .bp-c {
+    font: 500 11px var(--f-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal-2);
+  }
+
+  h2,
+  h3 {
+    font: 700 22px/1.2 var(--f-disp);
+    letter-spacing: -0.02em;
+  }
+
+  h2 a,
+  h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* The title link covers the whole card. */
+  h2 a::after,
+  h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .linked:hover h2 a,
+  .linked:hover h3 a {
+    color: var(--teal-2);
+  }
+
+  h2 a:focus-visible,
+  h3 a:focus-visible {
+    outline: none;
+  }
+
+  .linked:has(a:focus-visible) {
+    outline: 2.5px solid var(--copper);
+    outline-offset: 3px;
+  }
+
+  .bp-s {
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  @media (min-width: 641px) {
+    .feat {
+      grid-column: span 2;
+      flex-direction: row;
+    }
+
+    .feat .bp-im {
+      aspect-ratio: auto;
+      flex: 1.3;
+    }
+
+    .feat .bp-tx {
+      flex: 1;
+      justify-content: flex-end;
+      padding: 30px;
+    }
+
+    .feat h2 {
+      font-size: clamp(28px, 2.6vw, 38px);
+    }
+  }
+</style>

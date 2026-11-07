@@ -532,11 +532,29 @@
     }
   ],
   "blog": {
+    "seoTitle": "Blog · Solar, explained",
+    "seoDescription": "Plain-language articles from SAEL Energy on solar subsidies, monsoon output, cleaning, AMC and choosing the right solar plant.",
+    "feedTitle": "SAEL Blog · Solar, explained",
     "eyebrow": "SAEL Blog",
     "heading": "Solar, *explained*.",
     "intro": "Straight answers on subsidies, monsoon output, cleaning and maintenance, from the team that installs and services SAEL plants. Full articles are on the way.",
     "filterLabel": "Filter articles",
     "allLabel": "All",
-    "comingSoon": "Article coming soon"
+    "comingSoon": "Article coming soon",
+    "readingTime": "{minutes} min read",
+    "filterStatus": {
+      "one": "Showing 1 article",
+      "other": "Showing {count} articles"
+    },
+    "article": {
+      "backLabel": "All articles",
+      "byLabel": "By",
+      "publishedLabel": "Published",
+      "updatedLabel": "Updated",
+      "draftNotice": "Draft preview. This article is not published: it only shows on the local dev server.",
+      "relatedHeading": "More from the *blog*",
+      "whatsappLabel": "Ask on WhatsApp",
+      "whatsappMessage": "Hi SAEL, I just read \"{title}\" on your blog and have a question."
+    }
   }
 }

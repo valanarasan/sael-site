@@ -1,0 +1,38 @@
+---
+/**
+ * /blog: header and the card grid with topic filters. Drafts are listed as "coming soon" cards;
+ * published posts link to their article.
+ */
+import BlogGrid from '../../components/islands/BlogGrid.astro';
+import BlogIntro from '../../components/sections/BlogIntro.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts, getSections } from '../../lib/content';
+import { toPostCard, topicsInUse } from '../../lib/view-models/blog';
+
+const [sections, posts] = await Promise.all([getSections(), getPosts()]);
+const { blog } = sections;
+const cards = posts.map(toPostCard);
+const [first] = cards;
+---
+
+<BaseLayout title={blog.seoTitle} description={blog.seoDescription} image={first?.cover}>
+  <link
+    slot="head"
+    rel="alternate"
+    type="application/rss+xml"
+    title={blog.feedTitle}
+    href="/rss.xml"
+  />
+  <BlogIntro eyebrow={blog.eyebrow} heading={blog.heading} intro={blog.intro} />
+  <BlogGrid
+    posts={cards}
+    topics={topicsInUse(posts)}
+    labels={{
+      filter: blog.filterLabel,
+      all: blog.allLabel,
+      comingSoon: blog.comingSoon,
+      readingTime: blog.readingTime,
+      status: blog.filterStatus,
+    }}
+  />
+</BaseLayout>

@@ -57,4 +57,13 @@ describe('sectionsSchema', () => {
   it('needs at least one enquiry interest', () => {
     expect(withChange((s) => (s.contact.form.interests = [])).success).toBe(false);
   });
+
+  it('keeps the {minutes} and {count} placeholders in blog labels', () => {
+    expect(withChange((s) => (s.blog.readingTime = 'min read')).success).toBe(false);
+    expect(withChange((s) => (s.blog.filterStatus.other = 'Showing articles')).success).toBe(false);
+  });
+
+  it('needs a 50–170 character description for the blog page', () => {
+    expect(withChange((s) => (s.blog.seoDescription = 'Too short')).success).toBe(false);
+  });
 });

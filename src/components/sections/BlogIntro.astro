@@ -1,0 +1,45 @@
+---
+/** /blog page header (v5 .blog-hero): eyebrow, big h1 with a serif accent, intro. */
+import { parseAccent } from '../../lib/text';
+import RichText from '../ui/RichText.astro';
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  intro: string;
+}
+
+const { eyebrow, heading, intro } = Astro.props;
+---
+
+<section class="blog-hero" aria-labelledby="blog-title">
+  <div class="wrap">
+    <p class="lbl">
+      <b aria-hidden="true">●</b> {eyebrow}
+    </p>
+    <h1 id="blog-title">
+      <RichText segments={parseAccent(heading)} />
+    </h1>
+    <p class="in">{intro}</p>
+  </div>
+</section>
+
+<style>
+  .blog-hero {
+    padding: clamp(140px, 16vw, 200px) 0 clamp(40px, 5vw, 64px);
+  }
+
+  h1 {
+    font: 800 clamp(52px, 7.4vw, 112px) / 0.95 var(--f-disp);
+    letter-spacing: -0.05em;
+    margin-top: 18px;
+    max-width: 12ch;
+  }
+
+  .in {
+    margin-top: 22px;
+    max-width: 56ch;
+    font-size: 18px;
+    color: var(--ink-2);
+  }
+</style>
