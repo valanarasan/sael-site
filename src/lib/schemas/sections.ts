@@ -225,6 +225,19 @@ export const sectionsSchema = (image: ImageField) => {
         thankYou: z.string().min(1).max(200),
         whatsappLabel: z.string().min(1).max(40),
         whatsappMessage: z.string().min(1).max(300),
+        /** Button text while the enquiry is being sent. */
+        sending: z.string().min(1).max(40),
+        /** Pages shown when the form is sent without JavaScript. */
+        sentPage: z.object({
+          title: z.string().min(1).max(60),
+          backLabel: z.string().min(1).max(40),
+        }),
+        problemPage: z.object({
+          title: z.string().min(1).max(80),
+          /** May use {phone} and {email}. */
+          text: tokenText.max(400),
+          backLabel: z.string().min(1).max(40),
+        }),
       }),
     }),
 

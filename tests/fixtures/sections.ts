@@ -143,6 +143,9 @@ export const sectionsFixture = {
       thankYou: 'Thanks.',
       whatsappLabel: 'WhatsApp',
       whatsappMessage: 'Hi',
+      sending: 'Sending',
+      sentPage: { title: 'Thanks', backLabel: 'Home' },
+      problemPage: { title: 'Problem', text: 'Call {phone}.', backLabel: 'Back' },
     },
   },
   dayNight: {

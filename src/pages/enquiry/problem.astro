@@ -1,0 +1,19 @@
+---
+/** Shown when the enquiry form is sent without JavaScript and the server can't accept it. */
+import EnquiryResult from '../../components/sections/EnquiryResult.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSections, getSettings } from '../../lib/content';
+import { fillTokens } from '../../lib/text';
+import { tokenValues } from '../../lib/view-models/tokens';
+
+const [sections, settings] = await Promise.all([getSections(), getSettings()]);
+const { problemPage } = sections.contact.form;
+---
+
+<BaseLayout title={problemPage.title} noindex>
+  <EnquiryResult
+    title={problemPage.title}
+    text={fillTokens(problemPage.text, tokenValues(settings))}
+    back={{ label: problemPage.backLabel, href: '/#contact' }}
+  />
+</BaseLayout>

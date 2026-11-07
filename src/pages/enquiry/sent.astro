@@ -1,0 +1,22 @@
+---
+/** Shown after the enquiry form is sent without JavaScript (the script shows this in place). */
+import EnquiryResult from '../../components/sections/EnquiryResult.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { whatsappHref } from '../../lib/contact';
+import { getSections, getSettings } from '../../lib/content';
+
+const [sections, settings] = await Promise.all([getSections(), getSettings()]);
+const { form } = sections.contact;
+---
+
+<BaseLayout title={form.sentPage.title} noindex>
+  <EnquiryResult
+    title={form.sentPage.title}
+    text={[{ kind: 'text', text: form.thankYou }]}
+    back={{ label: form.sentPage.backLabel, href: '/' }}
+    whatsapp={{
+      label: form.whatsappLabel,
+      href: whatsappHref(settings.contact.whatsapp, form.whatsappMessage),
+    }}
+  />
+</BaseLayout>
