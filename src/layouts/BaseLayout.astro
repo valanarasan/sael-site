@@ -8,8 +8,10 @@ import '../styles/global.css';
 import Footer from '../components/sections/Footer.astro';
 import Header from '../components/sections/Header.astro';
 import MobileBar from '../components/sections/MobileBar.astro';
+import ChatAssistant from '../components/islands/ChatAssistant.astro';
 import MenuSheet from '../components/islands/MenuSheet.astro';
-import { getSettings } from '../lib/content';
+import { whatsappHref } from '../lib/contact';
+import { getChat, getSettings } from '../lib/content';
 import { toChrome } from '../lib/view-models/chrome';
 
 interface Props {
@@ -22,7 +24,7 @@ interface Props {
 
 const { title, description, noindex = false } = Astro.props;
 
-const settings = await getSettings();
+const [settings, chat] = await Promise.all([getSettings(), getChat()]);
 const chrome = toChrome(settings, Astro.url.pathname, new Date().getFullYear());
 
 const pageTitle = title ? `${title} · ${settings.company.name}` : settings.seo.title;
@@ -74,5 +76,23 @@ const menuId = 'menu-sheet';
     </main>
     <Footer {...chrome.footer} />
     <MobileBar {...chrome.mobileBar} />
+    <ChatAssistant
+      title={chat.title}
+      subtitle={chat.subtitle}
+      openLabel={chat.openLabel}
+      inputLabel={chat.inputLabel}
+      inputPlaceholder={chat.inputPlaceholder}
+      note={chat.note}
+      closeLabel={chat.closeLabel}
+      sendLabel={chat.sendLabel}
+      chipsLabel={chat.chipsLabel}
+      readLabel={chat.readLabel}
+      chips={chat.chips}
+      offline={{
+        text: chat.fallback.answer,
+        whatsappHref: whatsappHref(settings.contact.whatsapp, chat.whatsappChip.whatsapp),
+        whatsappLabel: chat.whatsappLabel,
+      }}
+    />
   </body>
 </html>

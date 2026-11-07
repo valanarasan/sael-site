@@ -151,6 +151,18 @@ export const sectionsSchema = (image: ImageField) => {
     gallery: z.object({
       eyebrow,
       heading,
+      /** Button and viewer labels, read by screen readers. */
+      controls: z.object({
+        previous: z.string().min(1).max(40),
+        next: z.string().min(1).max(40),
+        open: z.string().min(1).max(40),
+        viewer: z.string().min(1).max(40),
+        close: z.string().min(1).max(20),
+        previousPhoto: z.string().min(1).max(40),
+        nextPhoto: z.string().min(1).max(40),
+        /** Shown before the place in the viewer caption, e.g. "Photo · SAEL". */
+        credit: z.string().max(40),
+      }),
       items: z
         .array(pic.extend({ title: z.string().min(1).max(40), place: z.string().min(1).max(60) }))
         .min(1),

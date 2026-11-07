@@ -1,0 +1,467 @@
+---
+/**
+ * Chat assistant island: a floating "Ask SAEL" button and a non-modal chat panel.
+ * The panel's answers come from chat.json via /chat-data.json, which (with the matcher code)
+ * downloads only on first open. Messages go in a role="log" region so screen readers hear them.
+ * Escape closes the panel and returns focus to the button.
+ */
+import type { ChatContent } from '../../lib/schemas/chat';
+import Icon from '../ui/Icon.astro';
+
+type Props = Pick<
+  ChatContent,
+  | 'title'
+  | 'subtitle'
+  | 'openLabel'
+  | 'inputLabel'
+  | 'inputPlaceholder'
+  | 'note'
+  | 'closeLabel'
+  | 'sendLabel'
+  | 'chipsLabel'
+  | 'readLabel'
+  | 'chips'
+> & {
+  /** Shown if the chat data can't load: a general WhatsApp link and message. */
+  offline: { text: string; whatsappHref: string; whatsappLabel: string };
+};
+
+const {
+  title,
+  subtitle,
+  openLabel,
+  inputLabel,
+  inputPlaceholder,
+  note,
+  closeLabel,
+  sendLabel,
+  chipsLabel,
+  readLabel,
+  chips,
+  offline,
+} = Astro.props;
+const panelId = 'chat-panel';
+---
+
+<div
+  class="chat"
+  data-chat
+  data-read-label={readLabel}
+  data-offline-text={offline.text}
+  data-offline-href={offline.whatsappHref}
+  data-offline-label={offline.whatsappLabel}
+>
+  <button
+    class="cb-fab"
+    type="button"
+    aria-expanded="false"
+    aria-controls={panelId}
+    aria-haspopup="dialog"
+    data-chat-open
+  >
+    <span class="dot" aria-hidden="true"></span>
+    {openLabel}
+  </button>
+
+  <dialog class="cb" id={panelId} aria-labelledby="chat-title" data-chat-panel>
+    <div class="cb-h">
+      <img class="av" src="/apple-touch-icon.png" alt="" width="40" height="40" />
+      <div>
+        <b id="chat-title">{title}</b>
+        <small>{subtitle}</small>
+      </div>
+      <button class="cb-x" type="button" aria-label={closeLabel} data-chat-close>
+        <span aria-hidden="true">✕</span>
+      </button>
+    </div>
+    <div
+      class="cb-log"
+      role="log"
+      aria-live="polite"
+      aria-labelledby="chat-title"
+      data-chat-log
+    ></div>
+    <div class="cb-q" role="group" aria-label={chipsLabel}>
+      {chips.map((chip, i) => (
+        <button type="button" data-chip={i} data-message={chip.message}>
+          {chip.label}
+        </button>
+      ))}
+    </div>
+    <form class="cb-f" autocomplete="off" data-chat-form>
+      <label class="sr-only" for="chat-input">
+        {inputLabel}
+      </label>
+      <input id="chat-input" name="q" placeholder={inputPlaceholder} maxlength="300" />
+      <button type="submit" aria-label={sendLabel}>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </button>
+    </form>
+    <p class="cb-note">{note}</p>
+  </dialog>
+
+  <template data-wa-icon>
+    <Icon name="whatsapp" size={16} />
+  </template>
+</div>
+
+<script>
+  import { whenIdle } from '../../scripts/hydrate';
+
+  // The button handler is tiny and set up when the browser is idle; the chat engine and data
+  // load on first open (see scripts/islands/chat.ts).
+  document.querySelectorAll<HTMLElement>('[data-chat]').forEach((root) =>
+    whenIdle(() => {
+      void import('../../scripts/islands/chat').then((m) => m.initChat(root));
+    }),
+  );
+</script>
+
+<style>
+  .cb-fab {
+    position: fixed;
+    right: max(var(--gut-r), 24px);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 66px);
+    z-index: 96;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 54px;
+    padding: 0 20px 0 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--teal);
+    color: #fff;
+    font: 700 15px var(--f-disp);
+    cursor: pointer;
+    box-shadow: 0 14px 34px -12px rgba(11, 31, 34, 0.55);
+    transition:
+      transform 0.4s var(--ease),
+      background 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .cb-fab:hover {
+    background: var(--ink);
+    transform: translateY(-2px);
+  }
+
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: #25d366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.25);
+  }
+
+  .cb-fab[aria-expanded='true'] {
+    transform: scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cb {
+    position: fixed;
+    inset: auto max(var(--gut-r), 24px) calc(env(safe-area-inset-bottom, 0px) + 24px) auto;
+    z-index: 97;
+    width: min(380px, calc(100vw - 32px));
+    max-width: none;
+    height: min(600px, calc(100vh - 110px));
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    flex-direction: column;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--white);
+    color: var(--ink);
+    box-shadow:
+      0 30px 80px -20px rgba(11, 31, 34, 0.45),
+      0 0 0 1px var(--line);
+    transform-origin: 100% 100%;
+    transform: translateY(16px) scale(0.96);
+    opacity: 0;
+    transition:
+      transform 0.45s var(--ease),
+      opacity 0.3s ease;
+  }
+
+  .cb[open] {
+    display: flex;
+  }
+
+  .cb:global(.open) {
+    transform: none;
+    opacity: 1;
+  }
+
+  .cb-h {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 16px 14px 18px;
+    background: var(--teal);
+    color: #fff;
+  }
+
+  .av {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 5px;
+    object-fit: contain;
+  }
+
+  .cb-h b {
+    display: block;
+    font-size: 16px;
+  }
+
+  .cb-h small {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .cb-h small::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #25d366;
+  }
+
+  .cb-x {
+    margin-left: auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font:
+      18px system-ui,
+      sans-serif;
+    cursor: pointer;
+  }
+
+  .cb-x:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .cb-log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--paper);
+    overscroll-behavior: contain;
+  }
+
+  .cb-log :global(.cb-m) {
+    max-width: 86%;
+    padding: 11px 14px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    animation: cbIn 0.35s var(--ease);
+  }
+
+  .cb-log :global(.bot) {
+    align-self: flex-start;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 6px;
+    color: var(--ink);
+  }
+
+  .cb-log :global(.me) {
+    align-self: flex-end;
+    background: var(--ink);
+    color: #fff;
+    border-bottom-right-radius: 6px;
+  }
+
+  .cb-log :global(.cb-m a) {
+    color: var(--teal-2);
+    font-weight: 700;
+  }
+
+  .cb-log :global(.cb-more) {
+    display: block;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  .cb-log :global(.cb-wa) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    background: #25d366;
+    color: #073b1f;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .cb-log :global(.cb-wa:hover) {
+    background: #1ebe5a;
+    color: #073b1f;
+  }
+
+  .cb-log :global(.cb-typing) {
+    align-self: flex-start;
+    display: flex;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+
+  .cb-log :global(.cb-typing i) {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--muted);
+    animation: cbDot 1s infinite;
+  }
+
+  .cb-log :global(.cb-typing i:nth-child(2)) {
+    animation-delay: 0.15s;
+  }
+
+  .cb-log :global(.cb-typing i:nth-child(3)) {
+    animation-delay: 0.3s;
+  }
+
+  .cb-q {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    border-top: 1px solid var(--line);
+    background: var(--white);
+    max-height: 112px;
+    overflow-y: auto;
+  }
+
+  .cb-q button {
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--teal);
+    font: 600 13px var(--f-disp);
+    cursor: pointer;
+  }
+
+  .cb-q button:hover {
+    border-color: var(--teal);
+    background: var(--white);
+  }
+
+  .cb-f {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px 12px;
+    background: var(--white);
+  }
+
+  .cb-f input {
+    flex: 1;
+    min-width: 0;
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--line);
+    background: var(--paper);
+    font: 400 15px var(--f-disp);
+    color: var(--ink);
+  }
+
+  .cb-f input:focus-visible {
+    outline: 2px solid var(--copper);
+    outline-offset: 1px;
+    border-color: var(--copper);
+  }
+
+  .cb-f button {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    border: 0;
+    background: var(--copper);
+    color: #fff;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .cb-note {
+    padding: 0 14px 10px;
+    background: var(--white);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @keyframes cbIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes cbDot {
+    0%,
+    60%,
+    100% {
+      opacity: 0.3;
+      transform: none;
+    }
+
+    30% {
+      opacity: 1;
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .cb-fab {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 132px);
+      right: 16px;
+      padding: 0 16px 0 14px;
+      min-height: 50px;
+    }
+
+    .cb {
+      inset: auto 8px calc(env(safe-area-inset-bottom, 0px) + 8px) 8px;
+      width: auto;
+      height: min(620px, calc(100vh - 24px));
+    }
+  }
+</style>

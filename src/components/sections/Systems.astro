@@ -1,10 +1,10 @@
 ---
 /**
  * 01 · Compare systems: comparison table plus the system finder.
- * The finder shows its default answer (on-grid); step 6 makes the buttons work.
+ * The finder is an island (islands/SystemFinder.astro); it highlights the suggested column here.
  */
 import type { Sections } from '../../lib/schemas/sections';
-import Button from '../ui/Button.astro';
+import SystemFinder from '../islands/SystemFinder.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 
 type Props = Sections['systems'] & { number: number };
@@ -13,7 +13,7 @@ const { number, eyebrow, heading, table, finder } = Astro.props;
 const keys = ['onGrid', 'offGrid', 'hybrid'] as const;
 ---
 
-<section class="sec flush-top" id="systems" aria-labelledby="h-sys">
+<section class="sec flush-top" id="systems" aria-labelledby="h-sys" data-systems>
   <div class="wrap">
     <SectionHeading id="h-sys" number={number} eyebrow={eyebrow} heading={heading} />
     <div class="cmpx">
@@ -45,42 +45,7 @@ const keys = ['onGrid', 'offGrid', 'hybrid'] as const;
         ))}
       </div>
 
-      <div class="finder on-dark" data-finder>
-        <p class="lbl">{finder.label}</p>
-        <div class="fq">
-          <p id="fq-grid">{finder.gridQuestion}</p>
-          <div class="seg" role="group" aria-labelledby="fq-grid" data-question="grid">
-            <button type="button" aria-pressed="true" data-value="yes">
-              {finder.yes}
-            </button>
-            <button type="button" aria-pressed="false" data-value="no">
-              {finder.no}
-            </button>
-          </div>
-        </div>
-        <div class="fq" data-cuts>
-          <p id="fq-cuts">{finder.cutsQuestion}</p>
-          <div class="seg" role="group" aria-labelledby="fq-cuts" data-question="cuts">
-            <button type="button" aria-pressed="true" data-value="rare">
-              {finder.rarely}
-            </button>
-            <button type="button" aria-pressed="false" data-value="often">
-              {finder.often}
-            </button>
-          </div>
-        </div>
-        <div class="fres" aria-live="polite">
-          <span class="lbl">{finder.resultLabel}</span>
-          <b data-result-name>{finder.results.onGrid.name}</b>
-          <p data-result-why>{finder.results.onGrid.why}</p>
-        </div>
-        <p class="fmore">
-          {finder.more.text} <a href={finder.more.link.href}>{finder.more.link.label}</a>
-        </p>
-        <Button href={finder.cta.href} variant="cop" arrow class="go">
-          {finder.cta.label}
-        </Button>
-      </div>
+      <SystemFinder {...finder} />
     </div>
   </div>
 </section>
@@ -152,97 +117,6 @@ const keys = ['onGrid', 'offGrid', 'hybrid'] as const;
     color: var(--teal-2);
     font-weight: 800;
     margin-right: 6px;
-  }
-
-  .finder {
-    background: var(--ink);
-    color: var(--paper);
-    border-radius: 28px;
-    padding: clamp(24px, 3vw, 36px);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .finder > .lbl {
-    color: rgba(241, 243, 241, 0.6);
-  }
-
-  .fq p {
-    margin: 0 0 10px;
-    font-weight: 600;
-  }
-
-  .fq:global(.off) {
-    opacity: 0.35;
-    pointer-events: none;
-  }
-
-  .seg {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    padding: 5px;
-    border-radius: 14px;
-    background: rgba(241, 243, 241, 0.08);
-  }
-
-  .seg button {
-    min-height: 44px;
-    border: 0;
-    border-radius: 10px;
-    background: transparent;
-    color: rgba(241, 243, 241, 0.75);
-    font: 600 14px var(--f-disp);
-    cursor: pointer;
-    transition:
-      background 0.4s var(--ease),
-      color 0.4s var(--ease);
-  }
-
-  .seg button[aria-pressed='true'] {
-    background: var(--paper);
-    color: var(--ink);
-  }
-
-  .fres {
-    padding: 18px 20px;
-    border-radius: 18px;
-    background: rgba(241, 243, 241, 0.06);
-    border: 1px solid var(--line-d);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .fres .lbl {
-    color: rgba(241, 243, 241, 0.55);
-  }
-
-  .fres b {
-    font: 800 clamp(30px, 3vw, 40px) / 1.05 var(--f-disp);
-    letter-spacing: -0.03em;
-    color: var(--copper-2);
-  }
-
-  .fres p {
-    margin: 0;
-    color: rgba(241, 243, 241, 0.72);
-    font-size: 15px;
-  }
-
-  .fmore {
-    margin: 0;
-    font-size: 14px;
-    color: rgba(241, 243, 241, 0.65);
-  }
-
-  .fmore a {
-    color: var(--mint);
-  }
-
-  .finder :global(.go) {
-    align-self: flex-start;
   }
 
   @media (max-width: 860px) {

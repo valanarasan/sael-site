@@ -1,0 +1,249 @@
+---
+/**
+ * Subsidy calculator island: size slider and state dropdown. The default (3 kW, default state) is
+ * rendered on the server; the script recomputes with lib/subsidy.ts when the visitor changes
+ * either, and announces the new total once for screen readers.
+ */
+import type { Sections } from '../../lib/schemas/sections';
+import type { SubsidyRules } from '../../lib/schemas/subsidy';
+import { toIslandJson } from '../../lib/island-data';
+import type { CalculatorData, CalculatorView, StateOption } from '../../lib/view-models/subsidy';
+import Button from '../ui/Button.astro';
+
+type Labels = Sections['subsidy']['calculator'];
+
+type Props = Labels & {
+  states: StateOption[];
+  view: CalculatorView;
+  minKw: number;
+  maxKw: number;
+  rules: SubsidyRules;
+};
+
+const { states, view, minKw, maxKw, rules, ...c } = Astro.props;
+
+const data: CalculatorData = {
+  rules,
+  labels: {
+    stateTopUpLabel: c.stateTopUpLabel,
+    namedStateTopUpLabel: c.namedStateTopUpLabel,
+    centralTotalLabel: c.centralTotalLabel,
+    combinedTotalLabel: c.combinedTotalLabel,
+  },
+};
+---
+
+<div class="calc on-dark" data-calculator>
+  <script type="application/json" data-island="calculator" set:html={toIslandJson(data)} />
+  <div class="calc-h">
+    <span class="lbl">{c.label}</span>
+    <span class="kw" aria-hidden="true">
+      <b data-kw-value>{view.kw}</b> kW
+    </span>
+  </div>
+  <label class="rg" for="calc-kw">
+    {c.sizeLabel}
+    <input
+      id="calc-kw"
+      type="range"
+      min={minKw}
+      max={maxKw}
+      step="1"
+      value={view.kw}
+      aria-valuetext={`${view.kw} kW`}
+    />
+  </label>
+  <label class="rg" for="calc-state">
+    {c.stateLabel}
+    <select id="calc-state">
+      {states.map((s) => (
+        <option value={s.value} selected={s.selected}>
+          {s.label}
+        </option>
+      ))}
+    </select>
+  </label>
+  <dl class="out">
+    {view.slabRows.map((row) => (
+      <div class:list={[row.dim && 'dim']} data-slab-row>
+        <dt>{row.label}</dt>
+        <dd>{row.value}</dd>
+      </div>
+    ))}
+    <div class:list={['st-row', view.state.dim && 'dim']} data-state-row>
+      <dt data-state-label>
+        {view.state.name
+          ? c.namedStateTopUpLabel.replace('{state}', view.state.name)
+          : c.stateTopUpLabel}
+      </dt>
+      <dd>{view.state.value}</dd>
+    </div>
+    <div class="tot">
+      <dt data-total-label>{view.total.combined ? c.combinedTotalLabel : c.centralTotalLabel}</dt>
+      <dd data-total>{view.total.value}</dd>
+    </div>
+  </dl>
+  <p class="snote" data-state-note>
+    {view.note}
+  </p>
+  <p class="sr-only" aria-live="polite" data-announce></p>
+  <p class="note">{c.note}</p>
+  <Button href={c.cta.href} variant="cop" arrow class="go">
+    {c.cta.label}
+  </Button>
+</div>
+
+<script>
+  import { whenVisible } from '../../scripts/hydrate';
+
+  document.querySelectorAll<HTMLElement>('[data-calculator]').forEach((root) =>
+    whenVisible(root, () => {
+      void import('../../scripts/islands/calculator').then((m) => m.initCalculator(root));
+    }),
+  );
+</script>
+
+<style>
+  dl {
+    margin: 0;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  .calc {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 28px;
+    padding: clamp(24px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 0 40px 80px -40px rgba(11, 31, 34, 0.5);
+  }
+
+  .calc-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .calc-h .lbl {
+    color: rgba(241, 243, 241, 0.6);
+  }
+
+  .kw {
+    font: 500 15px var(--f-mono);
+    color: rgba(241, 243, 241, 0.7);
+  }
+
+  .kw b {
+    font: 800 56px/1 var(--f-disp);
+    letter-spacing: -0.05em;
+    color: #fff;
+    margin-right: 4px;
+  }
+
+  .rg {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font: 500 12px var(--f-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(241, 243, 241, 0.6);
+  }
+
+  .rg input {
+    width: 100%;
+    accent-color: var(--copper);
+    height: 28px;
+    cursor: pointer;
+  }
+
+  .rg select {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 8px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid var(--line-d);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font: 600 16px var(--f-disp);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .rg select option {
+    color: var(--ink);
+  }
+
+  .out div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-d);
+    transition: opacity 0.4s ease;
+  }
+
+  .out dt {
+    font-size: 15px;
+    color: rgba(241, 243, 241, 0.72);
+  }
+
+  .out dd {
+    font: 700 22px var(--f-disp);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .out .st-row dd {
+    color: var(--mint);
+  }
+
+  .out .tot {
+    border-bottom: 0;
+    padding-top: 18px;
+  }
+
+  .out .tot dt {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .out .tot dd {
+    font: 800 clamp(38px, 4vw, 54px) / 1 var(--f-disp);
+    letter-spacing: -0.04em;
+    color: var(--copper-2);
+  }
+
+  /* Dimmed rows use a dimmer colour, not opacity, so the text keeps 5.5:1 contrast. */
+  .out :global(.dim) dt,
+  .out :global(.dim) dd {
+    color: rgba(241, 243, 241, 0.55);
+  }
+
+  .snote {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--mint);
+    min-height: 1.5em;
+  }
+
+  .snote:empty {
+    display: none;
+  }
+
+  .note {
+    font-size: 13px;
+    color: rgba(241, 243, 241, 0.55);
+  }
+
+  .calc :global(.go) {
+    align-self: flex-start;
+  }
+</style>

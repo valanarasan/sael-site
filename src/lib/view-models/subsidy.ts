@@ -87,3 +87,14 @@ export function toCalculatorView(kw: number, stateId: string, rules: SubsidyRule
     ...(result.note ? { note: result.note } : {}),
   };
 }
+
+/** What the calculator island needs in the browser: the rates and the labels that change. */
+export interface CalculatorData {
+  rules: SubsidyRules;
+  labels: {
+    stateTopUpLabel: string;
+    namedStateTopUpLabel: string;
+    centralTotalLabel: string;
+    combinedTotalLabel: string;
+  };
+}

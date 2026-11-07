@@ -313,6 +313,16 @@
   "gallery": {
     "eyebrow": "Gallery",
     "heading": "Our work, *up close*",
+    "controls": {
+      "previous": "Previous photos",
+      "next": "Next photos",
+      "open": "Open photo",
+      "viewer": "Photo viewer",
+      "close": "Close",
+      "previousPhoto": "Previous photo",
+      "nextPhoto": "Next photo",
+      "credit": "Photo · SAEL"
+    },
     "items": [
       {
         "image": "../assets/images/g-elevated.jpg",

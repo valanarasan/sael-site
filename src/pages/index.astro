@@ -8,7 +8,7 @@ import Contact from '../components/sections/Contact.astro';
 import DayNight from '../components/sections/DayNight.astro';
 import Engineering from '../components/sections/Engineering.astro';
 import Faq from '../components/sections/Faq.astro';
-import Gallery from '../components/sections/Gallery.astro';
+import Gallery from '../components/islands/Gallery.astro';
 import Hero from '../components/sections/Hero.astro';
 import Highlights from '../components/sections/Highlights.astro';
 import Numbers from '../components/sections/Numbers.astro';
@@ -52,6 +52,7 @@ const { contact } = sections;
     slabs={toSlabRows(rules)}
     states={toStateOptions(rules)}
     view={toCalculatorView(DEFAULT_KW, rules.defaultStateId, rules)}
+    rules={rules}
     minKw={MIN_KW}
     maxKw={MAX_KW}
   />
