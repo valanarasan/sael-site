@@ -1,0 +1,146 @@
+/** Minimal valid sections content for schema tests. Not the live sections.json. */
+import { fakeImage } from './content';
+
+const pic = (name: string) => ({ image: fakeImage(name), alt: `Photo of ${name}` });
+const link = (label: string) => ({ label, href: '/#contact' });
+
+export const sectionsFixture = {
+  hero: {
+    eyebrow: 'Eyebrow',
+    headline: ['Line one', 'line *two*'],
+    intro: 'Intro text.',
+    primaryCta: link('Primary'),
+    secondaryCta: link('Secondary'),
+    fact: { value: '₹1', label: 'Fact' },
+    slides: [{ ...pic('slide'), tag: 'Tag', title: 'Title', credit: 'Credit' }],
+  },
+  highlights: { label: 'Highlights', items: [{ icon: 'home', title: 'Survey', text: 'Free' }] },
+  systems: {
+    eyebrow: 'Systems',
+    heading: 'Pick *one*',
+    table: {
+      label: 'Table',
+      columns: { onGrid: 'On', offGrid: 'Off', hybrid: 'Hy' },
+      rows: [{ label: 'Battery', onGrid: 'No', offGrid: 'Yes', hybrid: 'Yes' }],
+    },
+    finder: {
+      label: 'Finder',
+      gridQuestion: 'Grid?',
+      cutsQuestion: 'Cuts?',
+      yes: 'Yes',
+      no: 'No',
+      rarely: 'Rarely',
+      often: 'Often',
+      resultLabel: 'Suggest',
+      results: {
+        onGrid: { name: 'On', why: 'Cheap' },
+        hybrid: { name: 'Hy', why: 'Backup' },
+        offGrid: { name: 'Off', why: 'Remote' },
+      },
+      more: { text: 'Business?', link: link('Ask') },
+      cta: link('Quote'),
+    },
+  },
+  subsidy: {
+    eyebrow: 'Subsidy',
+    heading: 'Up to *₹1*',
+    intro: 'Intro.',
+    handles: ['Docs'],
+    calculator: {
+      label: 'Estimate',
+      sizeLabel: 'Size',
+      stateLabel: 'State',
+      stateTopUpLabel: 'Top-up',
+      centralTotalLabel: 'Central',
+      combinedTotalLabel: 'Both',
+      note: 'Note.',
+      cta: link('Check'),
+    },
+  },
+  process: {
+    eyebrow: 'Process',
+    heading: 'Steps',
+    steps: [
+      { title: 'One', text: 'First.' },
+      { title: 'Two', text: 'Second.' },
+    ],
+    tracker: { label: 'Track', stages: ['Start', 'Done'] },
+  },
+  why: {
+    eyebrow: 'Why',
+    heading: 'Because',
+    feature: { ...pic('why'), credit: 'Photo', title: 'Done right' },
+    tiles: [
+      { title: 'Reason', text: 'To come.', placeholder: true },
+      { title: 'Real', text: 'Real.' },
+    ],
+  },
+  engineering: {
+    eyebrow: 'Eng',
+    heading: 'Light *in*',
+    body: 'Body.',
+    photo: pic('eng'),
+    stats: [
+      { value: '3', label: 'Offices' },
+      { value: '—', label: 'Figure from SAEL', placeholder: true },
+    ],
+    stripLabel: 'Strip',
+    strip: [pic('s1'), pic('s2')],
+  },
+  gallery: {
+    eyebrow: 'Gallery',
+    heading: 'Work',
+    items: [{ ...pic('g'), title: 'G', place: 'Here' }],
+  },
+  numbers: { label: 'Numbers', stats: [{ value: '3', label: 'offices' }], ticker: ['EPC'] },
+  projects: { eyebrow: 'Projects', heading: 'Across *South India*' },
+  audience: {
+    eyebrow: 'Who',
+    heading: 'Everyone',
+    label: 'Audience',
+    tabs: [
+      { ...pic('home'), label: 'Homes', text: 'Save.' },
+      { ...pic('farm'), label: 'Farms', text: 'Pump.' },
+    ],
+  },
+  faq: { eyebrow: 'FAQs', heading: 'Questions', intro: 'Call {phone}.' },
+  contact: {
+    eyebrow: 'Book',
+    heading: 'Book *now*',
+    intro: 'Leave your number.',
+    background: pic('bg'),
+    form: {
+      name: 'Name',
+      phone: 'Mobile',
+      place: 'PIN',
+      bill: 'Bill',
+      billOptions: ['Low', 'High'],
+      interest: 'Interest',
+      interests: ['On-grid solar'],
+      message: 'Message',
+      consent: 'You may contact me.',
+      privacy: { text: 'We keep it safe.' },
+      submit: 'Send',
+      thankYou: 'Thanks.',
+      whatsappLabel: 'WhatsApp',
+      whatsappMessage: 'Hi',
+    },
+  },
+  dayNight: {
+    eyebrow: 'Day',
+    heading: 'Noon *to night*',
+    text: 'Text.',
+    sliderLabel: 'Compare',
+    day: { alt: 'A home by day', tag: 'Day', text: 'Sun.' },
+    night: { image: fakeImage('night'), alt: 'A home at night', tag: 'Night', text: 'Battery.' },
+    credit: 'Unsplash',
+  },
+  blog: {
+    eyebrow: 'Blog',
+    heading: 'Solar, *explained*.',
+    intro: 'Articles.',
+    filterLabel: 'Filter',
+    allLabel: 'All',
+    comingSoon: 'Soon',
+  },
+};
