@@ -1,0 +1,99 @@
+---
+/**
+ * v5 custom cursor: a copper dot that trails the pointer and grows with a label over elements
+ * marked data-cursor="…". Mouse and trackpad only, never with reduced motion. Decorative: the
+ * normal cursor stays, and the dot is hidden from screen readers.
+ */
+---
+
+<div class="cur" aria-hidden="true" data-cursor-dot>
+  <span data-cursor-label></span>
+</div>
+
+<script>
+  const fine = window.matchMedia('(pointer: fine)').matches;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dot = document.querySelector<HTMLElement>('[data-cursor-dot]');
+  const label = dot?.querySelector<HTMLElement>('[data-cursor-label]');
+
+  if (dot && label && fine && !reduce) {
+    let x = 0;
+    let y = 0;
+    let tx = 0;
+    let ty = 0;
+    let running = false;
+
+    const loop = () => {
+      x += (tx - x) * 0.18;
+      y += (ty - y) * 0.18;
+      dot.style.transform = `translate(${x}px, ${y}px)`;
+      if (Math.abs(tx - x) > 0.1 || Math.abs(ty - y) > 0.1) requestAnimationFrame(loop);
+      else running = false;
+    };
+
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        if (e.pointerType !== 'mouse') return;
+        tx = e.clientX;
+        ty = e.clientY;
+        dot.classList.add('on');
+        if (!running) {
+          running = true;
+          requestAnimationFrame(loop);
+        }
+        const target = (e.target as Element | null)?.closest<HTMLElement>('[data-cursor]');
+        dot.classList.toggle('big', Boolean(target));
+        if (target) label.textContent = target.dataset.cursor ?? '';
+      },
+      { passive: true },
+    );
+    document.documentElement.addEventListener('pointerleave', () => dot.classList.remove('on'));
+  }
+</script>
+
+<style>
+  .cur {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 150;
+    pointer-events: none;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 999px;
+    background: var(--copper);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font: 600 11px var(--f-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition:
+      width 0.45s var(--ease),
+      height 0.45s var(--ease),
+      margin 0.45s var(--ease),
+      opacity 0.3s ease;
+  }
+
+  .cur:global(.on) {
+    opacity: 1;
+  }
+
+  span {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .cur:global(.big) {
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
+  }
+
+  .cur:global(.big) span {
+    opacity: 1;
+  }
+</style>

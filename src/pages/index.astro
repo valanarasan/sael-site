@@ -3,6 +3,8 @@
  * Home page. Fetches content through the repository, maps it with the view models and passes
  * each section only the props it renders. Section numbers follow page order.
  */
+import Cursor from '../components/islands/Cursor.astro';
+import ProgressPill from '../components/islands/ProgressPill.astro';
 import Audience from '../components/sections/Audience.astro';
 import Contact from '../components/sections/Contact.astro';
 import DayNight from '../components/sections/DayNight.astro';
@@ -86,6 +88,8 @@ const { contact } = sections;
     whatsappLink={whatsappHref(settings.contact.whatsapp, contact.form.whatsappMessage)}
   />
   <DayNight number={next()} {...sections.dayNight} />
+  <ProgressPill sections={sections.progress} />
+  <Cursor />
 </BaseLayout>
 
 <script>
