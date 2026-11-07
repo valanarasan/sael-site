@@ -1,0 +1,402 @@
+{
+  "hero": {
+    "eyebrow": "Solar Architects® · Bangalore & Kerala",
+    "headline": ["Energy is", "all *around* us."],
+    "intro": "SAEL designs, installs and maintains on-grid, off-grid and hybrid solar for homes, businesses and industry across South India. We handle your PM Surya Ghar subsidy end to end.",
+    "primaryCta": { "label": "Check my subsidy", "href": "/#subsidy" },
+    "secondaryCta": { "label": "Free site survey", "href": "/#contact" },
+    "fact": { "value": "₹78,000", "label": "Max central home subsidy" },
+    "slides": [
+      {
+        "image": "../assets/images/why-main.jpg",
+        "alt": "Rooftop solar above a Chennai neighbourhood",
+        "tag": "On-grid · Homes",
+        "title": "A home that pays less every month",
+        "credit": "SAEL installation"
+      },
+      {
+        "image": "../assets/images/hero-rooftop.jpg",
+        "alt": "A SAEL rooftop solar array in Bengaluru",
+        "tag": "Rooftop solar",
+        "title": "Every flat roof can be a power plant",
+        "credit": "SAEL installation · Bengaluru"
+      },
+      {
+        "image": "../assets/images/hero-commercial.jpg",
+        "alt": "Solar panels across a commercial rooftop",
+        "tag": "Shops & offices",
+        "title": "Daytime loads, daytime power",
+        "credit": "SAEL installation"
+      },
+      {
+        "image": "../assets/images/hero-hybrid.jpg",
+        "alt": "A solar inverter and distribution box installed by SAEL",
+        "tag": "Hybrid & battery",
+        "title": "Power cuts, covered",
+        "credit": "SAEL installation"
+      },
+      {
+        "image": "../assets/images/hero-amc.jpg",
+        "alt": "The SAEL team cleaning a solar array",
+        "tag": "AMC & service",
+        "title": "Cleaned, checked, kept yielding",
+        "credit": "SAEL service team"
+      }
+    ]
+  },
+  "highlights": {
+    "label": "What every SAEL installation includes",
+    "items": [
+      { "icon": "home", "title": "Free site survey", "text": "Roof, shading and bills checked" },
+      {
+        "icon": "rupee",
+        "title": "Subsidy support",
+        "text": "PM Surya Ghar, DISCOM, net metering"
+      },
+      {
+        "icon": "wrench",
+        "title": "Professional installation",
+        "text": "Designed, installed and tested"
+      },
+      { "icon": "clock", "title": "AMC & service", "text": "Maintenance after installation" }
+    ]
+  },
+  "systems": {
+    "eyebrow": "Compare systems",
+    "heading": "On-grid, off-grid *or hybrid?*",
+    "table": {
+      "label": "Solar systems compared",
+      "columns": { "onGrid": "On-grid", "offGrid": "Off-grid", "hybrid": "Hybrid" },
+      "rows": [
+        {
+          "label": "Battery",
+          "onGrid": "None",
+          "offGrid": "Lithium or tubular",
+          "hybrid": "Yes, expandable"
+        },
+        {
+          "label": "During power cuts",
+          "onGrid": "No backup",
+          "offGrid": "Full backup",
+          "hybrid": "Partial to full"
+        },
+        {
+          "label": "Grid connection",
+          "onGrid": "Needed",
+          "offGrid": "Not needed",
+          "hybrid": "Needed"
+        },
+        {
+          "label": "PM Surya Ghar subsidy",
+          "onGrid": "Homes",
+          "offGrid": "—",
+          "hybrid": "Homes",
+          "tick": true
+        },
+        { "label": "Typical size", "onGrid": "2–10 kW", "offGrid": "1–15 kW", "hybrid": "3–15 kW" },
+        {
+          "label": "Best for",
+          "onGrid": "Homes, shops, offices",
+          "offGrid": "Remote homes, farms",
+          "hybrid": "Homes with frequent cuts"
+        }
+      ]
+    },
+    "finder": {
+      "label": "Find your system",
+      "gridQuestion": "Do you have a grid electricity connection?",
+      "cutsQuestion": "How often does the power go off?",
+      "yes": "Yes",
+      "no": "No",
+      "rarely": "Rarely",
+      "often": "Often",
+      "resultLabel": "We'd suggest",
+      "results": {
+        "onGrid": {
+          "name": "On-grid",
+          "why": "Lowest cost per unit, with the PM Surya Ghar subsidy. Surplus power earns credit through net metering."
+        },
+        "hybrid": {
+          "name": "Hybrid",
+          "why": "Grid savings by day plus a battery that keeps essentials running through power cuts. Subsidy-eligible for homes."
+        },
+        "offGrid": {
+          "name": "Off-grid",
+          "why": "A battery-backed system that runs fully independent of the grid, day and night."
+        }
+      },
+      "more": {
+        "text": "Running a business or factory?",
+        "link": { "label": "Ask about commercial & industrial solar", "href": "/#contact" }
+      },
+      "cta": { "label": "Get this quoted", "href": "/#contact" }
+    }
+  },
+  "subsidy": {
+    "eyebrow": "PM Surya Ghar Muft Bijli Yojana",
+    "heading": "Up to *₹78,000* back on your home's rooftop",
+    "intro": "The central government's rooftop scheme pays a subsidy on grid-tied home systems, and some states add their own top-up on top. SAEL checks your eligibility at the free consultation, then handles the application, the DISCOM approval and net metering as part of our end-to-end liaisoning.",
+    "handles": [
+      "Free eligibility check",
+      "Full documentation",
+      "DISCOM net-metering approval",
+      "State top-ups, where your state offers one"
+    ],
+    "calculator": {
+      "label": "Subsidy estimate",
+      "sizeLabel": "Home rooftop system size",
+      "stateLabel": "Your state",
+      "stateTopUpLabel": "State top-up",
+      "centralTotalLabel": "Central subsidy",
+      "combinedTotalLabel": "Central + state",
+      "note": "Residential rooftop only. State top-ups change often: SAEL confirms the final amount at your free consultation.",
+      "cta": { "label": "Check my eligibility", "href": "/#contact" }
+    }
+  },
+  "process": {
+    "eyebrow": "How it works",
+    "heading": "Survey to savings *in five steps*",
+    "steps": [
+      {
+        "title": "Book a survey",
+        "text": "Share your requirement and get a free site visit: roof, shading and your electricity bills."
+      },
+      {
+        "title": "System design",
+        "text": "Our engineers size the right system to your actual consumption, not a fixed package."
+      },
+      {
+        "title": "Installation",
+        "text": "A trained team installs, tests and commissions your system."
+      },
+      {
+        "title": "Subsidy & net metering",
+        "text": "We file your PM Surya Ghar subsidy and get the DISCOM net-metering approval."
+      },
+      {
+        "title": "AMC & service",
+        "text": "Cleaning, checks and maintenance keep your system yielding for years."
+      }
+    ],
+    "tracker": {
+      "label": "Track your installation",
+      "stages": [
+        "Site survey done",
+        "Team assigned",
+        "Installation started",
+        "Testing & commissioning",
+        "Completed"
+      ]
+    }
+  },
+  "why": {
+    "eyebrow": "Why SAEL",
+    "heading": "Solar only pays back *when it's done right*",
+    "feature": {
+      "image": "../assets/images/hero-home.jpg",
+      "alt": "Rooftop solar on a home at sunset",
+      "credit": "Photo · SAEL",
+      "title": "Sized correctly, installed properly and serviced for years."
+    },
+    "tiles": [
+      {
+        "title": "Reason one",
+        "text": "SAEL will supply the text for this tile.",
+        "placeholder": true
+      },
+      {
+        "title": "Reason two",
+        "text": "SAEL will supply the text for this tile.",
+        "placeholder": true
+      },
+      {
+        "title": "Reason three",
+        "text": "SAEL will supply the text for this tile.",
+        "placeholder": true
+      },
+      {
+        "title": "Reason four",
+        "text": "SAEL will supply the text for this tile.",
+        "placeholder": true
+      }
+    ]
+  },
+  "engineering": {
+    "eyebrow": "Engineering",
+    "heading": "Light in. *Lower bills* out.",
+    "body": "Every system uses Tier-1 modules and BIS-certified components, matched to the site and sized to your actual consumption. The same engineering team builds everything from a 1 kW home system to utility-scale plants.",
+    "photo": {
+      "image": "../assets/images/eng-structure.jpg",
+      "alt": "An elevated solar structure built by SAEL"
+    },
+    "stats": [
+      { "value": "3", "label": "Offices" },
+      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
+      { "value": "—", "label": "Figure from SAEL", "placeholder": true }
+    ],
+    "stripLabel": "Field photos from SAEL installations",
+    "strip": [
+      { "image": "../assets/images/s-monitor.jpg", "alt": "An inverter Wi-Fi monitoring dongle" },
+      { "image": "../assets/images/s-inverter.jpg", "alt": "A wall-mounted solar inverter" },
+      {
+        "image": "../assets/images/s-controller.jpg",
+        "alt": "A solar pump controller in the field"
+      },
+      {
+        "image": "../assets/images/s-cleaning.jpg",
+        "alt": "Cleaning a solar panel with a soft brush"
+      },
+      { "image": "../assets/images/s-tilt.jpg", "alt": "Tilted solar panels on a rooftop" },
+      { "image": "../assets/images/s-roof.jpg", "alt": "A solar array on a sloping roof" }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "Gallery",
+    "heading": "Our work, *up close*",
+    "items": [
+      {
+        "image": "../assets/images/g-elevated.jpg",
+        "alt": "An elevated SAEL solar structure in the afternoon sun",
+        "title": "Elevated array",
+        "place": "SAEL installation"
+      },
+      {
+        "image": "../assets/images/g-villa.jpg",
+        "alt": "Solar panels on a tiled villa roof",
+        "title": "Tiled-roof villa",
+        "place": "SAEL installation"
+      },
+      {
+        "image": "../assets/images/g-pump-array.jpg",
+        "alt": "A solar array powering a farm pump",
+        "title": "Solar pump array",
+        "place": "Bhoganahalli, Karnataka"
+      },
+      {
+        "image": "../assets/images/g-chennai.jpg",
+        "alt": "A rooftop solar array in Chennai",
+        "title": "Chennai rooftop",
+        "place": "Chennai, Tamil Nadu"
+      },
+      {
+        "image": "../assets/images/g-garden.jpg",
+        "alt": "Solar panels above a home with a garden",
+        "title": "Garden home",
+        "place": "SAEL installation"
+      },
+      {
+        "image": "../assets/images/g-bangalore.jpg",
+        "alt": "A rooftop solar array in Bengaluru",
+        "title": "Bengaluru rooftop",
+        "place": "Bengaluru, Karnataka"
+      }
+    ]
+  },
+  "numbers": {
+    "label": "SAEL in numbers",
+    "stats": [
+      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
+      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
+      { "value": "—", "label": "Figure from SAEL", "placeholder": true },
+      { "value": "3", "label": "offices · Bangalore, Kerala, NZ" }
+    ],
+    "ticker": ["Rooftop", "Ground-mount", "EPC", "O&M", "AMC", "Power purchase"]
+  },
+  "projects": {
+    "eyebrow": "Selected work",
+    "heading": "Projects across *South India*"
+  },
+  "audience": {
+    "eyebrow": "Who it's for",
+    "heading": "Built for anyone who *pays for power*",
+    "label": "Audience",
+    "tabs": [
+      {
+        "label": "Homes",
+        "image": "../assets/images/aud-home.jpg",
+        "alt": "Rooftop solar on a South Indian home",
+        "text": "On-grid or hybrid rooftop solar cuts the monthly bill, with up to ₹78,000 back through PM Surya Ghar."
+      },
+      {
+        "label": "Shops & offices",
+        "image": "../assets/images/aud-commercial.jpg",
+        "alt": "A wide elevated solar array on a commercial building",
+        "text": "Shops and offices use most of their power in daylight, exactly when the panels produce it."
+      },
+      {
+        "label": "Farms",
+        "image": "../assets/images/aud-farm.jpg",
+        "alt": "A solar array powering a farm pump in Karnataka",
+        "text": "Solar on farms cuts the diesel bill and keeps pump sets running where the grid is weak."
+      },
+      {
+        "label": "Industries",
+        "image": "../assets/images/aud-industry.jpg",
+        "alt": "An elevated solar structure in strong sunlight",
+        "text": "Factories, warehouses and campuses run daytime loads on rooftop or ground-mount solar, under OpEx or CapEx."
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "FAQs",
+    "heading": "Questions we *hear most*",
+    "intro": "Something else? Call {phone}, write to {email}, or read the {blog}."
+  },
+  "contact": {
+    "eyebrow": "Book with us",
+    "heading": "Book your free *site survey*.",
+    "intro": "Leave your number. We'll visit, check your roof and bills, and send a personalised quote with your subsidy worked out.",
+    "background": {
+      "image": "../assets/images/cta-poster.jpg",
+      "alt": "Rooftop solar panels in sunlight"
+    },
+    "form": {
+      "name": "Name",
+      "phone": "Mobile number",
+      "place": "District or PIN code",
+      "bill": "Monthly electricity bill",
+      "billOptions": ["Under ₹2,000", "₹2,000–5,000", "₹5,000–20,000", "Above ₹20,000"],
+      "interest": "Interest",
+      "interests": [
+        "On-grid solar",
+        "Hybrid solar with battery",
+        "Commercial or industrial project"
+      ],
+      "message": "Message (optional)",
+      "consent": "SAEL may contact me about my enquiry.",
+      "privacy": {
+        "text": "We use your name, number and details only to reply to your enquiry and arrange your site survey. How long we keep them is to be confirmed by SAEL.",
+        "placeholder": true
+      },
+      "submit": "Request a callback",
+      "thankYou": "Thank you. A SAEL consultant will call you to book your free visit.",
+      "whatsappLabel": "Continue on WhatsApp",
+      "whatsappMessage": "Hi SAEL, I just requested a callback on your website."
+    }
+  },
+  "dayNight": {
+    "eyebrow": "Day & night",
+    "heading": "Drag from *noon* to a power cut",
+    "text": "Homes and shops with a steady grid go on-grid. Homes with frequent power cuts go hybrid, and the battery carries them through.",
+    "sliderLabel": "Compare day and night",
+    "day": {
+      "alt": "A two-storey Indian home with a front lawn in daylight",
+      "tag": "☀ Day · On-grid",
+      "text": "Panels run your load; net metering credits the surplus."
+    },
+    "night": {
+      "alt": "A modern Indian home lit up in the evening",
+      "tag": "☾ Power cut · Hybrid",
+      "text": "The battery keeps essentials running."
+    },
+    "credit": "Photos · The Dimensions, Naksha Banwao / Unsplash"
+  },
+  "blog": {
+    "eyebrow": "SAEL Blog",
+    "heading": "Solar, *explained*.",
+    "intro": "Straight answers on subsidies, monsoon output, cleaning and maintenance, from the team that installs and services SAEL plants. Full articles are on the way.",
+    "filterLabel": "Filter articles",
+    "allLabel": "All",
+    "comingSoon": "Article coming soon"
+  }
+}

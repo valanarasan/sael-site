@@ -1,0 +1,223 @@
+{
+  "title": "SAEL Solar Assistant",
+  "subtitle": "Our team replies on WhatsApp",
+  "openLabel": "Ask SAEL",
+  "greeting": "Hi! I'm the SAEL solar assistant. Ask me about solar for your home or business, the PM Surya Ghar subsidy or a free site survey. For anything specific, our team replies on WhatsApp.",
+  "inputLabel": "Type your question",
+  "inputPlaceholder": "Type your question…",
+  "note": "Answers are general. Your exact quote and subsidy are confirmed at the free site survey.",
+  "whatsappLabel": "Continue on WhatsApp",
+  "fallback": {
+    "answer": "I'm not sure about that one, but our team can help on WhatsApp.",
+    "whatsapp": "Hi SAEL, I have a question: {question}"
+  },
+  "whatsappChip": {
+    "answer": "Sure. Tap below to chat with our team on WhatsApp.",
+    "whatsapp": "Hi SAEL, I'd like to talk about solar for my home.",
+    "buttonLabel": "Open WhatsApp"
+  },
+  "subsidyFollowUp": {
+    "intentId": "subsidy",
+    "answer": "For a {kw} kW home rooftop system, the central subsidy is about {amount}.",
+    "capNote": "The subsidy is capped at 3 kW, so it stays at ₹78,000 for bigger systems.",
+    "confirm": "We confirm it at the free site survey.",
+    "whatsapp": "Hi SAEL, I'm looking at a {kw} kW rooftop system. Can you check my subsidy?",
+    "buttonLabel": "Check on WhatsApp"
+  },
+  "chips": [
+    { "label": "Subsidy amount", "message": "How much subsidy can I get?" },
+    { "label": "Which system?", "message": "Which system should I choose?" },
+    { "label": "Power cuts", "message": "What happens in a power cut?" },
+    { "label": "Price", "message": "How much does it cost?" },
+    { "label": "Low output", "message": "My solar output has dropped" },
+    { "label": "Solar pump", "message": "Tell me about solar pumps" },
+    { "label": "Book a survey", "message": "I want to book a site survey" },
+    { "label": "Talk on WhatsApp" }
+  ],
+  "intents": [
+    {
+      "id": "hello",
+      "keywords": ["hi", "hello", "hey", "namaste", "vanakkam", "good morning", "good evening"],
+      "answer": "Hello! I can answer quick questions about solar for your home or business, the PM Surya Ghar subsidy and site surveys. What would you like to know?"
+    },
+    {
+      "id": "subsidy",
+      "keywords": [
+        "subsidy",
+        "surya ghar",
+        "pm surya",
+        "government",
+        "scheme",
+        "yojana",
+        "78000",
+        "78,000"
+      ],
+      "answer": "Homes with on-grid or hybrid rooftop solar get the PM Surya Ghar central subsidy: ₹30,000 per kW for the first 2 kW and ₹18,000 for the 3rd kW, up to ₹78,000. Some states add a top-up. Tell me your system size in kW (for example \"3 kW\") and I'll work it out.",
+      "related": ["pm-surya-ghar"],
+      "whatsapp": "Hi SAEL, I'd like to check my PM Surya Ghar subsidy eligibility."
+    },
+    {
+      "id": "which",
+      "keywords": [
+        "which",
+        "choose",
+        "difference",
+        "on-grid",
+        "on grid",
+        "ongrid",
+        "off-grid",
+        "off grid",
+        "hybrid",
+        "best system",
+        "suitable"
+      ],
+      "answer": "On-grid suits homes, shops and offices with a reliable grid: lowest cost, no battery. Hybrid adds a battery for homes with frequent power cuts. Off-grid is for places with no grid connection.",
+      "links": [{ "label": "Compare systems", "href": "/#systems" }],
+      "related": ["types-of-solar-plants"],
+      "whatsapp": "Hi SAEL, which solar system is right for my home?"
+    },
+    {
+      "id": "power-cut",
+      "keywords": [
+        "power cut",
+        "powercut",
+        "outage",
+        "blackout",
+        "current goes",
+        "no power",
+        "battery",
+        "backup",
+        "inverter"
+      ],
+      "answer": "An on-grid system switches off during a power cut, for safety. A hybrid or off-grid system switches to its battery and keeps fans, lights and the fridge running. Batteries come in lithium or tubular.",
+      "related": ["monsoon-no-sun"],
+      "whatsapp": "Hi SAEL, I need solar with battery backup for power cuts."
+    },
+    {
+      "id": "pump",
+      "keywords": [
+        "pump",
+        "borewell",
+        "bore well",
+        "irrigation",
+        "submersible",
+        "farm",
+        "agriculture",
+        "motor",
+        "hp"
+      ],
+      "answer": "Solar pumps from 1 to 10 HP (AC or DC) run borewells and irrigation for heads up to 100 m, with zero running cost. We size them to your head and discharge.",
+      "whatsapp": "Hi SAEL, I'm interested in a solar pump for my farm."
+    },
+    {
+      "id": "not-offered",
+      "keywords": ["atta", "chakki", "flour", "water heater", "geyser", "hot water"],
+      "answer": "SAEL focuses on solar power systems: on-grid, hybrid and off-grid, for homes, businesses and industry. We don't supply solar atta chakkis or water heaters.",
+      "whatsapp": "Hi SAEL, I have a question about solar for my home or business."
+    },
+    {
+      "id": "performance",
+      "keywords": [
+        "dirty",
+        "dust",
+        "clean",
+        "cleaning",
+        "output",
+        "generation",
+        "dropped",
+        "low",
+        "underperform",
+        "maintenance",
+        "amc",
+        "service",
+        "monsoon",
+        "rain",
+        "microcrack",
+        "crack"
+      ],
+      "answer": "Dust, shading and loose connections all eat into output. Our AMC covers cleaning, checks and repairs so the system keeps yielding.",
+      "related": ["dirty-solar-panels", "underperforming-signs"],
+      "whatsapp": "Hi SAEL, I'd like to ask about AMC and cleaning for my solar plant."
+    },
+    {
+      "id": "blog",
+      "keywords": ["blog", "article", "read", "learn", "guide", "tips"],
+      "answer": "Our blog explains solar in plain words: subsidies, monsoon output, cleaning and more.",
+      "links": [{ "label": "Open the SAEL blog", "href": "/blog" }]
+    },
+    {
+      "id": "price",
+      "keywords": [
+        "price",
+        "cost",
+        "rate",
+        "how much",
+        "quotation",
+        "quote",
+        "budget",
+        "charges",
+        "kitna"
+      ],
+      "answer": "The price depends on system size, roof and products, so we quote after a free site survey. Share your city and monthly electricity bill on WhatsApp and we'll send an estimate.",
+      "whatsapp": "Hi SAEL, I'd like a quote. My city: ___ , monthly bill: ₹___"
+    },
+    {
+      "id": "finance",
+      "keywords": ["emi", "loan", "finance", "opex", "capex", "upfront", "investment", "pay later"],
+      "answer": "Two options: under OpEx, investors fund the system and you pay for the power it produces. Under CapEx, you own the system and we handle installation and liaisoning end to end.",
+      "whatsapp": "Hi SAEL, I'd like to know about OpEx and CapEx options."
+    },
+    {
+      "id": "survey",
+      "keywords": [
+        "survey",
+        "site visit",
+        "visit",
+        "book",
+        "appointment",
+        "callback",
+        "call back",
+        "inspection"
+      ],
+      "answer": "The site survey is free: a consultant checks your roof, shading and power bills. Book it on WhatsApp, or use the callback form.",
+      "links": [{ "label": "Callback form", "href": "/#contact" }],
+      "whatsapp": "Hi SAEL, I'd like to book a free site survey."
+    },
+    {
+      "id": "contact",
+      "keywords": [
+        "address",
+        "office",
+        "where",
+        "location",
+        "located",
+        "phone",
+        "number",
+        "email",
+        "contact",
+        "bangalore",
+        "bengaluru",
+        "kerala"
+      ],
+      "answer": "Our offices: {offices}. Email: {email}.",
+      "whatsapp": "Hi SAEL, I have a question."
+    },
+    {
+      "id": "projects",
+      "keywords": [
+        "project",
+        "experience",
+        "work done",
+        "portfolio",
+        "mw",
+        "commercial",
+        "industrial",
+        "factory",
+        "company"
+      ],
+      "answer": "Beyond homes, SAEL builds rooftop and ground-mount systems across South India, and facilitates power for industrial and corporate buyers.",
+      "links": [{ "label": "See our projects", "href": "/#work" }],
+      "whatsapp": "Hi SAEL, I'd like to discuss a commercial or industrial project."
+    }
+  ]
+}

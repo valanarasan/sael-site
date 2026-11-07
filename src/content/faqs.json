@@ -1,0 +1,30 @@
+[
+  {
+    "question": "Is my home eligible for the PM Surya Ghar subsidy?",
+    "answer": "Residential on-grid and hybrid rooftop systems qualify. The central subsidy is ₹30,000 per kW for the first 2 kW and ₹18,000 for the 3rd kW, up to ₹78,000 for 3 kW and above. We check eligibility for free and file the application for you."
+  },
+  {
+    "question": "On-grid, off-grid or hybrid: which do I need?",
+    "answer": "On-grid suits homes, shops and offices with a reliable grid: it's the lowest-cost option. Hybrid adds a battery for homes with frequent power cuts. Off-grid suits places with no grid connection at all. The finder above gives a quick suggestion."
+  },
+  {
+    "question": "What happens during a power cut?",
+    "answer": "An on-grid system switches off when the grid fails, for safety. A hybrid or off-grid system switches to its battery and keeps your essential loads running."
+  },
+  {
+    "question": "Can a grid-tie system run on its own?",
+    "answer": "No. A grid-tie (on-grid) system needs the grid to run, and it shuts down during a power cut so it can't send power into lines that crews are repairing. If you need backup, choose a hybrid system with a battery."
+  },
+  {
+    "question": "Will solar power leave my building?",
+    "answer": "Only the surplus. Your own loads use solar power first; whatever is left flows to the grid through the net meter, and your DISCOM credits it against your bill."
+  },
+  {
+    "question": "How is a solar pump sized?",
+    "answer": "By the head (depth) and the discharge you need. We supply 1 to 10 HP AC or DC pumps for heads up to 100 m, with a VFD controller that adapts to changing sunlight."
+  },
+  {
+    "question": "Can I go solar without paying upfront?",
+    "answer": "Yes. Under OpEx, investors fund the system and you pay for the power it produces. Under CapEx, you own the system, and we handle installation and liaisoning end to end."
+  }
+]

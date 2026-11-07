@@ -1,0 +1,53 @@
+{
+  "central": {
+    "name": "PM Surya Ghar Muft Bijli Yojana",
+    "slabs": [
+      { "fromKw": 0, "toKw": 2, "perKw": 30000 },
+      { "fromKw": 2, "toKw": 3, "perKw": 18000 }
+    ],
+    "cap": 78000
+  },
+  "defaultStateId": "KA",
+  "fallbackStateId": "XX",
+  "states": [
+    {
+      "id": "KA",
+      "name": "Karnataka",
+      "note": "Karnataka has no state top-up at present: central subsidy only."
+    },
+    {
+      "id": "KL",
+      "name": "Kerala",
+      "note": "Kerala has no state top-up at present: central subsidy only."
+    },
+    {
+      "id": "TN",
+      "name": "Tamil Nadu",
+      "note": "Tamil Nadu has announced an extra subsidy of up to ₹1 lakh. The guidelines are awaited, so it is not counted here yet."
+    },
+    {
+      "id": "UP",
+      "name": "Uttar Pradesh",
+      "perKw": 15000,
+      "cap": 30000,
+      "note": "Uttar Pradesh adds ₹15,000 per kW, up to ₹30,000."
+    },
+    {
+      "id": "DL",
+      "name": "Delhi",
+      "perKw": 10000,
+      "capKw": 3,
+      "note": "Delhi adds ₹10,000 per kW, up to 3 kW."
+    },
+    {
+      "id": "GA",
+      "name": "Goa",
+      "note": "Goa pays an extra subsidy on top of the central amount. We confirm the figure with GEDA for your system."
+    },
+    {
+      "id": "XX",
+      "name": "Other states",
+      "note": "Ask us whether your state adds a top-up."
+    }
+  ]
+}
