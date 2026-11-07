@@ -1,7 +1,6 @@
 ---
 /**
- * 11 · Day & night: before/after photos split at 50%. Step 7 makes the handle draggable
- * (pointer and arrow keys).
+ * 11 · Day & night: before/after photos with a draggable split (scripts/islands/compare.ts).
  */
 import type { Sections } from '../../lib/schemas/sections';
 import Photo from '../ui/Photo.astro';
@@ -25,7 +24,7 @@ const { number, eyebrow, heading, text, sliderLabel, day, night, credit } = Astr
       />
       <p>{text}</p>
     </div>
-    <div class="cmp" data-compare>
+    <div class="cmp" data-compare data-cursor="⇆">
       <Photo
         src={day.image}
         alt={day.alt}
@@ -65,6 +64,16 @@ const { number, eyebrow, heading, text, sliderLabel, day, night, credit } = Astr
     <p class="cmp-cr">{credit}</p>
   </div>
 </section>
+
+<script>
+  import { whenVisible } from '../../scripts/hydrate';
+
+  document.querySelectorAll<HTMLElement>('[data-compare]').forEach((root) =>
+    whenVisible(root, () => {
+      void import('../../scripts/islands/compare').then((m) => m.initCompare(root));
+    }),
+  );
+</script>
 
 <style>
   .cmp-head {

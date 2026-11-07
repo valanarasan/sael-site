@@ -219,3 +219,37 @@ test.describe('chat assistant', () => {
     await expectNoSeriousA11yViolations(page);
   });
 });
+
+test.describe('day/night slider', () => {
+  test('moves with the keyboard and reports its value', async ({ page }) => {
+    await page.goto('/');
+    const root = await hydrate(page, '[data-compare]');
+    const handle = root.getByRole('slider', { name: 'Compare day and night' });
+    await expect(handle).toHaveAttribute('aria-valuenow', '50');
+    await handle.focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(handle).toHaveAttribute('aria-valuenow', '55');
+    await page.keyboard.press('PageDown');
+    await expect(handle).toHaveAttribute('aria-valuenow', '45');
+    await page.keyboard.press('Home');
+    await expect(handle).toHaveAttribute('aria-valuenow', '0');
+    await page.keyboard.press('End');
+    await expect(handle).toHaveAttribute('aria-valuenow', '100');
+    await expect(handle).toHaveAttribute('aria-valuetext', '100%');
+    expect(await root.evaluate((el) => el.style.getPropertyValue('--p'))).toBe('100%');
+  });
+
+  test('follows a drag', async ({ page }) => {
+    await page.goto('/');
+    const root = await hydrate(page, '[data-compare]');
+    const box = await root.boundingBox();
+    if (!box) throw new Error('no slider');
+    await page.mouse.move(box.x + box.width * 0.5, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width * 0.2, box.y + box.height / 2, { steps: 5 });
+    await page.mouse.up();
+    const value = Number(await root.getByRole('slider').getAttribute('aria-valuenow'));
+    expect(value).toBeGreaterThan(15);
+    expect(value).toBeLessThan(25);
+  });
+});
