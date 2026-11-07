@@ -1,6 +1,7 @@
 ---
 title: 'What is PM Surya Ghar Yojana?'
 topic: 'Subsidy & schemes'
+order: 1
 cover: ../../assets/images/hero-rooftop.jpg
 coverAlt: 'A SAEL rooftop solar array in Bengaluru'
 draft: true
