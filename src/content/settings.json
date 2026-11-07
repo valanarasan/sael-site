@@ -1,0 +1,159 @@
+{
+  "seo": {
+    "title": "SAEL Energy · Solar for homes, businesses & industry",
+    "description": "On-grid, off-grid and hybrid solar for homes, businesses and industry across South India, with PM Surya Ghar subsidy support."
+  },
+  "company": {
+    "name": "SAEL Energy",
+    "legalName": "SAEL Energy Solution LLP",
+    "tagline": "Solar Architects®",
+    "summary": "SAEL Energy Solution LLP · Solar Architects®. On-grid, off-grid and hybrid solar for homes, businesses and industry across South India."
+  },
+  "contact": {
+    "phone": {
+      "display": "+91 98807 03083",
+      "e164": "+919880703083"
+    },
+    "whatsapp": "919880703083",
+    "email": "info@saelenergy.com"
+  },
+  "offices": [
+    {
+      "name": "Bangalore",
+      "address": "54/3, Hutchins Road, 2nd Cross, Bangalore 560 084",
+      "phone": {
+        "display": "+91 98807 03083",
+        "e164": "+919880703083"
+      }
+    },
+    {
+      "name": "Kerala",
+      "address": "No. 4/330, Pallickaparambil, Karakkadu, Kunnamthanam PO, Pathanamthitta Dist., Kerala 689581",
+      "phone": {
+        "display": "+91 91130 83917",
+        "e164": "+919113083917"
+      }
+    },
+    {
+      "name": "New Zealand",
+      "phone": {
+        "display": "+64 21 982 414",
+        "e164": "+6421982414"
+      },
+      "email": "renny@saelenergy.com"
+    }
+  ],
+  "primaryCta": {
+    "label": "Free site survey",
+    "href": "/#contact"
+  },
+  "nav": {
+    "header": [
+      {
+        "label": "Compare",
+        "href": "/#systems"
+      },
+      {
+        "label": "Subsidy",
+        "href": "/#subsidy"
+      },
+      {
+        "label": "Projects",
+        "href": "/#work"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "Contact",
+        "href": "/#contact"
+      }
+    ],
+    "menu": [
+      {
+        "label": "Compare",
+        "href": "/#systems"
+      },
+      {
+        "label": "Subsidy",
+        "href": "/#subsidy"
+      },
+      {
+        "label": "How it works",
+        "href": "/#process"
+      },
+      {
+        "label": "Projects",
+        "href": "/#work"
+      },
+      {
+        "label": "FAQs",
+        "href": "/#faq"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "Contact",
+        "href": "/#contact"
+      }
+    ]
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": "Solutions",
+        "links": [
+          {
+            "label": "On-grid solar",
+            "href": "/#systems"
+          },
+          {
+            "label": "Hybrid solar",
+            "href": "/#systems"
+          },
+          {
+            "label": "Off-grid solar",
+            "href": "/#systems"
+          },
+          {
+            "label": "Commercial & industrial",
+            "href": "/#contact"
+          },
+          {
+            "label": "Blog",
+            "href": "/blog"
+          }
+        ]
+      },
+      {
+        "title": "Explore",
+        "links": [
+          {
+            "label": "PM Surya Ghar subsidy",
+            "href": "/#subsidy"
+          },
+          {
+            "label": "How it works",
+            "href": "/#process"
+          },
+          {
+            "label": "Projects",
+            "href": "/#work"
+          },
+          {
+            "label": "FAQs",
+            "href": "/#faq"
+          },
+          {
+            "label": "Day & night",
+            "href": "/#compare"
+          }
+        ]
+      }
+    ],
+    "credits": "Project photos and video © SAEL Energy Solution LLP. Project-card and day/night photos from Unsplash (The Dimensions, Naksha Banwao and others). Subsidy figures: PM Surya Ghar Muft Bijli Yojana (central) and state nodal agencies."
+  }
+}
