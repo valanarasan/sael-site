@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SAEL Energy · Solar for homes, businesses &amp; industry</title>
+<meta name="description" content="Design concept for SAEL Energy Solution LLP: on-grid, off-grid and hybrid solar for homes, businesses and industry across South India, with PM Surya Ghar subsidy support.">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link rel="apple-touch-icon" href="assets/img/sael-mark-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Flow: top bar · split hero whose photo window expands to full screen and slides sideways · pinned service index · bento capabilities · engineering split + photo marquee · drag gallery · impact band · featured projects · audience tabs · CTA with inline form · day/night compare slider · footer.
+   Scheme: cool paper white with teal-black ink, copper as the only warm accent, one deep-teal band. */
+:root{
+  --paper:#F1F3F1; --paper-2:#E5EAE8; --white:#FFFFFF; --ink:#0B1F22; --ink-2:#2B4145; --muted:#5D7376;
+  --teal:#0E4A4F; --teal-2:#13606A; --mint:#BFE6DF; --copper:#E8692E; --copper-2:#F59A5B;
+  --line:rgba(11,31,34,.12); --line-d:rgba(241,243,241,.16);
+  --f-disp:'Plus Jakarta Sans', system-ui, sans-serif; --f-ser:'Newsreader', Georgia, serif; --f-mono:'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gut-l:max(16px, env(safe-area-inset-left, 0px)); --gut-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{overflow-x:clip}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--f-disp);-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{max-width:100%;display:block}
+a{color:var(--teal)}a:hover{color:var(--copper)}
+:focus-visible{outline:2.5px solid var(--copper);outline-offset:3px;border-radius:8px}
+h1,h2,h3{margin:0;font-family:var(--f-disp);font-weight:700;letter-spacing:-.035em;text-wrap:balance}
+p{margin:0}
+em.s{font-family:var(--f-ser);font-style:italic;font-weight:400;letter-spacing:-.01em;color:var(--teal-2)}
+.on-dark em.s{color:var(--mint)}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(var(--gut-l),40px);padding-right:max(var(--gut-r),40px)}
+.lbl{font:500 12px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lbl b{color:var(--copper);font-weight:500}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.w > i{display:inline-block;font-style:inherit}
+
+/* loader */
+.loader{position:fixed;inset:0;z-index:200;background:var(--ink);color:var(--paper);display:flex;flex-direction:column;justify-content:flex-end;padding:0 max(var(--gut-l),40px) 48px}
+.loader .word{display:flex;font:800 clamp(80px,18vw,260px)/.8 var(--f-disp);letter-spacing:-.05em;overflow:hidden}
+.loader .word span{display:inline-block;transform:translateY(105%)}
+.loader .bar{height:2px;background:rgba(241,243,241,.15);margin-top:28px;position:relative;overflow:hidden}
+.loader .bar i{position:absolute;inset:0;background:var(--copper);transform-origin:0 50%;transform:scaleX(0)}
+.loader .meta{display:flex;justify-content:space-between;margin-top:14px;font:500 12px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(241,243,241,.6)}
+
+/* cursor */
+.cur{position:fixed;left:0;top:0;z-index:150;pointer-events:none;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:999px;background:var(--copper);display:grid;place-items:center;color:#fff;font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:width .45s var(--ease),height .45s var(--ease),margin .45s var(--ease),opacity .3s ease}
+.cur span{opacity:0;transition:opacity .25s ease}
+.cur.big{width:84px;height:84px;margin:-42px 0 0 -42px}
+.cur.big span{opacity:1}
+
+/* top bar */
+.top{position:fixed;left:0;right:0;top:0;z-index:90;padding-top:env(safe-area-inset-top, 0px);transition:transform .6s var(--ease),background .4s ease,box-shadow .4s ease}
+.top.solid{background:rgba(241,243,241,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--line)}
+.top.hide{transform:translateY(-110%)}
+.top-in{max-width:1320px;margin:0 auto;padding:18px max(var(--gut-r),40px) 18px max(var(--gut-l),40px);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font:800 22px var(--f-disp);letter-spacing:-.03em}
+.logo img{display:block;height:54px;width:auto}
+.logo i{display:none}
+.logo:hover i{transform:rotate(225deg)}
+.links{display:flex;gap:30px}
+.links a{position:relative;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;padding:6px 0}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--copper);transform:scaleX(0);transform-origin:100% 50%;transition:transform .5s var(--ease)}
+.links a:hover::after,.links a.act::after{transform:scaleX(1);transform-origin:0 50%}
+.top-r{display:flex;justify-content:flex-end;align-items:center;gap:18px}
+.txtbtn{background:none;border:0;padding:8px 0;cursor:pointer;font:600 14px var(--f-disp);color:var(--ink);display:inline-flex;align-items:center;gap:10px}
+.txtbtn i{display:flex;flex-direction:column;gap:5px}
+.txtbtn i b{display:block;width:22px;height:1.5px;background:currentColor;transition:transform .5s var(--ease)}
+.txtbtn:hover i b:last-child{transform:translateX(-6px)}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:0 24px;border-radius:12px;border:0;cursor:pointer;text-decoration:none;font:600 15px var(--f-disp);overflow:hidden;isolation:isolate;transition:color .5s var(--ease)}
+.btn::before{content:"";position:absolute;left:0;right:0;bottom:0;height:0;z-index:-1;transition:height .55s var(--ease)}
+.btn:hover::before{height:100%}
+.b-ink{background:var(--ink);color:var(--paper)}.b-ink::before{background:var(--copper)}.b-ink:hover{color:#fff}
+.b-cop{background:var(--copper);color:#fff}.b-cop::before{background:var(--ink)}.b-cop:hover{color:#fff}
+.b-line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}.b-line::before{background:var(--ink)}.b-line:hover{color:var(--paper)}
+.b-paper{background:var(--paper);color:var(--ink)}.b-paper::before{background:var(--copper)}.b-paper:hover{color:#fff}
+.btn .ar{display:inline-block;width:18px;height:18px;position:relative;overflow:hidden}
+.btn .ar::before,.btn .ar::after{content:"→";position:absolute;inset:0;line-height:18px;transition:transform .5s var(--ease)}
+.btn .ar::after{transform:translateX(-120%)}
+.btn:hover .ar::before{transform:translateX(120%)}
+.btn:hover .ar::after{transform:translateX(0)}
+
+/* menu sheet */
+.sheet{position:fixed;inset:0;z-index:120;display:grid;grid-template-columns:1fr minmax(320px,40vw);visibility:hidden}
+.sheet .sc{background:rgba(11,31,34,.35);opacity:0;transition:opacity .6s ease}
+.sheet .sp{background:var(--ink);color:var(--paper);padding:110px 48px 48px;display:flex;flex-direction:column;gap:6px;transform:translateX(100%);transition:transform .8s var(--ease)}
+.sheet.open{visibility:visible}.sheet.open .sc{opacity:1}.sheet.open .sp{transform:none}
+.sheet .sp a{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line-d);color:var(--paper);text-decoration:none;font:600 34px var(--f-disp);letter-spacing:-.03em;transition:color .3s ease,padding .5s var(--ease)}
+.sheet .sp a small{font:500 12px var(--f-mono);color:rgba(241,243,241,.5)}
+.sheet .sp a:hover{color:var(--copper-2);padding-left:10px}
+.sheet .x{position:absolute;right:40px;top:28px;color:var(--paper)}
+
+/* progress pill */
+.prog{position:fixed;left:max(var(--gut-l),24px);bottom:calc(env(safe-area-inset-bottom, 0px) + 22px);z-index:85;display:flex;align-items:center;gap:12px;padding:8px 16px 8px 8px;border-radius:999px;background:rgba(255,255,255,.85);box-shadow:0 10px 30px rgba(11,31,34,.12);backdrop-filter:blur(12px);font:500 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase}
+.prog svg{width:34px;height:34px;transform:rotate(-90deg)}
+.prog .nm{display:inline-block;min-width:9ch}
+.concept{position:fixed;right:max(var(--gut-r),24px);bottom:calc(env(safe-area-inset-bottom, 0px) + 22px);z-index:85;font:500 11px var(--f-mono);letter-spacing:.08em;padding:9px 14px;border-radius:999px;background:var(--ink);color:var(--mint)}
+
+/* hero */
+.hero{position:relative;height:100vh;height:100svh;overflow:hidden;background:var(--paper)}
+.h-copy{position:absolute;left:max(var(--gut-l),40px);top:0;bottom:0;width:min(46vw,640px);display:flex;flex-direction:column;justify-content:center;gap:26px;padding-top:70px;z-index:3}
+.h-copy h1{font-size:clamp(48px,6.4vw,104px);line-height:.95;letter-spacing:-.05em}
+.h-copy p{max-width:44ch;color:var(--ink-2);font-size:18px}
+.h-row{display:flex;flex-wrap:wrap;gap:12px}
+.h-meta{display:flex;gap:28px;padding-top:22px;border-top:1px solid var(--line)}
+.h-meta div{display:flex;flex-direction:column}
+.h-meta b{font:700 26px var(--f-disp);letter-spacing:-.03em}
+.h-meta span{font:500 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.h-win{position:absolute;inset:0;z-index:2;clip-path:inset(13vh 4vw 9vh 52vw round 28px);will-change:clip-path;background:var(--ink)}
+.h-track{position:absolute;top:0;left:0;height:100%;display:flex;will-change:transform}
+.h-slide{position:relative;width:100vw;height:100%;flex:none;overflow:hidden}
+.h-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
+.h-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,31,34,.55),rgba(11,31,34,0) 45%),linear-gradient(0deg,rgba(11,31,34,.55),rgba(11,31,34,0) 40%);opacity:var(--o,0);transition:opacity .4s ease}
+.h-cap{position:absolute;right:max(var(--gut-r),40px);bottom:clamp(28px,6vh,64px);z-index:4;width:min(420px,40vw);padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);box-shadow:0 20px 50px rgba(11,31,34,.2);opacity:0;transform:translateY(20px)}
+.h-cap .r1{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.h-cap .tg{font:500 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper)}
+.h-cap h2{font-size:26px;line-height:1.1;margin-top:8px}
+.h-cap .cr{display:block;margin-top:10px;font:500 11px var(--f-mono);color:var(--muted)}
+.h-cap .ticks{display:flex;gap:4px}
+.h-cap .ticks i{width:16px;height:3px;border-radius:2px;background:var(--line);transition:background .4s ease,width .5s var(--ease)}
+.h-cap .ticks i.on{background:var(--copper);width:28px}
+.h-idx{position:absolute;left:max(var(--gut-l),40px);bottom:clamp(28px,6vh,64px);z-index:4;color:#fff;font:700 clamp(80px,12vw,180px)/.8 var(--f-disp);letter-spacing:-.06em;opacity:0;mix-blend-mode:overlay}
+
+/* services index */
+.svc{padding-block:clamp(90px,10vw,150px)}
+.svc-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px}
+.svc-top h2{font-size:clamp(40px,5.6vw,84px);line-height:.95;max-width:12ch}
+.svc-top p{max-width:40ch;color:var(--ink-2)}
+.svc-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px)}
+.svc-nav{position:sticky;top:16vh;align-self:start;display:flex;flex-direction:column}
+.svc-nav a{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;padding:18px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--muted);transition:color .4s ease}
+.svc-nav a:last-child{border-bottom:1px solid var(--line)}
+.svc-nav a .k{width:36px;height:36px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font:500 12px var(--f-mono)}
+.svc-nav a b{font:700 clamp(26px,2.8vw,40px)/1 var(--f-disp);letter-spacing:-.035em;transition:transform .6s var(--ease)}
+.svc-nav a .t{font:500 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;opacity:0;transform:translateX(-10px);transition:opacity .4s ease,transform .5s var(--ease)}
+.svc-nav a.on{color:var(--ink)}
+.svc-nav a.on .k{background:var(--copper);border-color:var(--copper);color:#fff}
+.svc-nav a.on b{transform:translateX(8px)}
+.svc-nav a.on .t{opacity:1;transform:none;color:var(--copper)}
+.svc-list{display:flex;flex-direction:column;gap:clamp(60px,8vw,120px)}
+.pn{display:flex;flex-direction:column;gap:20px;min-height:70vh}
+.pn .ph{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:5/4;background:var(--paper-2)}
+.pn .ph img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;will-change:transform}
+.pn .ph .cr{position:absolute;left:14px;bottom:12px;font:500 11px var(--f-mono);color:#fff;background:rgba(11,31,34,.5);padding:5px 10px;border-radius:999px}
+.pn .chips{display:flex;flex-wrap:wrap;gap:8px}
+.pn .chips span{font:500 12px var(--f-mono);padding:7px 12px;border-radius:8px;background:var(--white);border:1px solid var(--line)}
+.pn h3{font-size:clamp(28px,2.8vw,40px);line-height:1.05}
+.pn p{color:var(--ink-2);max-width:52ch}
+.pn .fig{display:flex;align-items:baseline;gap:16px;padding-top:18px;border-top:1px solid var(--line)}
+.pn .fig b{font:800 clamp(40px,4.6vw,64px)/1 var(--f-disp);letter-spacing:-.05em;color:var(--copper);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pn .fig span{color:var(--muted);font-size:15px}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(240px,auto);gap:16px}
+.bx{position:relative;border-radius:24px;padding:28px;background:var(--white);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:20px;transition:transform .7s var(--ease),box-shadow .7s var(--ease)}
+.bx:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(11,31,34,.1)}
+.bx.big{grid-row:span 2;color:#fff;background:var(--ink);justify-content:flex-end}
+.bx.big img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
+.bx.big:hover img{transform:scale(1.06)}
+.bx.big::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,31,34,0) 35%,rgba(11,31,34,.85))}
+.bx.big > *:not(img){position:relative;z-index:1}
+.bx.teal{background:var(--teal);color:var(--paper);border-color:var(--teal)}
+.bx .n{font:500 12px var(--f-mono);letter-spacing:.14em;color:var(--copper)}
+.bx h3{font-size:30px;line-height:1.05}
+.bx p{font-size:15px;color:inherit;opacity:.82}
+.bx .ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--paper);color:var(--teal);transition:transform .7s var(--ease),background .4s ease}
+.bx:hover .ico{transform:rotate(-12deg) scale(1.08);background:var(--copper);color:#fff}
+.bx.teal .ico{background:rgba(241,243,241,.12);color:var(--mint)}
+
+/* engineering */
+.eng{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:center}
+.eng .pic{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/5}
+.eng .pic img{width:100%;height:100%;object-fit:cover}
+.eng .pic .badge{position:absolute;right:18px;top:18px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);display:flex;flex-direction:column}
+.eng .pic .badge b{font:800 30px var(--f-disp);letter-spacing:-.04em;color:var(--copper)}
+.eng .pic .badge span{font:500 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.eng h2{font-size:clamp(40px,5vw,76px);line-height:.98}
+.eng .rows{margin-top:30px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.eng .rows div{padding:20px 16px 0 0;display:flex;flex-direction:column;gap:6px}
+.eng .rows b{font:800 clamp(30px,3vw,44px)/1 var(--f-disp);letter-spacing:-.04em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.eng .rows span{font-size:14px;color:var(--muted)}
+.strip{margin-top:clamp(56px,7vw,96px);overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.strip .st{display:flex;gap:14px;width:max-content;animation:mq 50s linear infinite}
+.strip:hover .st{animation-play-state:paused}
+.strip figure{margin:0;width:300px;aspect-ratio:3/2;border-radius:16px;overflow:hidden;flex:none;position:relative}
+.strip img{width:100%;height:100%;object-fit:cover;filter:saturate(.85);transition:filter .5s ease,transform 1s var(--ease)}
+.strip figure:hover img{filter:none;transform:scale(1.06)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* gallery drag */
+.gal-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:36px}
+.gal-head h2{font-size:clamp(40px,5vw,76px);line-height:.98}
+.gal-ctl{display:flex;gap:10px}
+.rb{width:52px;height:52px;border-radius:50%;border:1.5px solid var(--ink);background:none;cursor:pointer;color:var(--ink);font-size:18px;transition:background .3s ease,color .3s ease,transform .5s var(--ease)}
+.rb:hover{background:var(--ink);color:var(--paper);transform:scale(1.06)}
+.drag{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 max(var(--gut-r),40px) 20px max(var(--gut-l),calc((100vw - 1320px)/2 + 40px));scrollbar-width:none;cursor:grab}
+.drag::-webkit-scrollbar{display:none}
+.drag.down{cursor:grabbing;scroll-snap-type:none}
+.gi{flex:none;width:clamp(280px,34vw,520px);scroll-snap-align:start;border:0;padding:0;background:none;text-align:left;cursor:inherit;color:inherit}
+.gi:nth-child(3n+2){width:clamp(260px,26vw,400px)}
+.gi .im{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;background:var(--paper-2)}
+.gi:nth-child(3n+2) .im{aspect-ratio:3/4}
+.gi img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.2s var(--ease);pointer-events:none}
+.gi:hover img{transform:scale(1)}
+.gi .tx{display:flex;justify-content:space-between;gap:12px;margin-top:14px}
+.gi .tx b{font:700 20px var(--f-disp);letter-spacing:-.02em}
+.gi .tx span{font:500 11px var(--f-mono);color:var(--muted);text-align:right}
+.lb{position:fixed;inset:0;z-index:160;background:rgba(11,31,34,.95);display:grid;place-items:center;opacity:0;visibility:hidden;transition:opacity .5s ease,visibility .5s}
+.lb.open{opacity:1;visibility:visible}
+.lb figure{margin:0;width:min(1500px,92vw);transform:scale(.95);transition:transform .7s var(--ease)}
+.lb.open figure{transform:none}
+.lb img{width:100%;max-height:82vh;object-fit:contain;border-radius:14px}
+.lb figcaption{display:flex;justify-content:space-between;margin-top:12px;font:500 12px var(--f-mono);color:rgba(241,243,241,.7)}
+.lb .rb{position:absolute;border-color:var(--paper);color:var(--paper)}
+.lb .rb:hover{background:var(--paper);color:var(--ink)}
+
+/* impact band */
+.band{background:var(--teal);color:var(--paper);padding-block:clamp(70px,8vw,110px);overflow:hidden;position:relative}
+.nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.nums div{padding:0 24px;border-left:1px solid var(--line-d);display:flex;flex-direction:column;gap:10px}
+.nums div:first-child{border-left:0;padding-left:0}
+.nums b{font:800 clamp(52px,6.4vw,104px)/.9 var(--f-disp);letter-spacing:-.06em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.nums b sup{font-size:.36em;letter-spacing:0;vertical-align:top;margin-left:4px;color:var(--copper-2)}
+.nums span{font-size:15px;color:rgba(241,243,241,.75)}
+.ticker{margin-top:clamp(56px,7vw,90px);display:flex;width:max-content;animation:mq 30s linear infinite;font:700 clamp(36px,5vw,76px) var(--f-disp);letter-spacing:-.04em;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(191,230,223,.45)}
+.ticker span{padding-right:40px}
+.ticker em{font-family:var(--f-ser);font-style:italic;font-weight:400;color:var(--copper-2);-webkit-text-stroke:0}
+
+/* projects */
+.pj{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px}
+.feat{position:relative;border-radius:28px;overflow:hidden;min-height:620px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;text-decoration:none}
+.feat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease)}
+.feat:hover img{transform:scale(1.05)}
+.feat::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,31,34,0) 30%,rgba(11,31,34,.88))}
+.feat > *:not(img){position:relative;z-index:1}
+.feat .sz{font:500 12px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper-2)}
+.feat h3{font-size:clamp(34px,3.6vw,54px);line-height:1;margin-top:10px}
+.feat p{max-width:46ch;opacity:.86;margin-top:10px}
+.pj-r{display:flex;flex-direction:column;gap:18px}
+.pc{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;align-items:center;padding:12px;border-radius:22px;background:var(--white);border:1px solid var(--line);text-decoration:none;color:inherit;transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.pc:hover{transform:translateX(8px);box-shadow:-12px 20px 40px rgba(11,31,34,.08)}
+.pc .im{aspect-ratio:1;border-radius:14px;overflow:hidden}
+.pc .im img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.pc:hover .im img{transform:scale(1.1)}
+.pc .sz{font:500 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--copper)}
+.pc h3{font-size:22px;line-height:1.15;margin-top:6px}
+.pc p{font-size:14px;color:var(--muted);margin-top:4px}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}
+.mini div{padding:20px;border-radius:18px;border:1.5px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.mini b{font:800 22px var(--f-disp);letter-spacing:-.03em;white-space:nowrap}
+.mini span{font-size:13px;color:var(--muted);text-align:right}
+
+/* audience tabs */
+.aud{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(32px,5vw,72px);align-items:center}
+.tabs{display:flex;flex-direction:column;gap:10px;margin-top:30px}
+.tabs button{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:0 22px;border-radius:16px;border:1px solid var(--line);background:transparent;cursor:pointer;font:600 19px var(--f-disp);color:var(--ink);text-align:left;transition:background .4s ease,color .4s ease,border-color .4s ease}
+.tabs button i{font-style:normal;transition:transform .5s var(--ease)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tabs button[aria-selected="true"] i{transform:rotate(-45deg)}
+.aud-pane{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:5/4;background:var(--paper-2)}
+.aud-pane img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .8s ease,transform 1.4s var(--ease)}
+.aud-pane img.off{opacity:0;transform:scale(1.08)}
+.aud-pane .q{position:absolute;left:18px;right:18px;bottom:18px;padding:22px;border-radius:18px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);font-size:17px;transition:opacity .4s ease,transform .5s var(--ease)}
+.aud-pane .q.swap{opacity:0;transform:translateY(10px)}
+
+/* CTA */
+.cta{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;color:#fff}
+.cta > img,.cta > video{position:absolute;inset:0;width:100%;height:120%;object-fit:cover;will-change:transform}
+.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,31,34,.85),rgba(11,31,34,.35) 60%,rgba(11,31,34,.15))}
+.cta .wrap{position:relative;z-index:1;width:100%}
+.cta-box{max-width:620px;display:flex;flex-direction:column;gap:22px}
+.cta h2{font-size:clamp(46px,6vw,96px);line-height:.95}
+.cta p{font-size:18px;opacity:.86;max-width:46ch}
+.qf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:16px;border-radius:22px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(14px)}
+.qf .full{grid-column:1/-1}
+.qf input,.qf select{width:100%;min-height:52px;padding:0 16px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(11,31,34,.45);color:#fff;font:400 16px var(--f-disp)}
+.qf input::placeholder{color:rgba(255,255,255,.6)}
+.qf input:focus,.qf select:focus{outline:none;border-color:var(--copper-2)}
+.qf .err{grid-column:1/-1;font:500 12px var(--f-mono);color:#FFC2A6;min-height:0}
+.qf label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ok{padding:22px;border-radius:22px;background:var(--copper);display:flex;align-items:center;gap:14px;font-weight:600}
+.ok svg path{stroke-dasharray:60;stroke-dashoffset:60;animation:dr .9s .2s var(--ease) forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+.offs{display:flex;flex-wrap:wrap;gap:10px 28px;font-size:14px;opacity:.85}
+.offs a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.4)}
+.offs a:hover{color:var(--copper-2)}
+
+/* compare */
+.cmp-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px}
+.cmp-head h2{font-size:clamp(40px,5vw,76px);line-height:.98;max-width:14ch}
+.cmp-head p{max-width:44ch;color:var(--ink-2)}
+.cmp{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:16/8;background:var(--ink);user-select:none;touch-action:pan-y;--p:50%}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.cmp .nt{clip-path:inset(0 0 0 var(--p))}
+.cmp .hd{position:absolute;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:#fff}
+.cmp .hd button{position:absolute;top:50%;left:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:0;background:#fff;color:var(--ink);font-size:18px;box-shadow:0 10px 30px rgba(0,0,0,.3);cursor:ew-resize;transition:transform .4s var(--ease)}
+.cmp .hd button:hover{transform:scale(1.1)}
+.cmp .tg{position:absolute;top:18px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.9);font:500 12px var(--f-mono);letter-spacing:.08em;max-width:min(320px,40%)}
+.cmp .tg b{display:block;font:700 15px var(--f-disp);letter-spacing:-.01em;margin-bottom:2px}
+.cmp .tg.l{left:18px}.cmp .tg.r{right:18px;background:rgba(11,31,34,.85);color:var(--paper)}
+.cmp-cr{margin-top:12px;font:500 11px var(--f-mono);color:var(--muted)}
+
+/* footer */
+footer{padding-block:clamp(80px,9vw,120px) 30px;border-top:1px solid var(--line)}
+.fg{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.4fr;gap:40px}
+.fc h4{margin:0 0 16px;font:500 12px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fc a{display:block;padding:5px 0;color:var(--ink);text-decoration:none;transition:color .3s ease}
+.fc a:hover{color:var(--copper)}
+.fc p{font-size:15px;color:var(--ink-2)}
+.wm{margin-top:clamp(60px,8vw,110px);font:800 clamp(100px,24vw,380px)/.76 var(--f-disp);letter-spacing:-.07em;color:var(--ink);display:flex;justify-content:space-between}
+.wm span{display:inline-block}
+.fb{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:28px;font:500 11px var(--f-mono);letter-spacing:.08em;color:var(--muted)}
+.cred{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.7;max-width:110ch}
+.sec{padding-block:clamp(90px,10vw,150px)}
+.hd2{display:flex;flex-direction:column;gap:14px;margin-bottom:44px}
+.hd2 h2{font-size:clamp(40px,5vw,76px);line-height:.98;max-width:16ch}
+
+@media (max-width: 1020px){
+  .links{display:none}.top-in{grid-template-columns:1fr auto}
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nums{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:36px}
+  .nums div:nth-child(3){border-left:0;padding-left:0}
+  .fg{grid-template-columns:1fr 1fr}
+}
+@media (max-width: 860px){
+  .wrap{padding-left:var(--gut-l);padding-right:var(--gut-r)}
+  .hero{height:auto;min-height:0;padding-top:96px}
+  .h-copy{position:relative;left:auto;width:auto;padding:24px var(--gut-r) 28px var(--gut-l)}
+  .h-win{position:relative;clip-path:none;height:62vh;margin:0 var(--gut-r) 0 var(--gut-l);border-radius:24px;overflow:hidden}
+  .h-track{overflow-x:auto;scroll-snap-type:x mandatory;width:100%;scrollbar-width:none}
+  .h-slide{width:100%;scroll-snap-align:start}
+  .h-slide::after{opacity:1}
+  .h-cap{position:relative;right:auto;bottom:auto;width:auto;margin:14px var(--gut-r) 0 var(--gut-l);opacity:1;transform:none}
+  .h-idx{display:none}
+  .svc-grid,.eng,.pj,.aud{grid-template-columns:minmax(0,1fr)}
+  .svc-nav{position:relative;top:0;display:none}
+  .pn{min-height:0}
+  .bento,.mini{grid-template-columns:minmax(0,1fr)}
+  .bx.big{min-height:380px;grid-row:auto}
+  .eng .rows{grid-template-columns:minmax(0,1fr)}
+  .feat{min-height:440px}
+  .pc{grid-template-columns:96px minmax(0,1fr)}
+  .qf{grid-template-columns:minmax(0,1fr)}
+  .cmp{aspect-ratio:4/5}
+  .prog{display:none}
+  .sheet{grid-template-columns:0 1fr}
+}
+@media (max-width: 560px){ .top-r .btn{display:none} .fg,.nums{grid-template-columns:minmax(0,1fr)} .nums div{border-left:0;padding-left:0} }
+
+/* client-revision additions */
+.ph-tag{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;padding:5px 10px;border-radius:999px;border:1px dashed currentColor;font:500 10.5px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.bx.todo{border-style:dashed}
+.eng .rows .todo b{color:var(--muted)}
+.nums .todo b{opacity:.45}
+.calc select{width:100%;min-height:48px;margin-top:8px;padding:0 14px;border-radius:12px;border:1px solid var(--line-d);background:rgba(255,255,255,.06);color:#fff;font:600 16px var(--f-body)}
+.calc select option{color:var(--ink)}
+.out .st-row b{color:var(--mint)}
+.calc .snote{font-size:13px;line-height:1.5;color:var(--mint);min-height:1.5em}
+.calc .snote:empty{display:none}
+.gi .tx span,.pc .sz{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}.loader{display:none}}
+
+/* India-market additions: highlights strip, subsidy, process, FAQ */
+.hl{background:var(--white);border-block:1px solid var(--line)}
+.hl-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.hl-in > div{display:flex;gap:14px;align-items:center;padding:26px 22px;border-left:1px solid var(--line)}
+.hl-in > div:first-child{border-left:0;padding-left:0}
+.hi{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--paper-2);color:var(--teal)}
+.hl p{display:flex;flex-direction:column;line-height:1.35}
+.hl b{font-weight:700;font-size:16px}
+.hl span{font-size:14px;color:var(--muted)}
+.sub{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:center}
+.sub h2{font-size:clamp(40px,4.8vw,74px);line-height:.98}
+.sub-in{margin-top:22px;max-width:52ch;color:var(--ink-2)}
+.slabs{margin-top:30px;border-top:1px solid var(--line)}
+.slabs div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.slabs span{font-size:15px;color:var(--muted)}
+.slabs b{font:700 20px var(--f-disp);letter-spacing:-.02em;white-space:nowrap}
+.handle{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.handle li{padding:8px 14px;border-radius:999px;background:var(--paper-2);font-size:14px;font-weight:600;color:var(--teal)}
+.handle li::before{content:"✓ ";color:var(--copper)}
+.calc{background:var(--ink);color:var(--paper);border-radius:28px;padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:22px;box-shadow:0 40px 80px -40px rgba(11,31,34,.5)}
+.calc-h{display:flex;justify-content:space-between;align-items:baseline}
+.calc .kw{font:500 15px var(--f-mono);color:rgba(241,243,241,.7)}
+.calc .kw b{font:800 56px/1 var(--f-disp);letter-spacing:-.05em;color:#fff;margin-right:4px}
+.rg{display:flex;flex-direction:column;gap:12px;font:500 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(241,243,241,.6)}
+.rg input{width:100%;accent-color:var(--copper);height:28px;cursor:pointer}
+.out div{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--line-d);transition:opacity .4s ease}
+.out span{font-size:15px;color:rgba(241,243,241,.72)}
+.out b{font:700 22px var(--f-disp);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.out .tot{border-bottom:0;padding-top:18px}
+.out .tot span{color:#fff;font-weight:600}
+.out .tot b{font:800 clamp(38px,4vw,54px)/1 var(--f-disp);letter-spacing:-.04em;color:var(--copper-2)}
+.out .dim{opacity:.35}
+.calc .note{font-size:13px;color:rgba(241,243,241,.55)}
+.calc .btn{align-self:flex-start}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;counter-reset:s}
+.steps li{position:relative;padding:26px 20px 28px;border-radius:24px;background:var(--white);border:1px solid var(--line);display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.steps li::after{content:"";position:absolute;left:24px;right:24px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:var(--copper);transform:scaleX(0);transform-origin:0 50%;transition:transform .8s var(--ease)}
+.steps li.lit::after{transform:scaleX(1)}
+.steps .sn{font:800 46px/1 var(--f-disp);letter-spacing:-.05em;color:var(--teal-2)}
+.steps h3{font-size:20px;letter-spacing:-.02em}
+.steps p{font-size:15px;color:var(--ink-2)}
+.track{margin-top:22px;display:flex;align-items:center;gap:18px;padding:16px 18px;border-radius:18px;border:1.5px dashed var(--line)}
+.tk-l{flex:none;font:500 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tk{display:flex;flex-wrap:wrap;gap:8px}
+.tk i{font-style:normal;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--paper-2);color:var(--muted);transition:background .5s var(--ease),color .5s var(--ease)}
+.tk i.on{background:var(--teal);color:#fff}
+.faq{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,80px);align-items:start}
+.faq h2{font-size:clamp(40px,4.6vw,70px);line-height:.98}
+.faq-in{margin-top:20px;color:var(--ink-2);max-width:40ch}
+.qa{border-top:1px solid var(--line)}
+.qa details{border-bottom:1px solid var(--line)}
+.qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:22px 0;font:700 19px/1.35 var(--f-disp);letter-spacing:-.015em}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";flex:none;width:34px;height:34px;border-radius:999px;display:grid;place-items:center;background:var(--paper-2);color:var(--teal);font-size:20px;transition:transform .5s var(--ease),background .4s ease,color .4s ease}
+.qa details[open] summary::after{transform:rotate(45deg);background:var(--copper);color:#fff}
+.qa details p{padding:0 54px 24px 0;color:var(--ink-2)}
+@media (max-width: 1240px){ .steps{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width: 1020px){ .hl-in,.steps{grid-template-columns:repeat(2,minmax(0,1fr))} .hl-in > div:nth-child(3){border-left:0;padding-left:0} }
+@media (max-width: 860px){ .sub,.faq{grid-template-columns:minmax(0,1fr)} .track{flex-direction:column;align-items:flex-start} }
+@media (max-width: 560px){ .hl-in,.steps{grid-template-columns:minmax(0,1fr)} .hl-in > div{border-left:0;padding-left:0;padding-block:16px;border-top:1px solid var(--line)} .hl-in > div:first-child{border-top:0} .qa details p{padding-right:0} }
+
+/* compare + finder */
+.cmpx{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:stretch}
+.cmp-t{border-radius:28px;border:1px solid var(--line);background:var(--white);overflow:hidden;display:flex;flex-direction:column}
+.cmp-t .r{flex:1 1 auto;display:grid;grid-template-columns:minmax(0,1.15fr) repeat(3,minmax(0,1fr));align-items:center;border-top:1px solid var(--line)}
+.cmp-t .r:first-child{border-top:0}
+.cmp-t .r > span{height:100%;display:flex;align-items:center;padding:16px 18px;font-size:15px;transition:background .5s var(--ease),color .5s var(--ease)}
+.cmp-t .r > span[role="rowheader"]{color:var(--muted);font-size:14px}
+.cmp-t .h > span{font:600 12px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal);padding-block:20px}
+.cmp-t span.pick{background:rgba(232,105,46,.08)}
+.cmp-t .h span.pick{background:var(--copper);color:#fff}
+.cmp-t i.y{font-style:normal;color:var(--teal-2);font-weight:800;margin-right:6px}
+.finder{background:var(--ink);color:var(--paper);border-radius:28px;padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:20px}
+.fq p{margin:0 0 10px;font-weight:600}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:14px;background:rgba(241,243,241,.08)}
+.seg button{min-height:44px;border:0;border-radius:10px;background:transparent;color:rgba(241,243,241,.75);font:600 14px var(--f-disp);cursor:pointer;transition:background .4s var(--ease),color .4s var(--ease)}
+.seg button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.fq.off{opacity:.35;pointer-events:none}
+.fres{padding:18px 20px;border-radius:18px;background:rgba(241,243,241,.06);border:1px solid var(--line-d);display:flex;flex-direction:column;gap:6px}
+.fres b{font:800 clamp(30px,3vw,40px)/1.05 var(--f-disp);letter-spacing:-.03em;color:var(--copper-2)}
+.fres p{margin:0;color:rgba(241,243,241,.72);font-size:15px}
+.fmore{margin:0;font-size:14px;color:rgba(241,243,241,.65)}
+.fmore a{color:var(--mint)}
+/* mobile action bar */
+.mbar{display:none}
+@media (max-width: 860px){
+  .cmpx{grid-template-columns:minmax(0,1fr)}
+  .cmp-t .r > span{padding:12px 10px;font-size:13px}
+  .cmp-t .h > span{font-size:10px;letter-spacing:.08em}
+  .mbar{display:grid;grid-template-columns:auto 1fr;gap:8px;position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:95;padding:8px;border-radius:18px;background:rgba(11,31,34,.94);transition:transform .5s var(--ease)}
+  .mbar.away{transform:translateY(140%)}
+  .mbar a{min-height:48px;padding:0 18px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;text-decoration:none;font:700 15px var(--f-disp);background:rgba(255,255,255,.1)}
+  .mbar a.go{background:var(--copper)}
+  .concept{bottom:calc(env(safe-area-inset-bottom,0px) + 86px)}
+  .prog{bottom:calc(env(safe-area-inset-bottom,0px) + 86px)}
+  footer{padding-bottom:96px}
+}
+/* chat assistant (FAQ answers + WhatsApp handoff) */
+.cb-fab{position:fixed;right:max(var(--gut-r),24px);bottom:calc(env(safe-area-inset-bottom,0px) + 66px);z-index:96;display:flex;align-items:center;gap:10px;min-height:54px;padding:0 20px 0 16px;border:0;border-radius:999px;background:var(--teal);color:#fff;font:700 15px var(--f-disp);cursor:pointer;box-shadow:0 14px 34px -12px rgba(11,31,34,.55);transition:transform .4s var(--ease),background .3s ease}
+.cb-fab:hover{background:var(--ink);transform:translateY(-2px)}
+.cb-fab .dot{width:9px;height:9px;border-radius:999px;background:#25D366;box-shadow:0 0 0 3px rgba(37,211,102,.25)}
+.cb-fab[aria-expanded="true"]{transform:scale(.9);opacity:0;pointer-events:none}
+.cb{position:fixed;right:max(var(--gut-r),24px);bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:97;width:min(380px,calc(100vw - 32px));height:min(600px,calc(100vh - 110px));display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:var(--white);box-shadow:0 30px 80px -20px rgba(11,31,34,.45),0 0 0 1px var(--line);transform-origin:100% 100%;transform:translateY(16px) scale(.96);opacity:0;visibility:hidden;transition:transform .45s var(--ease),opacity .3s ease,visibility 0s linear .45s}
+.cb.open{transform:none;opacity:1;visibility:visible;transition:transform .45s var(--ease),opacity .3s ease}
+.cb-h{display:flex;align-items:center;gap:12px;padding:16px 16px 14px 18px;background:var(--teal);color:#fff}
+.cb-h .av{flex:none;width:40px;height:40px;border-radius:12px;background:#fff url(assets/img/sael-mark-180.png) center/30px no-repeat}
+.cb-h b{display:block;font-size:16px}
+.cb-read{display:inline-block;margin-top:8px;font-weight:600;color:var(--teal-2)}
+.cb-h small{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.75)}
+.cb-h small::before{content:"";width:7px;height:7px;border-radius:999px;background:#25D366}
+.cb-x{margin-left:auto;width:36px;height:36px;border-radius:999px;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:18px;cursor:pointer}
+.cb-x:hover{background:rgba(255,255,255,.22)}
+.cb-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--paper);overscroll-behavior:contain}
+.cb-m{max-width:86%;padding:11px 14px;border-radius:16px;font-size:15px;line-height:1.5;animation:cbIn .35s var(--ease)}
+.cb-m.bot{align-self:flex-start;background:var(--white);border:1px solid var(--line);border-bottom-left-radius:6px;color:var(--ink)}
+.cb-m.me{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.cb-m a{color:var(--teal-2);font-weight:700}
+.cb-wa{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:9px 14px;border-radius:12px;background:#25D366;color:#073B1F!important;text-decoration:none;font-weight:700;font-size:14px}
+.cb-wa:hover{background:#1EBE5A}
+.cb-typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;border-radius:16px;background:var(--white);border:1px solid var(--line)}
+.cb-typing i{width:6px;height:6px;border-radius:999px;background:var(--muted);animation:cbDot 1s infinite}
+.cb-typing i:nth-child(2){animation-delay:.15s}.cb-typing i:nth-child(3){animation-delay:.3s}
+.cb-q{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid var(--line);background:var(--white);max-height:112px;overflow-y:auto}
+.cb-q button{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--teal);font:600 13px var(--f-disp);cursor:pointer}
+.cb-q button:hover{border-color:var(--teal);background:var(--white)}
+.cb-f{display:flex;gap:8px;padding:10px 12px 12px;background:var(--white)}
+.cb-f input{flex:1;min-width:0;min-height:46px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);font:400 15px var(--f-disp);color:var(--ink)}
+.cb-f input:focus{outline:none;border-color:var(--copper)}
+.cb-f button{flex:none;width:46px;height:46px;border-radius:12px;border:0;background:var(--copper);color:#fff;cursor:pointer;display:grid;place-items:center}
+.cb-note{padding:0 14px 10px;background:var(--white);font-size:11px;color:var(--muted);text-align:center}
+@keyframes cbIn{from{opacity:0;transform:translateY(8px)}}
+@keyframes cbDot{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+@media (max-width: 860px){
+  .cb-fab{bottom:calc(env(safe-area-inset-bottom,0px) + 132px);right:16px;padding:0 16px 0 14px;min-height:50px}
+  .cb{right:8px;left:8px;width:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);height:min(620px,calc(100vh - 24px))}
+}
+@media (prefers-reduced-motion: reduce){.cb,.cb-m,.cb-typing i{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="word"><span>S</span><span>A</span><span>E</span><span>L</span></div>
+  <div class="bar"><i id="ldBar"></i></div>
+  <div class="meta"><span>Solar Architects®</span><span id="ldPct">000</span></div>
+</div>
+<div class="cur" id="cur" aria-hidden="true"><span id="curT">View</span></div>
+<div class="concept">Concept · not the live SAEL site</div>
+<div class="prog" id="prog" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(11,31,34,.12)" stroke-width="3"></circle><circle id="progRing" cx="18" cy="18" r="15" fill="none" stroke="#E8692E" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.25" stroke-dashoffset="94.25"></circle></svg><span class="nm" id="progNm">01 · Home</span></div>
+
+<header class="top" id="top-bar">
+  <div class="top-in">
+    <a class="logo" href="#home" aria-label="SAEL Energy, home"><img src="assets/img/sael-logo.png" alt="SAEL Energy" width="57" height="54"></a>
+    <nav class="links" aria-label="Main"><a href="#systems">Compare</a><a href="#subsidy">Subsidy</a><a href="#work">Projects</a><a href="blog.html">Blog</a><a href="#contact">Contact</a></nav>
+    <div class="top-r"><a class="btn b-ink" href="#contact" style="min-height:44px;padding:0 18px;font-size:14px">Free site survey <span class="ar" aria-hidden="true"></span></a><button class="txtbtn" type="button" id="menuBtn" aria-expanded="false">Menu <i aria-hidden="true"><b></b><b></b></i></button></div>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" aria-hidden="true">
+  <div class="sc" id="sheetScrim"></div>
+  <div class="sp"><button class="txtbtn x" type="button" id="menuX" style="color:var(--paper)">Close ✕</button>
+    <a href="#systems">Compare <small>01</small></a><a href="#subsidy">Subsidy <small>02</small></a><a href="#process">How it works <small>03</small></a><a href="#work">Projects <small>04</small></a><a href="#faq">FAQs <small>05</small></a><a href="blog.html">Blog <small>06</small></a><a href="#contact">Contact <small>07</small></a>
+    <p style="margin-top:auto;font-size:14px;color:rgba(241,243,241,.6)">info@saelenergy.com<br>+91 98807 03083</p></div>
+</div>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="home" aria-label="SAEL Energy">
+  <div class="h-copy" id="hCopy">
+    <p class="lbl"><b>●</b> Solar Architects® · Bangalore &amp; Kerala</p>
+    <h1><span class="w"><i>Energy is</i></span><br><span class="w"><i>all <em class="s">around</em> us.</i></span></h1>
+    <p>SAEL designs, installs and maintains on-grid, off-grid and hybrid solar for homes, businesses and industry across South India. We handle your PM Surya Ghar subsidy end to end.</p>
+    <div class="h-row"><a class="btn b-cop mag" href="#subsidy">Check my subsidy <span class="ar" aria-hidden="true"></span></a><a class="btn b-line mag" href="#contact">Free site survey</a></div>
+    <div class="h-meta"><div><b>₹78,000</b><span>Max central home subsidy</span></div></div>
+  </div>
+  <div class="h-win" id="hWin">
+    <div class="h-track" id="hTrack">
+      <div class="h-slide"><img src="assets/img/why-main.jpg" srcset="assets/img/why-main-1200.jpg 1200w, assets/img/why-main.jpg 2400w" sizes="100vw" alt="Rooftop solar above a Chennai neighbourhood" fetchpriority="high"></div>
+      <div class="h-slide"><img src="assets/img/hero-rooftop.jpg" srcset="assets/img/hero-rooftop-1200.jpg 1200w, assets/img/hero-rooftop.jpg 2880w" sizes="100vw" alt="A SAEL rooftop solar array in Bengaluru" loading="lazy"></div>
+      <div class="h-slide"><img src="assets/img/hero-commercial.jpg" srcset="assets/img/hero-commercial-1200.jpg 1200w, assets/img/hero-commercial.jpg 2560w" sizes="100vw" alt="Solar panels across a commercial rooftop" loading="lazy"></div>
+      <div class="h-slide"><img src="assets/img/hero-hybrid.jpg" srcset="assets/img/hero-hybrid-1200.jpg 1200w, assets/img/hero-hybrid.jpg 2560w" sizes="100vw" alt="A solar inverter and distribution box installed by SAEL" loading="lazy"></div>
+      <div class="h-slide"><img src="assets/img/hero-amc.jpg" srcset="assets/img/hero-amc-1200.jpg 1200w, assets/img/hero-amc.jpg 1920w" sizes="100vw" alt="The SAEL team cleaning a solar array" loading="lazy"></div>
+    </div>
+    <div class="h-idx" id="hIdx" aria-hidden="true">01</div>
+  </div>
+  <div class="h-cap" id="hCap" aria-live="polite">
+    <div class="r1"><span class="tg" id="capTag">On-grid · Homes</span><span class="ticks" id="ticks" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span></div>
+    <h2 id="capT">A home that pays less every month</h2>
+    <span class="cr" id="capC">Photo · SAEL installation</span>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section class="hl" aria-label="What every SAEL installation includes">
+  <div class="wrap hl-in">
+    <div><span class="hi" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9H3z"></path></svg></span><p><b>Free site survey</b><span>Roof, shading and bills checked</span></p></div>
+    <div><span class="hi" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 4h11M7 9h11M7 4c6 0 6 10 0 10l8 6"></path></svg></span><p><b>Subsidy support</b><span>PM Surya Ghar, DISCOM, net metering</span></p></div>
+    <div><span class="hi" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"></path></svg></span><p><b>Professional installation</b><span>Designed, installed and tested</span></p></div>
+    <div><span class="hi" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></span><p><b>AMC &amp; service</b><span>Maintenance after installation</span></p></div>
+  </div>
+</section>
+
+<!-- SYSTEMS: COMPARE + FINDER -->
+<section class="sec" id="systems" aria-labelledby="h-sys" style="padding-top:0">
+  <div class="wrap">
+    <div class="hd2"><p class="lbl"><b>01</b> · Compare systems</p><h2 id="h-sys" class="split">On-grid, off-grid <em class="s">or hybrid?</em></h2></div>
+    <div class="cmpx">
+      <div class="cmp-t" role="table" aria-label="Solar systems compared">
+        <div class="r h" role="row"><span role="columnheader"></span><span role="columnheader" data-k="on">On-grid</span><span role="columnheader" data-k="off">Off-grid</span><span role="columnheader" data-k="hy">Hybrid</span></div>
+        <div class="r" role="row"><span role="rowheader">Battery</span><span role="cell" data-k="on">None</span><span role="cell" data-k="off">Lithium or tubular</span><span role="cell" data-k="hy">Yes, expandable</span></div>
+        <div class="r" role="row"><span role="rowheader">During power cuts</span><span role="cell" data-k="on">No backup</span><span role="cell" data-k="off">Full backup</span><span role="cell" data-k="hy">Partial to full</span></div>
+        <div class="r" role="row"><span role="rowheader">Grid connection</span><span role="cell" data-k="on">Needed</span><span role="cell" data-k="off">Not needed</span><span role="cell" data-k="hy">Needed</span></div>
+        <div class="r" role="row"><span role="rowheader">PM Surya Ghar subsidy</span><span role="cell" data-k="on"><i class="y">✓</i> Homes</span><span role="cell" data-k="off">—</span><span role="cell" data-k="hy"><i class="y">✓</i> Homes</span></div>
+        <div class="r" role="row"><span role="rowheader">Typical size</span><span role="cell" data-k="on">2–10 kW</span><span role="cell" data-k="off">1–15 kW</span><span role="cell" data-k="hy">3–15 kW</span></div>
+        <div class="r" role="row"><span role="rowheader">Best for</span><span role="cell" data-k="on">Homes, shops, offices</span><span role="cell" data-k="off">Remote homes, farms</span><span role="cell" data-k="hy">Homes with frequent cuts</span></div>
+      </div>
+      <div class="finder on-dark" id="finder">
+        <p class="lbl" style="color:rgba(241,243,241,.6)">Find your system</p>
+        <div class="fq"><p>Do you have a grid electricity connection?</p><div class="seg" data-q="grid"><button type="button" aria-pressed="true" data-v="yes">Yes</button><button type="button" aria-pressed="false" data-v="no">No</button></div></div>
+        <div class="fq" id="fqCuts"><p>How often does the power go off?</p><div class="seg" data-q="cuts"><button type="button" aria-pressed="true" data-v="rare">Rarely</button><button type="button" aria-pressed="false" data-v="often">Often</button></div></div>
+        <div class="fres" aria-live="polite"><span class="lbl" style="color:rgba(241,243,241,.55)">We'd suggest</span><b id="fName">On-grid</b><p id="fWhy">Lowest cost per unit, with the PM Surya Ghar subsidy. Surplus power earns credit through net metering.</p></div>
+        <p class="fmore">Running a business or factory? <a href="#contact">Ask about commercial &amp; industrial solar</a></p>
+        <a class="btn b-cop" href="#contact" style="align-self:flex-start">Get this quoted <span class="ar" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- SUBSIDY -->
+<section class="sec" id="subsidy" aria-labelledby="h-sub" style="padding-top:0">
+  <div class="wrap sub">
+    <div>
+      <p class="lbl"><b>02</b> · PM Surya Ghar Muft Bijli Yojana</p>
+      <h2 id="h-sub" class="split" style="margin-top:16px">Up to <em class="s">₹78,000</em> back on your home's rooftop</h2>
+      <p class="sub-in">The central government's rooftop scheme pays a subsidy on grid-tied home systems, and some states add their own top-up on top. SAEL checks your eligibility at the free consultation, then handles the application, the DISCOM approval and net metering as part of our end-to-end liaisoning.</p>
+      <div class="slabs">
+        <div><span>First 2 kW</span><b>₹30,000 / kW</b></div>
+        <div><span>3rd kW</span><b>₹18,000</b></div>
+        <div><span>Maximum · 3 kW and above</span><b>₹78,000</b></div>
+      </div>
+      <ul class="handle"><li>Free eligibility check</li><li>Full documentation</li><li>DISCOM net-metering approval</li><li>State top-ups, where your state offers one</li></ul>
+    </div>
+    <div class="calc on-dark" id="calc">
+      <div class="calc-h"><span class="lbl" style="color:rgba(241,243,241,.6)">Subsidy estimate</span><span class="kw"><b id="kwV">3</b> kW</span></div>
+      <label class="rg" for="kw">Home rooftop system size<input id="kw" type="range" min="1" max="10" step="1" value="3"></label>
+      <label class="rg" for="st">Your state<select id="st"></select></label>
+      <div class="out">
+        <div><span>First 2 kW</span><b id="c1">₹60,000</b></div>
+        <div id="c2Row"><span>3rd kW</span><b id="c2">₹18,000</b></div>
+        <div id="sRow" class="st-row"><span id="sLbl">State top-up</span><b id="cS">—</b></div>
+        <div class="tot"><span id="tLbl">Total subsidy</span><b id="cT">₹78,000</b></div>
+      </div>
+      <p class="snote" id="sNote" aria-live="polite"></p>
+      <p class="note">Residential rooftop only. State top-ups change often: SAEL confirms the final amount at your free consultation.</p>
+      <a class="btn b-cop" href="#contact">Check my eligibility <span class="ar" aria-hidden="true"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sec" id="process" aria-labelledby="h-pro" style="padding-top:0">
+  <div class="wrap">
+    <div class="hd2"><p class="lbl"><b>03</b> · How it works</p><h2 id="h-pro" class="split">Survey to savings <em class="s">in five steps</em></h2></div>
+    <ol class="steps">
+      <li><span class="sn">01</span><h3>Book a survey</h3><p>Share your requirement and get a free site visit: roof, shading and your electricity bills.</p></li>
+      <li><span class="sn">02</span><h3>System design</h3><p>Our engineers size the right system to your actual consumption, not a fixed package.</p></li>
+      <li><span class="sn">03</span><h3>Installation</h3><p>A trained team installs, tests and commissions your system.</p></li>
+      <li><span class="sn">04</span><h3>Subsidy &amp; net metering</h3><p>We file your PM Surya Ghar subsidy and get the DISCOM net-metering approval.</p></li>
+      <li><span class="sn">05</span><h3>AMC &amp; service</h3><p>Cleaning, checks and maintenance keep your system yielding for years.</p></li>
+    </ol>
+    <div class="track" aria-label="Installation stages"><span class="tk-l">Track your installation</span><div class="tk"><i class="on">Site survey done</i><i>Team assigned</i><i>Installation started</i><i>Testing &amp; commissioning</i><i>Completed</i></div></div>
+  </div>
+</section>
+<!-- WHY SAEL -->
+<section class="sec" id="capabilities" aria-labelledby="h-c" style="padding-top:0">
+  <div class="wrap">
+    <div class="hd2"><p class="lbl"><b>04</b> · Why SAEL</p><h2 id="h-c" class="split">Solar only pays back <em class="s">when it's done right</em></h2></div>
+    <div class="bento">
+      <div class="bx big"><img src="assets/img/hero-home.jpg" srcset="assets/img/hero-home-1200.jpg 1200w, assets/img/hero-home.jpg 2880w" sizes="(max-width: 860px) 100vw, 50vw" alt="Rooftop solar on a home at sunset" loading="lazy" style="object-position:20% 100%"><span class="n">Photo · SAEL</span><h3>Sized correctly, installed properly and serviced for years.</h3></div>
+      <div class="bx todo"><span class="ph-tag">Content from SAEL</span><div><h3>Reason one</h3><p>SAEL will supply the text for this tile.</p></div></div>
+      <div class="bx teal todo"><span class="ph-tag">Content from SAEL</span><div><h3>Reason two</h3><p>SAEL will supply the text for this tile.</p></div></div>
+      <div class="bx todo"><span class="ph-tag">Content from SAEL</span><div><h3>Reason three</h3><p>SAEL will supply the text for this tile.</p></div></div>
+      <div class="bx todo"><span class="ph-tag">Content from SAEL</span><div><h3>Reason four</h3><p>SAEL will supply the text for this tile.</p></div></div>
+    </div>
+  </div>
+</section>
+<!-- ENGINEERING -->
+<section class="sec" id="engineering" aria-labelledby="h-e" style="padding-top:0">
+  <div class="wrap eng">
+    <div class="pic" id="engPic"><img src="assets/img/eng-structure.jpg" srcset="assets/img/eng-structure-1200.jpg 1200w, assets/img/eng-structure.jpg 1600w" sizes="(max-width: 860px) 100vw, 50vw" alt="An elevated solar structure built by SAEL" loading="lazy"></div>
+    <div>
+      <p class="lbl"><b>05</b> · Engineering</p>
+      <h2 id="h-e" class="split" style="margin-top:16px">Light in. <em class="s">Lower bills</em> out.</h2>
+      <p style="margin-top:22px;max-width:48ch;color:var(--ink-2)">Every system uses Tier-1 modules and BIS-certified components, matched to the site and sized to your actual consumption. The same engineering team builds everything from a 1 kW home system to utility-scale plants.</p>
+      <div class="rows"><div><b data-count="3">3</b><span>Offices</span></div><div class="todo"><b>—</b><span>Figure from SAEL</span></div><div class="todo"><b>—</b><span>Figure from SAEL</span></div></div>
+    </div>
+  </div>
+  <div class="strip" aria-label="Field photos from SAEL installations"><div class="st">
+    <figure><img src="assets/img/s-monitor.jpg" alt="An inverter Wi-Fi monitoring dongle" loading="lazy"></figure>
+    <figure><img src="assets/img/s-inverter.jpg" alt="A wall-mounted solar inverter" loading="lazy"></figure>
+    <figure><img src="assets/img/s-controller.jpg" alt="A solar pump controller in the field" loading="lazy"></figure>
+    <figure><img src="assets/img/s-cleaning.jpg" alt="Cleaning a solar panel with a soft brush" loading="lazy"></figure>
+    <figure><img src="assets/img/s-tilt.jpg" alt="Tilted solar panels on a rooftop" loading="lazy"></figure>
+    <figure><img src="assets/img/s-roof.jpg" alt="A solar array on a sloping roof" loading="lazy"></figure>
+    <figure aria-hidden="true"><img src="assets/img/s-monitor.jpg" alt="" loading="lazy"></figure>
+    <figure aria-hidden="true"><img src="assets/img/s-inverter.jpg" alt="" loading="lazy"></figure>
+    <figure aria-hidden="true"><img src="assets/img/s-controller.jpg" alt="" loading="lazy"></figure>
+    <figure aria-hidden="true"><img src="assets/img/s-cleaning.jpg" alt="" loading="lazy"></figure>
+    <figure aria-hidden="true"><img src="assets/img/s-tilt.jpg" alt="" loading="lazy"></figure>
+    <figure aria-hidden="true"><img src="assets/img/s-roof.jpg" alt="" loading="lazy"></figure>
+  </div></div>
+</section>
+
+<!-- GALLERY -->
+<section class="sec" id="gallery" aria-labelledby="h-g" style="padding-top:0">
+  <div class="wrap gal-head"><div style="display:flex;flex-direction:column;gap:14px"><p class="lbl"><b>06</b> · Gallery</p><h2 id="h-g" class="split">Our work, <em class="s">up close</em></h2></div><div class="gal-ctl"><button class="rb" type="button" id="gPrev" aria-label="Previous photos">←</button><button class="rb" type="button" id="gNext" aria-label="Next photos">→</button></div></div>
+  <div class="drag" id="drag">
+    <button class="gi" type="button"><div class="im"><img src="assets/img/g-elevated.jpg" srcset="assets/img/g-elevated-1200.jpg 1200w, assets/img/g-elevated.jpg 2400w" sizes="(max-width: 860px) 86vw, 40vw" alt="An elevated SAEL solar structure in the afternoon sun" loading="lazy" draggable="false"></div><div class="tx"><b>Elevated array</b><span>SAEL installation</span></div></button>
+    <button class="gi" type="button"><div class="im"><img src="assets/img/g-villa.jpg" srcset="assets/img/g-villa-1200.jpg 1200w, assets/img/g-villa.jpg 2400w" sizes="(max-width: 860px) 86vw, 40vw" alt="Solar panels on a tiled villa roof" loading="lazy" draggable="false"></div><div class="tx"><b>Tiled-roof villa</b><span>SAEL installation</span></div></button>
+    <button class="gi" type="button"><div class="im"><img src="assets/img/g-pump-array.jpg" srcset="assets/img/g-pump-array-1200.jpg 1200w, assets/img/g-pump-array.jpg 2400w" sizes="(max-width: 860px) 86vw, 40vw" alt="A solar array powering a farm pump" loading="lazy" draggable="false"></div><div class="tx"><b>Solar pump array</b><span>Bhoganahalli, Karnataka</span></div></button>
+    <button class="gi" type="button"><div class="im"><img src="assets/img/g-chennai.jpg" srcset="assets/img/g-chennai-1200.jpg 1200w, assets/img/g-chennai.jpg 2400w" sizes="(max-width: 860px) 86vw, 40vw" alt="A rooftop solar array in Chennai" loading="lazy" draggable="false"></div><div class="tx"><b>Chennai rooftop</b><span>Chennai, Tamil Nadu</span></div></button>
+    <button class="gi" type="button"><div class="im"><img src="assets/img/g-garden.jpg" srcset="assets/img/g-garden-1200.jpg 1200w, assets/img/g-garden.jpg 2400w" sizes="(max-width: 860px) 86vw, 40vw" alt="Solar panels above a home with a garden" loading="lazy" draggable="false"></div><div class="tx"><b>Garden home</b><span>SAEL installation</span></div></button>
+    <button class="gi" type="button"><div class="im"><img src="assets/img/g-bangalore.jpg" srcset="assets/img/g-bangalore-1200.jpg 1200w, assets/img/g-bangalore.jpg 2400w" sizes="(max-width: 860px) 86vw, 40vw" alt="A rooftop solar array in Bengaluru" loading="lazy" draggable="false"></div><div class="tx"><b>Bengaluru rooftop</b><span>Bengaluru, Karnataka</span></div></button>
+  </div>
+</section>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer"><button class="rb" type="button" id="lbX" aria-label="Close" style="right:28px;top:28px">✕</button><button class="rb" type="button" id="lbP" aria-label="Previous" style="left:24px;top:50%">←</button><button class="rb" type="button" id="lbN" aria-label="Next" style="right:24px;top:50%">→</button><figure><img id="lbImg" src="data:," alt=""><figcaption><span id="lbT"></span><span id="lbC"></span></figcaption></figure></div>
+
+<!-- IMPACT -->
+<section class="band on-dark" aria-label="SAEL in numbers">
+  <div class="wrap nums">
+    <div class="todo"><b>—</b><span>Figure from SAEL</span></div>
+    <div class="todo"><b>—</b><span>Figure from SAEL</span></div>
+    <div class="todo"><b>—</b><span>Figure from SAEL</span></div>
+    <div><b data-count="3">3</b><span>offices · Bangalore, Kerala, NZ</span></div>
+  </div>
+  <div class="ticker" aria-hidden="true"><span>Rooftop <em>·</em> Ground-mount <em>·</em> EPC <em>·</em> O&amp;M <em>·</em> AMC <em>·</em> Power purchase <em>·</em> </span><span>Rooftop <em>·</em> Ground-mount <em>·</em> EPC <em>·</em> O&amp;M <em>·</em> AMC <em>·</em> Power purchase <em>·</em> </span></div>
+</section>
+
+<!-- PROJECTS -->
+<section class="sec" id="work" aria-labelledby="h-w">
+  <div class="wrap">
+    <div class="hd2"><p class="lbl"><b>07</b> · Selected work</p><h2 id="h-w" class="split">Projects across <em class="s">South India</em></h2></div>
+    <div class="pj">
+      <a class="feat" href="#contact"><img src="assets/img/feat-ground.jpg" srcset="assets/img/feat-ground-1200.jpg 1200w, assets/img/feat-ground.jpg 2400w" sizes="(max-width: 860px) 100vw, 60vw" alt="A SAEL ground-mount solar array" loading="lazy"><span class="sz">Rooftop &amp; ground-mount · Tamil Nadu · Karnataka · Kerala</span><h3>SAEL installations</h3><p>Homes, businesses and farms, surveyed, built and serviced by the SAEL team. Photo: SAEL.</p></a>
+      <div class="pj-r">
+        <a class="pc" href="#contact"><div class="im"><img src="https://images.unsplash.com/photo-1508791290064-c27cc1ef7a9a?auto=format&fit=crop&w=600&q=85" alt="Wind turbines on a green field" loading="lazy"></div><div><span class="sz">24 MW wind · Karnataka</span><h3>Ushdev International / Wind World</h3><p>Power facilitation for an industrial buyer.</p></div></a>
+        <a class="pc" href="#contact"><div class="im"><img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=600&q=85" alt="Rows of solar panels on a green field" loading="lazy"></div><div><span class="sz">20 MW solar · Karnataka</span><h3>Hero Future Energies / Wipro</h3><p>Green power for a corporate consumer.</p></div></a>
+        <a class="pc" href="#contact"><div class="im"><img src="https://images.unsplash.com/photo-1611365892117-00ac5ef43c90?auto=format&fit=crop&w=600&q=85" alt="Solar panels on a brown field" loading="lazy"></div><div><span class="sz">4.5 MW solar · Karnataka</span><h3>Hero Future Energies / Dimo Castings</h3><p>Power facilitation for a manufacturer.</p></div></a>
+      </div>
+    </div>
+    <div class="mini"><div><b>2 MW</b><span>Confidential · power facilitation</span></div><div><b>1 MW</b><span>Confidential · ground mount</span></div><div><b>10 kW</b><span>Confidential · rooftop</span></div></div>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<section class="sec" aria-labelledby="h-a" style="padding-top:0">
+  <div class="wrap aud">
+    <div>
+      <p class="lbl"><b>08</b> · Who it's for</p>
+      <h2 id="h-a" class="split" style="margin-top:16px;font-size:clamp(40px,4.6vw,70px);line-height:.98">Built for anyone who <em class="s">pays for power</em></h2>
+      <div class="tabs" role="tablist" aria-label="Audience">
+        <button type="button" role="tab" aria-selected="true" data-a="0">Homes <i aria-hidden="true">→</i></button>
+        <button type="button" role="tab" aria-selected="false" data-a="1">Shops &amp; offices <i aria-hidden="true">→</i></button>
+        <button type="button" role="tab" aria-selected="false" data-a="2">Farms <i aria-hidden="true">→</i></button>
+        <button type="button" role="tab" aria-selected="false" data-a="3">Industries <i aria-hidden="true">→</i></button>
+      </div>
+    </div>
+    <div class="aud-pane" role="tabpanel">
+      <img src="assets/img/aud-home.jpg" srcset="assets/img/aud-home-1200.jpg 1200w, assets/img/aud-home.jpg 1800w" sizes="(max-width: 860px) 100vw, 55vw" alt="Rooftop solar on a South Indian home" loading="lazy" data-a="0">
+      <img src="assets/img/aud-commercial.jpg" srcset="assets/img/aud-commercial-1200.jpg 1200w, assets/img/aud-commercial.jpg 1800w" sizes="(max-width: 860px) 100vw, 55vw" alt="A wide elevated solar array on a commercial building" loading="lazy" data-a="1" class="off">
+      <img src="assets/img/aud-farm.jpg" srcset="assets/img/aud-farm-1200.jpg 1200w, assets/img/aud-farm.jpg 1800w" sizes="(max-width: 860px) 100vw, 55vw" alt="A solar array powering a farm pump in Karnataka" loading="lazy" data-a="2" class="off">
+      <img src="assets/img/aud-industry.jpg" srcset="assets/img/aud-industry-1200.jpg 1200w, assets/img/aud-industry.jpg 1800w" sizes="(max-width: 860px) 100vw, 55vw" alt="An elevated solar structure in strong sunlight" loading="lazy" data-a="3" class="off">
+      <p class="q" id="audQ">On-grid or hybrid rooftop solar cuts the monthly bill, with up to ₹78,000 back through PM Surya Ghar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq" aria-labelledby="h-faq" style="padding-top:0">
+  <div class="wrap faq">
+    <div><p class="lbl"><b>09</b> · FAQs</p><h2 id="h-faq" class="split" style="margin-top:16px">Questions we <em class="s">hear most</em></h2><p class="faq-in">Something else? Call <a href="tel:+919880703083">+91 98807 03083</a>, write to <a href="mailto:info@saelenergy.com">info@saelenergy.com</a>, or read the <a href="blog.html">SAEL blog</a>.</p></div>
+    <div class="qa">
+      <details open><summary>Is my home eligible for the PM Surya Ghar subsidy?</summary><p>Residential on-grid and hybrid rooftop systems qualify. The central subsidy is ₹30,000 per kW for the first 2 kW and ₹18,000 for the 3rd kW, up to ₹78,000 for 3 kW and above. We check eligibility for free and file the application for you.</p></details>
+      <details><summary>On-grid, off-grid or hybrid: which do I need?</summary><p>On-grid suits homes, shops and offices with a reliable grid: it's the lowest-cost option. Hybrid adds a battery for homes with frequent power cuts. Off-grid suits places with no grid connection at all. The finder above gives a quick suggestion.</p></details>
+      <details><summary>What happens during a power cut?</summary><p>An on-grid system switches off when the grid fails, for safety. A hybrid or off-grid system switches to its battery and keeps your essential loads running.</p></details>
+      <details><summary>Can a grid-tie system run on its own?</summary><p>No. A grid-tie (on-grid) system needs the grid to run, and it shuts down during a power cut so it can't send power into lines that crews are repairing. If you need backup, choose a hybrid system with a battery.</p></details>
+      <details><summary>Will solar power leave my building?</summary><p>Only the surplus. Your own loads use solar power first; whatever is left flows to the grid through the net meter, and your DISCOM credits it against your bill.</p></details>
+      <details><summary>How is a solar pump sized?</summary><p>By the head (depth) and the discharge you need. We supply 1 to 10 HP AC or DC pumps for heads up to 100 m, with a VFD controller that adapts to changing sunlight.</p></details>
+      <details><summary>Can I go solar without paying upfront?</summary><p>Yes. Under OpEx, investors fund the system and you pay for the power it produces. Under CapEx, you own the system, and we handle installation and liaisoning end to end.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta on-dark" id="contact" aria-labelledby="h-cta">
+  <video id="ctaImg" autoplay muted loop playsinline preload="metadata" poster="assets/img/cta-poster.jpg" aria-hidden="true"><source src="assets/video/rooftop-loop.mp4" type="video/mp4"></video>
+  <div class="wrap"><div class="cta-box">
+    <p class="lbl" style="color:rgba(255,255,255,.75)"><b>10</b> · Book with us</p>
+    <h2 id="h-cta" class="split">Book your free <em class="s">site survey</em>.</h2>
+    <p>Leave your number. We'll visit, check your roof and bills, and send a personalised quote with your subsidy worked out.</p>
+    <form class="qf" id="qf" novalidate>
+      <label for="q-n">Name</label><input id="q-n" name="name" placeholder="Your name" autocomplete="name">
+      <label for="q-p">Mobile number</label><input id="q-p" name="phone" type="tel" inputmode="numeric" placeholder="Mobile number" autocomplete="tel-national">
+      <label for="q-c">City or PIN code</label><input id="q-c" name="city" placeholder="City or PIN code" autocomplete="postal-code">
+      <label for="q-b">Monthly electricity bill</label><select id="q-b" name="bill"><option value="">Monthly bill</option><option>Under ₹2,000</option><option>₹2,000–5,000</option><option>₹5,000–20,000</option><option>Above ₹20,000</option></select>
+      <label for="q-t">Interest</label><select id="q-t" name="type" class="full"><option>On-grid solar</option><option>Hybrid solar with battery</option><option>Commercial or industrial project</option></select>
+      <span class="err" id="qErr"></span>
+      <button class="btn b-cop full" type="submit" id="qSend">Request a callback <span class="ar" aria-hidden="true"></span></button>
+    </form>
+    <div class="ok" id="qOk" hidden><svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M8 18l6 6 12-13" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>Thank you. A SAEL consultant will call you to book your free visit.</div>
+    <div class="offs"><span>Bangalore <a href="tel:+919880703083">+91 98807 03083</a></span><span>Kerala <a href="tel:+919113083917">+91 91130 83917</a></span><span>NZ <a href="tel:+6421982414">+64 21 982 414</a></span><a href="mailto:info@saelenergy.com">info@saelenergy.com</a></div>
+  </div></div>
+</section>
+
+<!-- DAY / NIGHT COMPARE -->
+<section class="sec" id="compare" aria-labelledby="h-dn">
+  <div class="wrap">
+    <div class="cmp-head"><div style="display:flex;flex-direction:column;gap:14px"><p class="lbl"><b>11</b> · Day &amp; night</p><h2 id="h-dn" class="split">Drag from <em class="s">noon</em> to a power cut</h2></div><p>Homes and shops with a steady grid go on-grid. Homes with frequent power cuts go hybrid, and the battery carries them through.</p></div>
+    <div class="cmp" id="cmp">
+      <img src="https://images.unsplash.com/photo-1626249893889-c044fd88e9f7?auto=format&fit=crop&w=3840&q=85" alt="A two-storey Indian home with a front lawn in daylight" loading="lazy">
+      <img class="nt" src="https://images.unsplash.com/photo-1721815693498-cc28507c0ba2?auto=format&fit=crop&w=3840&q=85" alt="A modern Indian home lit up in the evening" loading="lazy">
+      <span class="tg l"><b>☀ Day · On-grid</b>Panels run your load; net metering credits the surplus.</span>
+      <span class="tg r"><b>☾ Power cut · Hybrid</b>The battery keeps essentials running.</span>
+      <div class="hd"><button type="button" id="cmpBtn" role="slider" aria-label="Compare day and night" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">⇆</button></div>
+    </div>
+    <p class="cmp-cr">Photos · The Dimensions, Naksha Banwao / Unsplash</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fg">
+      <div class="fc"><a class="logo" href="#home" style="margin-bottom:14px" aria-label="SAEL Energy, home"><img src="assets/img/sael-logo.png" alt="SAEL Energy" width="76" height="72" style="height:72px"></a><p>SAEL Energy Solution LLP · Solar Architects®. On-grid, off-grid and hybrid solar for homes, businesses and industry across South India.</p></div>
+      <div class="fc"><h4>Solutions</h4><a href="#systems">On-grid solar</a><a href="#systems">Hybrid solar</a><a href="#systems">Off-grid solar</a><a href="#contact">Commercial &amp; industrial</a><a href="blog.html">Blog</a></div>
+      <div class="fc"><h4>Explore</h4><a href="#subsidy">PM Surya Ghar subsidy</a><a href="#process">How it works</a><a href="#work">Projects</a><a href="#faq">FAQs</a><a href="#compare">Day &amp; night</a></div>
+      <div class="fc"><h4>Offices</h4><p><b>Bangalore</b> · 54/3, Hutchins Road, 2nd Cross, Bangalore 560 084 · <a href="tel:+919880703083" style="display:inline">+91 98807 03083</a></p><p style="margin-top:10px"><b>Kerala</b> · No. 4/330, Pallickaparambil, Karakkadu, Kunnamthanam PO, Pathanamthitta Dist., Kerala 689581 · <a href="tel:+919113083917" style="display:inline">+91 91130 83917</a></p><p style="margin-top:10px"><b>New Zealand</b> · <a href="tel:+6421982414" style="display:inline">+64 21 982 414</a> · <a href="mailto:renny@saelenergy.com" style="display:inline">renny@saelenergy.com</a></p><p style="margin-top:10px"><a href="mailto:info@saelenergy.com" style="display:inline">info@saelenergy.com</a></p></div>
+    </div>
+    <p class="wm" aria-hidden="true"><span>S</span><span>A</span><span>E</span><span>L</span></p>
+    <div class="fb"><span>© SAEL Energy Solution LLP</span><span>Design concept · not the live site</span></div>
+    <p class="cred">Project photos and video © SAEL Energy Solution LLP. Project-card and day/night photos from Unsplash (The Dimensions, Naksha Banwao and others). Company details from saelenergy.com. Subsidy figures: PM Surya Ghar Muft Bijli Yojana (central) and state nodal agencies.</p>
+  </div>
+</footer>
+<div class="mbar" id="mbar" aria-label="Quick contact"><a href="tel:+919880703083"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>Call</a><a class="go" href="#contact">Free site survey</a></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+  const desk = () => innerWidth > 860;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+
+  /* ---------- top bar + progress pill ---------- */
+  const bar = $('#top-bar'); let lastY = 0;
+  const secs = [['home','Home'],['systems','Compare'],['subsidy','Subsidy'],['process','How it works'],['capabilities','Why SAEL'],['engineering','Engineering'],['gallery','Gallery'],['work','Projects'],['faq','FAQs'],['contact','Contact'],['compare','Day & night']].map(([id, n]) => [document.getElementById(id), n]);
+  const onScroll = () => {
+    const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+    bar.classList.toggle('solid', y > 40); bar.classList.toggle('hide', y > 500 && y > lastY + 6); if (y < lastY - 6) bar.classList.remove('hide'); lastY = y;
+    $('#progRing').style.strokeDashoffset = 94.25 * (1 - (max > 0 ? y / max : 0));
+    let cur = 0; secs.forEach(([el], i) => { if (el && el.getBoundingClientRect().top < innerHeight * .5) cur = i; });
+    $('#progNm').textContent = String(cur + 1).padStart(2, '0') + ' · ' + secs[cur][1];
+    $$('.links a').forEach(a => a.classList.toggle('act', a.getAttribute('href') === '#' + secs[cur][0].id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* menu sheet */
+  const sheet = $('#sheet'), mb = $('#menuBtn');
+  const setSheet = o => { sheet.classList.toggle('open', o); sheet.setAttribute('aria-hidden', String(!o)); mb.setAttribute('aria-expanded', String(o)); if (o) $('#menuX').focus(); };
+  mb.addEventListener('click', () => setSheet(true)); $('#menuX').addEventListener('click', () => setSheet(false)); $('#sheetScrim').addEventListener('click', () => setSheet(false));
+  $$('#sheet a').forEach(a => a.addEventListener('click', () => setSheet(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape') { setSheet(false); closeLb(); } });
+
+  /* gallery drag + buttons + lightbox */
+  const drag = $('#drag'); let down = false, sx = 0, sl = 0, moved = 0;
+  drag.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = 0; sx = e.clientX; sl = drag.scrollLeft; drag.classList.add('down'); });
+  addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - sx; moved = Math.max(moved, Math.abs(dx)); drag.scrollLeft = sl - dx; });
+  addEventListener('pointerup', () => { if (!down) return; down = false; drag.classList.remove('down'); });
+  const step = () => drag.querySelector('.gi').getBoundingClientRect().width + 18;
+  $('#gPrev').addEventListener('click', () => drag.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }));
+  $('#gNext').addEventListener('click', () => drag.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }));
+  const items = $$('.gi'), lb = $('#lb'); let cur = 0;
+  const show = i => { cur = (i + items.length) % items.length; const im = items[cur].querySelector('img'); $('#lbImg').src = im.getAttribute('src'); $('#lbImg').alt = im.alt; $('#lbT').textContent = items[cur].querySelector('b').textContent; $('#lbC').textContent = 'Photo · SAEL · ' + items[cur].querySelector('.tx span').textContent; };
+  function closeLb(){ lb.classList.remove('open'); }
+  items.forEach((it, i) => it.addEventListener('click', e => { if (moved > 6) { e.preventDefault(); return; } show(i); lb.classList.add('open'); $('#lbX').focus(); }));
+  $('#lbX').addEventListener('click', closeLb); $('#lbP').addEventListener('click', () => show(cur - 1)); $('#lbN').addEventListener('click', () => show(cur + 1));
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+
+  /* audience tabs */
+  const Q = ['On-grid or hybrid rooftop solar cuts the monthly bill, with up to ₹78,000 back through PM Surya Ghar.', 'Shops and offices use most of their power in daylight, exactly when the panels produce it.', 'Solar on farms cuts the diesel bill and keeps pump sets running where the grid is weak.', 'Factories, warehouses and campuses run daytime loads on rooftop or ground-mount solar, under OpEx or CapEx.'];
+  $$('.tabs button').forEach(b => b.addEventListener('click', () => {
+    const a = b.dataset.a; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    $$('.aud-pane img').forEach(im => im.classList.toggle('off', im.dataset.a !== a));
+    const q = $('#audQ'); q.classList.add('swap'); setTimeout(() => { q.textContent = Q[a]; q.classList.remove('swap'); }, reduce ? 0 : 280);
+  }));
+
+  /* quote form */
+  const qf = $('#qf');
+  qf.addEventListener('submit', e => {
+    e.preventDefault();
+    const n = qf.elements.name.value.trim(), m = qf.elements.phone.value.replace(/\D/g, '').replace(/^(91|0)(?=\d{10}$)/, '');
+    const err = !n ? 'Enter your name.' : !/^[6-9]\d{9}$/.test(m) ? 'Enter a 10-digit mobile number.' : '';
+    $('#qErr').textContent = err; if (err) { (!n ? qf.elements.name : qf.elements.phone).focus(); return; }
+    $('#qSend').disabled = true; setTimeout(() => { qf.hidden = true; $('#qOk').hidden = false; }, 650);
+  });
+
+  /* day/night compare */
+  const cmp = $('#cmp'), cb = $('#cmpBtn'); let cdown = false;
+  const setP = v => { v = Math.max(0, Math.min(100, v)); cmp.style.setProperty('--p', v + '%'); cb.setAttribute('aria-valuenow', Math.round(v)); };
+  const fromX = x => { const r = cmp.getBoundingClientRect(); setP((x - r.left) / r.width * 100); };
+  cmp.addEventListener('pointerdown', e => { cdown = true; fromX(e.clientX); });
+  addEventListener('pointermove', e => { if (cdown) fromX(e.clientX); });
+  addEventListener('pointerup', () => { cdown = false; });
+  cb.addEventListener('keydown', e => { const v = +cb.getAttribute('aria-valuenow'); if (e.key === 'ArrowLeft') setP(v - 5); if (e.key === 'ArrowRight') setP(v + 5); });
+
+  /* PM Surya Ghar calculator: ₹30,000/kW for the first 2 kW, ₹18,000 for the 3rd, capped at ₹78,000 */
+  const inr = v => '₹' + v.toLocaleString('en-IN');
+  /* State top-ups paid on top of the central subsidy. Edit this table when SAEL confirms figures:
+     perKw = rupees per kW, capKw = kW the top-up stops at, cap = rupee ceiling, note = text shown under the result. */
+  const STATES = [
+    { id: 'KA', n: 'Karnataka', note: 'Karnataka has no state top-up at present: central subsidy only.' },
+    { id: 'KL', n: 'Kerala', note: 'Kerala has no state top-up at present: central subsidy only.' },
+    { id: 'TN', n: 'Tamil Nadu', note: 'Tamil Nadu has announced an extra subsidy of up to ₹1 lakh. The guidelines are awaited, so it is not counted here yet.' },
+    { id: 'UP', n: 'Uttar Pradesh', perKw: 15000, cap: 30000, note: 'Uttar Pradesh adds ₹15,000 per kW, up to ₹30,000.' },
+    { id: 'DL', n: 'Delhi', perKw: 10000, capKw: 3, note: 'Delhi adds ₹10,000 per kW, up to 3 kW.' },
+    { id: 'GA', n: 'Goa', note: 'Goa pays an extra subsidy on top of the central amount. We confirm the figure with GEDA for your system.' },
+    { id: 'XX', n: 'Other states', note: 'Ask us whether your state adds a top-up.' }
+  ];
+  const stSel = $('#st'); STATES.forEach(s => { const o = document.createElement('option'); o.value = s.id; o.textContent = s.n; stSel.appendChild(o); });
+  const topUp = (s, k) => { if (!s.perKw) return 0; let v = Math.min(k, s.capKw || k) * s.perKw; if (s.cap) v = Math.min(v, s.cap); return v; };
+  const calc = () => { const k = +$('#kw').value, a = Math.min(k, 2) * 30000, b = k >= 3 ? 18000 : 0, s = STATES.find(x => x.id === stSel.value) || STATES[0], t = topUp(s, k);
+    $('#kwV').textContent = k; $('#c1').textContent = inr(a); $('#c2').textContent = b ? inr(b) : '—'; $('#c2Row').classList.toggle('dim', !b);
+    $('#sLbl').textContent = s.id === 'XX' ? 'State top-up' : s.n + ' top-up'; $('#cS').textContent = t ? '+ ' + inr(t) : '—'; $('#sRow').classList.toggle('dim', !t);
+    $('#tLbl').textContent = t ? 'Central + state' : 'Central subsidy'; $('#cT').textContent = inr(a + b + t); $('#sNote').textContent = s.note || ''; };
+  $('#kw').addEventListener('input', calc); stSel.addEventListener('change', calc); calc();
+
+  /* FAQ: one answer open at a time */
+  $$('.qa details').forEach(d => d.addEventListener('toggle', () => { if (d.open) $$('.qa details').forEach(o => { if (o !== d) o.open = false; }); }));
+
+  /* system finder -> highlighted column */
+  const F = { grid: 'yes', cuts: 'rare' };
+  const REC = { on: ['On-grid', 'Lowest cost per unit, with the PM Surya Ghar subsidy. Surplus power earns credit through net metering.'],
+    hy: ['Hybrid', 'Grid savings by day plus a battery that keeps essentials running through power cuts. Subsidy-eligible for homes.'],
+    off: ['Off-grid', 'A battery-backed system that runs fully independent of the grid, day and night.'] };
+  const pick = () => { const k = F.grid === 'no' ? 'off' : F.cuts === 'often' ? 'hy' : 'on';
+    $('#fqCuts').classList.toggle('off', F.grid === 'no'); $('#fName').textContent = REC[k][0]; $('#fWhy').textContent = REC[k][1];
+    $$('.cmp-t [data-k]').forEach(c => c.classList.toggle('pick', c.dataset.k === k));
+    if (window.gsap && !reduce) gsap.fromTo('.fres', { y: 10, opacity: .4 }, { y: 0, opacity: 1, duration: .5, ease: 'expo.out' }); };
+  $$('.seg').forEach(g => g.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { F[g.dataset.q] = b.dataset.v; g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pick(); })));
+  pick();
+  /* mobile action bar hides over the contact section and footer */
+  const mbar = $('#mbar'); const hideOn = [$('#contact'), $('footer')]; new IntersectionObserver(() => mbar.classList.toggle('away', hideOn.some(el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }))).observe($('#contact')); new IntersectionObserver(() => mbar.classList.toggle('away', hideOn.some(el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }))).observe($('footer'));
+
+  /* button magnetism + cursor */
+  if (fine && !reduce) {
+    const c = $('#cur'), ct = $('#curT'); let x = 0, y = 0, tx = 0, ty = 0;
+    addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; c.style.opacity = 1; }, { passive: true });
+    (function loop(){ x += (tx - x) * .18; y += (ty - y) * .18; c.style.transform = 'translate(' + x + 'px,' + y + 'px)'; requestAnimationFrame(loop); })();
+    const hov = (sel, label) => $$(sel).forEach(el => { el.addEventListener('pointerenter', () => { ct.textContent = label; c.classList.add('big'); }); el.addEventListener('pointerleave', () => c.classList.remove('big')); });
+    hov('.gi', 'Drag'); hov('.feat, .pc', 'Open'); hov('.cmp', '⇆'); hov('.strip figure', 'View');
+    $$('.mag').forEach(el => {
+      el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(); el.style.transform = 'translate(' + (e.clientX - r.left - r.width / 2) * .2 + 'px,' + (e.clientY - r.top - r.height / 2) * .3 + 'px)'; });
+      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+      el.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1), color .5s cubic-bezier(.16,1,.3,1)';
+    });
+  }
+
+  const cv = $('#ctaImg'); if (reduce && cv.pause) { cv.removeAttribute('autoplay'); cv.pause(); }
+  if (reduce || !window.gsap || !window.ScrollTrigger) { $('#loader').remove(); $('#hCap').style.opacity = 1; $('#hCap').style.transform = 'none'; return; }
+  gsap.registerPlugin(ScrollTrigger);
+
+  let lenis = null;
+  if (window.Lenis) {
+    lenis = new Lenis({ lerp: .09 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
+    $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => { const el = document.querySelector(a.getAttribute('href')); if (el && !a.closest('.svc-nav')) { e.preventDefault(); lenis.scrollTo(el, { duration: 1.6 }); } else if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -innerHeight * .3, duration: 1.4 }); } }));
+  }
+
+  /* split headings */
+  $$('.split').forEach(h => {
+    const walk = n => [...n.childNodes].forEach(c => {
+      if (c.nodeType === 3) { const f = document.createDocumentFragment(); c.textContent.split(/(\s+)/).forEach(t => { if (!t) return; if (/^\s+$/.test(t)) { f.appendChild(document.createTextNode(t)); return; } const w = document.createElement('span'); w.className = 'w'; const i = document.createElement('i'); i.textContent = t; w.appendChild(i); f.appendChild(w); }); c.replaceWith(f); }
+      else if (c.nodeType === 1 && !c.classList.contains('w')) walk(c);
+    });
+    walk(h);
+    gsap.from(h.querySelectorAll('.w > i'), { yPercent: 105, duration: 1, ease: 'expo.out', stagger: .045, scrollTrigger: { trigger: h, start: 'top 86%', once: true } });
+  });
+
+  /* loader: letters rise, bar fills, curtain lifts */
+  const o = { p: 0 };
+  gsap.timeline()
+    .to('#loader .word span', { y: 0, duration: .9, ease: 'expo.out', stagger: .07 })
+    .to(o, { p: 100, duration: 1.3, ease: 'power2.inOut', onUpdate: () => { $('#ldPct').textContent = String(Math.round(o.p)).padStart(3, '0'); $('#ldBar').style.transform = 'scaleX(' + o.p / 100 + ')'; } }, '<.2')
+    .to('#loader', { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, '+=.1')
+    .set('#loader', { display: 'none' })
+    .from(desk() ? '#hWin' : {}, desk() ? { clipPath: 'inset(50vh 4vw 50vh 52vw round 28px)', duration: 1.4, ease: 'expo.out' } : { duration: .01 }, '<.35')
+    .from('#hTrack .h-slide:first-child img', { scale: 1.3, duration: 2, ease: 'expo.out' }, '<')
+    .from('#hCopy .lbl, #hCopy .w > i, #hCopy > p, #hCopy .h-row, #hCopy .h-meta > div', { yPercent: 60, y: 20, opacity: 0, duration: 1, ease: 'expo.out', stagger: .06 }, '<.15');
+
+  /* hero: window expands to full screen, then slides travel sideways */
+  const CAP = [
+    ['On-grid · Homes', 'A home that pays less every month', 'SAEL installation'], ['Rooftop solar', 'Every flat roof can be a power plant', 'SAEL installation · Bengaluru'],
+    ['Shops & offices', 'Daytime loads, daytime power', 'SAEL installation'], ['Hybrid & battery', 'Power cuts, covered', 'SAEL installation'],
+    ['AMC & service', 'Cleaned, checked, kept yielding', 'SAEL service team']
+  ];
+  const ticks = $$('#ticks i'); let shown = -1;
+  const setCap = i => { if (i === shown) return; shown = i; const c = $('#hCap');
+    gsap.to(c.querySelectorAll('#capTag, #capT, #capC'), { opacity: 0, y: -8, duration: .2, onComplete: () => { $('#capTag').textContent = CAP[i][0]; $('#capT').textContent = CAP[i][1]; $('#capC').textContent = 'Photo · ' + CAP[i][2]; gsap.fromTo(c.querySelectorAll('#capTag, #capT, #capC'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .45, stagger: .05, ease: 'expo.out' }); } });
+    ticks.forEach((t, j) => t.classList.toggle('on', j === i)); $('#hIdx').textContent = String(i + 1).padStart(2, '0'); };
+  ScrollTrigger.matchMedia({
+    '(min-width: 861px)': function () {
+      const slides = $$('.h-slide'), n = slides.length;
+      const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '.hero', start: 'top top', end: () => '+=' + innerHeight * (n * .8 + 1), pin: true, scrub: .9, anticipatePin: 1,
+        onUpdate: s => { const p = Math.max(0, (s.progress * (n * .8 + 1) - 1) / (n * .8)); setCap(Math.min(n - 1, Math.round(p * (n - 1)))); } } });
+      tl.to('#hCopy', { xPercent: -30, opacity: 0, duration: .8 }, 0)
+        .to('#hWin', { clipPath: 'inset(0vh 0vw 0vh 0vw round 0px)', duration: 1, ease: 'power2.inOut' }, 0)
+        .to('.h-slide', { '--o': 1, duration: .6 }, .4)
+        .to('#hCap', { opacity: 1, y: 0, duration: .4 }, .6)
+        .to('#hIdx', { opacity: 1, duration: .4 }, .7)
+        .to('#hTrack', { x: () => -(n - 1) * innerWidth, duration: n * .8, ease: 'none' }, 1);
+      slides.forEach((s, i) => { if (i) tl.fromTo(s.querySelector('img'), { xPercent: -18, scale: 1.12 }, { xPercent: 0, scale: 1, duration: .8 }, 1 + (i - 1) * .8); });
+      return () => { gsap.set(['#hCopy', '#hWin', '#hTrack', '#hCap', '#hIdx'], { clearProps: 'all' }); };
+    },
+    '(max-width: 860px)': function () {
+      $('#hCap').style.opacity = 1; $('#hCap').style.transform = 'none';
+      const tr = $('#hTrack'); tr.addEventListener('scroll', () => setCap(Math.round(tr.scrollLeft / tr.clientWidth)), { passive: true });
+    }
+  });
+
+  /* count-ups */
+  $$('[data-count]').forEach(el => { const to = +el.dataset.count, suf = el.dataset.suffix || '', c = { v: 0 }; gsap.to(c, { v: to, duration: 2, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%', once: true }, onUpdate: () => { el.textContent = Math.round(c.v).toLocaleString('en-IN') + suf; } }); });
+
+  /* bento: tiles flip up in sequence */
+  gsap.from('.bx', { y: 80, opacity: 0, rotateX: -14, transformOrigin: '50% 100%', transformPerspective: 1000, duration: 1.2, ease: 'expo.out', stagger: .09, scrollTrigger: { trigger: '.bento', start: 'top 85%', once: true } });
+
+  /* engineering photo: mask slides open, image counter-scrolls */
+  gsap.fromTo('#engPic', { clipPath: 'inset(0% 0% 100% 0% round 28px)' }, { clipPath: 'inset(0% 0% 0% 0% round 28px)', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: '#engPic', start: 'top 80%', once: true } });
+  gsap.fromTo('#engPic img', { scale: 1.25 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '#engPic', start: 'top bottom', end: 'bottom top', scrub: true } });
+
+  /* gallery cards slide in from the right */
+  gsap.from('.gi', { x: 160, opacity: 0, duration: 1.3, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '#drag', start: 'top 85%', once: true } });
+
+  /* impact numbers + ticker speed tied to scroll velocity */
+  gsap.from('.nums > div', { y: 60, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: .1, scrollTrigger: { trigger: '.nums', start: 'top 85%', once: true } });
+
+  /* projects */
+  gsap.from('.feat', { clipPath: 'inset(0% 100% 0% 0% round 28px)', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: '.pj', start: 'top 80%', once: true } });
+  gsap.from('.pc', { x: 60, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: .1, scrollTrigger: { trigger: '.pj', start: 'top 75%', once: true } });
+
+  /* CTA background parallax */
+  gsap.fromTo('#ctaImg', { yPercent: -16 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true } });
+  gsap.from('.cta-box > *:not(h2)', { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '.cta-box', start: 'top 75%', once: true } });
+
+  /* compare: handle sweeps to show both sides once */
+  ScrollTrigger.create({ trigger: '#cmp', start: 'top 70%', once: true, onEnter: () => { const s = { v: 50 }; gsap.timeline().to(s, { v: 18, duration: .9, ease: 'power2.inOut', onUpdate: () => setP(s.v) }).to(s, { v: 82, duration: 1.2, ease: 'power2.inOut', onUpdate: () => setP(s.v) }).to(s, { v: 50, duration: .9, ease: 'power2.inOut', onUpdate: () => setP(s.v) }); } });
+
+  /* highlights, subsidy, process, FAQ */
+  gsap.from('.cmp-t .r', { x: -40, opacity: 0, duration: 1, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: '.cmp-t', start: 'top 85%', once: true } });
+  gsap.from('#finder', { y: 90, rotate: 2, opacity: 0, duration: 1.3, ease: 'expo.out', scrollTrigger: { trigger: '#finder', start: 'top 88%', once: true } });
+  gsap.from('.hl-in > div', { y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '.hl', start: 'top 92%', once: true } });
+  gsap.from('#calc', { y: 90, rotate: 2.5, opacity: 0, duration: 1.3, ease: 'expo.out', scrollTrigger: { trigger: '#calc', start: 'top 85%', once: true } });
+  gsap.from('.slabs div, .handle li', { x: -40, opacity: 0, duration: 1, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: '.slabs', start: 'top 88%', once: true } });
+  gsap.from('.steps li', { y: 70, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: .1, scrollTrigger: { trigger: '.steps', start: 'top 85%', once: true } });
+  const tks = $$('.tk i'); ScrollTrigger.create({ trigger: '.steps', start: 'top 70%', end: 'bottom 30%', scrub: true, onUpdate: s => { const k = Math.min(tks.length - 1, Math.floor(s.progress * tks.length)); tks.forEach((t, j) => t.classList.toggle('on', j <= k)); const sl = $$('.steps li'); sl.forEach((l, j) => l.classList.toggle('lit', j <= Math.floor(s.progress * sl.length - .01))); } });
+  gsap.from('.qa details', { y: 30, opacity: 0, duration: .9, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: '.qa', start: 'top 85%', once: true } });
+
+  /* footer wordmark letters rise */
+  gsap.from('.wm span', { yPercent: 100, duration: 1.2, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '.wm', start: 'top 95%', once: true } });
+
+  addEventListener('load', () => ScrollTrigger.refresh());
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+})();
+</script>
+<button class="cb-fab" id="cbFab" type="button" aria-controls="cb" aria-expanded="false"><span class="dot" aria-hidden="true"></span>Ask SAEL</button>
+<section class="cb" id="cb" role="dialog" aria-modal="false" aria-labelledby="cbTitle" aria-hidden="true">
+  <div class="cb-h"><span class="av" aria-hidden="true"></span><div><b id="cbTitle">SAEL Solar Assistant</b><small>Our team replies on WhatsApp</small></div><button class="cb-x" id="cbX" type="button" aria-label="Close chat">✕</button></div>
+  <div class="cb-log" id="cbLog" role="log" aria-live="polite"></div>
+  <div class="cb-q" id="cbQ" aria-label="Suggested questions"></div>
+  <form class="cb-f" id="cbF" autocomplete="off"><label for="cbIn" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Type your question</label><input id="cbIn" placeholder="Type your question…" maxlength="300"><button type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button></form>
+  <p class="cb-note">Answers are general. Your exact quote and subsidy are confirmed at the free site survey.</p>
+</section>
+<script>
+/* SAEL chat assistant: keyword-matched FAQ answers, every answer can continue on WhatsApp */
+(function(){
+  const WA = '919880703083'; // SAEL WhatsApp number (to confirm with the client)
+  const $ = s => document.querySelector(s);
+  const fab = $('#cbFab'), box = $('#cb'), log = $('#cbLog'), qs = $('#cbQ'), form = $('#cbF'), inp = $('#cbIn');
+  const inr = v => '₹' + v.toLocaleString('en-IN');
+  const wa = text => 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text);
+  const onBlog = document.body.dataset.page === 'blog', HOME = onBlog ? 'index.html' : '', BLOG = onBlog ? '#' : 'blog.html';
+  const read = (slug, title) => '<br><a class="cb-read" href="' + (onBlog ? '#' : 'blog.html#') + slug + '">Read: ' + title + ' →</a>';
+  const waBtn = (text, label) => '<br><a class="cb-wa" href="' + wa(text) + '" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.4.3.2.5.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.1z"></path></svg>' + (label || 'Continue on WhatsApp') + '</a>';
+  const KB = [
+    { id: 'hello', k: ['hi', 'hello', 'hey', 'namaste', 'vanakkam', 'good morning', 'good evening'], a: () => 'Hello! I can answer quick questions about solar for your home or business, the PM Surya Ghar subsidy and site surveys. What would you like to know?' },
+    { id: 'subsidy', k: ['subsidy', 'surya ghar', 'pm surya', 'government', 'scheme', 'yojana', '78000', '78,000'], a: () => 'Homes with on-grid or hybrid rooftop solar get the PM Surya Ghar central subsidy: ₹30,000 per kW for the first 2 kW and ₹18,000 for the 3rd kW, up to ₹78,000. Some states add a top-up. Tell me your system size in kW (for example "3 kW") and I\'ll work it out.' + read('pm-surya-ghar', 'What is PM Surya Ghar Yojana?'), wa: 'Hi SAEL, I\'d like to check my PM Surya Ghar subsidy eligibility.' },
+    { id: 'which', k: ['which', 'choose', 'difference', 'on-grid', 'on grid', 'ongrid', 'off-grid', 'off grid', 'hybrid', 'best system', 'suitable'], a: () => 'On-grid suits homes, shops and offices with a reliable grid: lowest cost, no battery. Hybrid adds a battery for homes with frequent power cuts. Off-grid is for places with no grid connection. See <a href="' + HOME + '#systems">Compare systems</a> for a quick suggestion.' + read('types-of-solar-plants', 'A practical guide to the types of solar plants'), wa: 'Hi SAEL, which solar system is right for my home?' },
+    { id: 'cut', k: ['power cut', 'powercut', 'outage', 'blackout', 'current goes', 'no power', 'battery', 'backup', 'inverter'], a: () => 'An on-grid system switches off during a power cut, for safety. A hybrid or off-grid system switches to its battery and keeps fans, lights and the fridge running. Batteries come in lithium or tubular.' + read('monsoon-no-sun', 'Solar panels in the monsoon'), wa: 'Hi SAEL, I need solar with battery backup for power cuts.' },
+    { id: 'pump', k: ['pump', 'borewell', 'bore well', 'irrigation', 'submersible', 'farm', 'agriculture', 'motor', 'hp'], a: () => 'Solar pumps from 1 to 10 HP (AC or DC) run borewells and irrigation for heads up to 100 m, with zero running cost. We size them to your head and discharge.', wa: 'Hi SAEL, I\'m interested in a solar pump for my farm.' },
+    { id: 'notoffered', k: ['atta', 'chakki', 'flour', 'water heater', 'geyser', 'hot water'], a: () => 'SAEL focuses on solar power systems: on-grid, hybrid and off-grid, for homes, businesses and industry. We don\'t supply solar atta chakkis or water heaters.', wa: 'Hi SAEL, I have a question about solar for my home or business.' },
+    { id: 'perf', k: ['dirty', 'dust', 'clean', 'cleaning', 'output', 'generation', 'dropped', 'low', 'underperform', 'maintenance', 'amc', 'service', 'monsoon', 'rain', 'microcrack', 'crack'], a: () => 'Dust, shading and loose connections all eat into output. Our AMC covers cleaning, checks and repairs so the system keeps yielding.' + read('dirty-solar-panels', 'How dirty panels drain generation') + read('underperforming-signs', '5 signs your plant is underperforming'), wa: 'Hi SAEL, I\'d like to ask about AMC and cleaning for my solar plant.' },
+    { id: 'blog', k: ['blog', 'article', 'read', 'learn', 'guide', 'tips'], a: () => 'Our blog explains solar in plain words: subsidies, monsoon output, cleaning and more. <a href="' + BLOG + '">Open the SAEL blog</a>.' },
+    { id: 'price', k: ['price', 'cost', 'rate', 'how much', 'quotation', 'quote', 'budget', 'charges', 'kitna'], a: () => 'The price depends on system size, roof and products, so we quote after a free site survey. Share your city and monthly electricity bill on WhatsApp and we\'ll send an estimate.', wa: 'Hi SAEL, I\'d like a quote. My city: ___ , monthly bill: ₹___' },
+    { id: 'finance', k: ['emi', 'loan', 'finance', 'opex', 'capex', 'upfront', 'investment', 'pay later'], a: () => 'Two options: under OpEx, investors fund the system and you pay for the power it produces. Under CapEx, you own the system and we handle installation and liaisoning end to end.', wa: 'Hi SAEL, I\'d like to know about OpEx and CapEx options.' },
+    { id: 'survey', k: ['survey', 'site visit', 'visit', 'book', 'appointment', 'callback', 'call back', 'inspection'], a: () => 'The site survey is free: a consultant checks your roof, shading and power bills. Book it on WhatsApp, or use the <a href="' + HOME + '#contact">callback form</a>.', wa: 'Hi SAEL, I\'d like to book a free site survey.' },
+    { id: 'contact', k: ['address', 'office', 'where', 'location', 'located', 'phone', 'number', 'email', 'contact', 'bangalore', 'bengaluru', 'kerala'], a: () => 'Bangalore: 54/3, Hutchins Road, 2nd Cross, Bangalore 560 084, <a href="tel:+919880703083">+91 98807 03083</a>. Kerala: Pathanamthitta Dist., Kerala 689581, <a href="tel:+919113083917">+91 91130 83917</a>. Email: <a href="mailto:info@saelenergy.com">info@saelenergy.com</a>.', wa: 'Hi SAEL, I have a question.' },
+    { id: 'projects', k: ['project', 'experience', 'work done', 'portfolio', 'mw', 'commercial', 'industrial', 'factory', 'company'], a: () => 'Beyond homes, SAEL builds rooftop and ground-mount systems across South India, and has facilitated 24 MW of wind and 20 MW of solar power in Karnataka. See <a href="' + HOME + '#work">our projects</a>.', wa: 'Hi SAEL, I\'d like to discuss a commercial or industrial project.' }
+  ];
+  const CHIPS = [['Subsidy amount', 'How much subsidy can I get?'], ['Which system?', 'Which system should I choose?'], ['Power cuts', 'What happens in a power cut?'], ['Price', 'How much does it cost?'], ['Low output', 'My solar output has dropped'], ['Solar pump', 'Tell me about solar pumps'], ['Book a survey', 'I want to book a site survey'], ['Talk on WhatsApp', '__wa__']];
+  let started = false, last = null, awaitKw = false;
+  const scroll = () => { log.scrollTop = log.scrollHeight; };
+  const add = (html, who) => { const m = document.createElement('div'); m.className = 'cb-m ' + who; m.innerHTML = html; log.appendChild(m); scroll(); return m; };
+  const esc = t => t.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const botSay = html => { const t = document.createElement('div'); t.className = 'cb-typing'; t.innerHTML = '<i></i><i></i><i></i>'; log.appendChild(t); scroll(); setTimeout(() => { t.remove(); add(html, 'bot'); }, 550); };
+  const match = text => { const t = ' ' + text.toLowerCase() + ' '; let best = null, score = 0;
+    KB.forEach(e => { let s = 0; e.k.forEach(k => { const hit = k.length <= 3 ? new RegExp('\\b' + k + '\\b').test(t) : t.includes(k); if (hit) s += k.length > 4 ? 2 : 1; }); if (s > score) { score = s; best = e; } }); return best; };
+  const subsidy = kw => { const a = Math.min(kw, 2) * 30000, b = kw >= 3 ? 18000 : 0; return a + b; };
+  const reply = text => {
+    const kwm = text.toLowerCase().match(/(\d+(?:\.\d+)?)\s*(kw|kilowatt)?/);
+    if (kwm && (awaitKw || kwm[2])) { const kw = Math.max(1, Math.min(10, Math.floor(+kwm[1]))); awaitKw = false;
+      return botSay('For a ' + kw + ' kW home rooftop system, the central subsidy is about <b>' + inr(subsidy(kw)) + '</b>.' + (kw > 3 ? ' (The subsidy is capped at 3 kW, so it stays at ₹78,000 for bigger systems.)' : '') + ' We confirm it at the free site survey.' + waBtn('Hi SAEL, I\'m looking at a ' + kw + ' kW rooftop system. Can you check my subsidy?', 'Check on WhatsApp')); }
+    const e = match(text); last = e;
+    if (!e) return botSay('I\'m not sure about that one, but our team can help on WhatsApp.' + waBtn('Hi SAEL, I have a question: ' + text));
+    awaitKw = e.id === 'subsidy';
+    botSay(e.a() + (e.wa ? waBtn(e.wa) : ''));
+  };
+  const send = text => { text = text.trim(); if (!text) return;
+    if (text === '__wa__') { add('Talk on WhatsApp', 'me'); return botSay('Sure. Tap below to chat with our team on WhatsApp.' + waBtn('Hi SAEL, I\'d like to talk about solar for my home.', 'Open WhatsApp')); }
+    add(esc(text), 'me'); reply(text); };
+  CHIPS.forEach(([label, q]) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', () => send(q)); qs.appendChild(b); });
+  const setOpen = o => { box.classList.toggle('open', o); box.setAttribute('aria-hidden', String(!o)); fab.setAttribute('aria-expanded', String(o));
+    if (o && !started) { started = true; add('Hi! I\'m the SAEL solar assistant. Ask me about solar for your home or business, the PM Surya Ghar subsidy or a free site survey. For anything specific, our team replies on WhatsApp.', 'bot'); }
+    if (o) setTimeout(() => inp.focus(), 300); else fab.focus(); };
+  fab.addEventListener('click', () => setOpen(true));
+  $('#cbX').addEventListener('click', () => setOpen(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && box.classList.contains('open')) setOpen(false); });
+  form.addEventListener('submit', e => { e.preventDefault(); send(inp.value); inp.value = ''; });
+  log.addEventListener('click', e => { const a = e.target.closest('a[href*="#"]'); if (a && innerWidth <= 860) setOpen(false); });
+})();
+</script>
+</body>
+</html>
