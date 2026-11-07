@@ -18,7 +18,7 @@ const { number, eyebrow, heading, feature, cards, minis } = Astro.props;
     <SectionHeading id="h-w" number={number} eyebrow={eyebrow} heading={heading} />
     <div class="pj">
       {feature && (
-        <article class="feat">
+        <article class="feat" data-motion="clip-right">
           {feature.image && (
             <Photo
               src={feature.image.src}
@@ -37,7 +37,7 @@ const { number, eyebrow, heading, feature, cards, minis } = Astro.props;
           )}
         </article>
       )}
-      <div class="pj-r">
+      <div class="pj-r" data-motion="stagger-right">
         {cards.map((card) => (
           <article class:list={['pc', !card.image && 'no-photo']}>
             {card.image && (

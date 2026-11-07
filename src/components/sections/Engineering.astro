@@ -1,7 +1,7 @@
 ---
 /**
  * 05 · Engineering: photo, text, three figures and a strip of field photos.
- * The strip is static for now; step 7 turns it into the v5 marquee.
+ * The strip is a marquee: the photos repeat once (hidden from screen readers) so the loop is seamless.
  */
 import type { Sections } from '../../lib/schemas/sections';
 import Photo from '../ui/Photo.astro';
@@ -14,7 +14,7 @@ const { number, eyebrow, heading, body, photo, stats, stripLabel, strip } = Astr
 
 <section class="sec flush-top" id="engineering" aria-labelledby="h-e">
   <div class="wrap eng">
-    <div class="pic" data-eng-photo>
+    <div class="pic" data-eng-photo data-motion="mask-down">
       <Photo
         src={photo.image}
         alt={photo.alt}
@@ -36,19 +36,26 @@ const { number, eyebrow, heading, body, photo, stats, stripLabel, strip } = Astr
         {stats.map((stat) => (
           <div class:list={[stat.placeholder && 'todo']}>
             <dt>{stat.label}</dt>
-            <dd>{stat.value}</dd>
+            <dd data-count={/^\d+$/.test(stat.value) ? stat.value : undefined}>{stat.value}</dd>
           </div>
         ))}
       </dl>
     </div>
   </div>
-  <ul class="strip" aria-label={stripLabel} data-strip>
-    {strip.map((item) => (
-      <li>
-        <Photo src={item.image} alt={item.alt} sizes="300px" maxWidth={600} />
-      </li>
-    ))}
-  </ul>
+  <div class="strip" data-strip>
+    <ul class="st" aria-label={stripLabel}>
+      {strip.map((item) => (
+        <li>
+          <Photo src={item.image} alt={item.alt} sizes="300px" maxWidth={600} />
+        </li>
+      ))}
+      {strip.map((item) => (
+        <li aria-hidden="true">
+          <Photo src={item.image} alt="" sizes="300px" maxWidth={600} />
+        </li>
+      ))}
+    </ul>
+  </div>
 </section>
 
 <style>
@@ -122,13 +129,29 @@ const { number, eyebrow, heading, body, photo, stats, stripLabel, strip } = Astr
   }
 
   .strip {
+    margin-top: clamp(56px, 7vw, 96px);
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .st {
     list-style: none;
-    margin: clamp(56px, 7vw, 96px) 0 0;
+    margin: 0;
     padding: 0;
     display: flex;
     gap: 14px;
-    overflow: hidden;
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    width: max-content;
+    animation: mq 50s linear infinite;
+  }
+
+  .strip:hover .st {
+    animation-play-state: paused;
+  }
+
+  @keyframes mq {
+    to {
+      transform: translateX(calc(-50% - 7px));
+    }
   }
 
   .strip li {

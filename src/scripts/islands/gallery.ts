@@ -88,6 +88,7 @@ export function initGallery(root: HTMLElement): void {
   const open = (index: number) => {
     show(index);
     viewer.showModal();
+    document.dispatchEvent(new Event('motion:pause'));
     requestAnimationFrame(() => viewer.classList.add('open'));
   };
 
@@ -112,6 +113,9 @@ export function initGallery(root: HTMLElement): void {
   viewer.addEventListener('click', (e) => {
     if (e.target === viewer) close();
   });
-  viewer.addEventListener('close', () => viewer.classList.remove('open'));
+  viewer.addEventListener('close', () => {
+    viewer.classList.remove('open');
+    document.dispatchEvent(new Event('motion:resume'));
+  });
   root.dataset.ready = 'true';
 }

@@ -16,9 +16,52 @@ html {
   overflow-x: clip;
 }
 
-/* Lenis (step 7) controls scrolling when smooth scroll is on. */
+/* Lenis smooth scroll (lib/motion.ts) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Split headings: each word rises from its own mask (lib/motion.ts). */
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.w > i {
+  display: inline-block;
+  font-style: inherit;
+}
+
+/*
+ * The <head> marks the page "motion-ok" when reduced motion is off, so the hero copy can start
+ * hidden and rise in without a flash. If the motion script never runs (blocked, failed), the copy
+ * appears anyway after 2.5 s. Once motion starts (html.motion-on) this rule stops applying.
+ */
+.motion-ok:not(.motion-on) [data-hero-copy] {
+  opacity: 0;
+  animation: motion-fallback 0s 2.5s forwards;
+}
+
+@keyframes motion-fallback {
+  to {
+    opacity: 1;
+  }
 }
 
 body {

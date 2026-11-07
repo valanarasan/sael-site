@@ -46,9 +46,22 @@ const viewerId = 'gallery-viewer';
       </button>
     </div>
   </div>
-  <ul class="drag" id={trackId} aria-labelledby="h-g" tabindex="0" data-gallery>
+  <ul
+    class="drag"
+    id={trackId}
+    aria-labelledby="h-g"
+    tabindex="0"
+    data-gallery
+    data-motion="slide-in"
+  >
     {items.map((item, i) => (
-      <li class="gi" data-gallery-item data-title={item.title} data-place={item.place}>
+      <li
+        class="gi"
+        data-gallery-item
+        data-cursor="Drag"
+        data-title={item.title}
+        data-place={item.place}
+      >
         <figure>
           <div class="im">
             <Photo
@@ -77,6 +90,7 @@ const viewerId = 'gallery-viewer';
 
   <dialog
     class="lb"
+    data-lenis-prevent
     id={viewerId}
     aria-label={controls.viewer}
     data-gallery-viewer

@@ -12,7 +12,7 @@ const { id, links, email, phone } = Astro.props;
 const titleId = `${id}-title`;
 ---
 
-<dialog class="sheet" id={id} aria-labelledby={titleId} data-menu-sheet>
+<dialog class="sheet" data-lenis-prevent id={id} aria-labelledby={titleId} data-menu-sheet>
   <div class="sc" data-menu-close aria-hidden="true"></div>
   <div class="sp">
     <h2 class="sr-only" id={titleId}>
@@ -59,6 +59,7 @@ const titleId = `${id}-title`;
       window.clearTimeout(closeTimer);
       sheet.showModal();
       document.documentElement.classList.add('menu-open');
+      document.dispatchEvent(new Event('motion:pause'));
       setExpanded(true);
       // Next frame so the slide-in transition runs from the closed position.
       requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add('open')));
@@ -68,6 +69,7 @@ const titleId = `${id}-title`;
       if (!sheet.open) return;
       sheet.classList.remove('open');
       document.documentElement.classList.remove('menu-open');
+      document.dispatchEvent(new Event('motion:resume'));
       setExpanded(false);
       if (reducedMotion.matches || !panel) {
         finishClose();

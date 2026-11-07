@@ -1,5 +1,5 @@
 ---
-/** Teal numbers band with the outlined ticker. The ticker is static until step 7. */
+/** Teal numbers band with the outlined ticker (a marquee; the words repeat once to loop). */
 import type { Sections } from '../../lib/schemas/sections';
 
 type Props = Sections['numbers'];
@@ -8,15 +8,22 @@ const { label, stats, ticker } = Astro.props;
 ---
 
 <section class="band on-dark" aria-label={label}>
-  <dl class="wrap nums">
+  <dl class="wrap nums" data-motion="stagger-up" data-motion-distance="60">
     {stats.map((stat) => (
       <div class:list={[stat.placeholder && 'todo']}>
         <dt>{stat.label}</dt>
-        <dd>{stat.value}</dd>
+        <dd data-count={/^\d+$/.test(stat.value) ? stat.value : undefined}>{stat.value}</dd>
       </div>
     ))}
   </dl>
   <div class="ticker" aria-hidden="true" data-ticker>
+    <span>
+      {ticker.map((word) => (
+        <>
+          {word} <em>·</em>{' '}
+        </>
+      ))}
+    </span>
     <span>
       {ticker.map((word) => (
         <>
@@ -80,8 +87,15 @@ const { label, stats, ticker } = Astro.props;
     font: 700 clamp(36px, 5vw, 76px) var(--f-disp);
     letter-spacing: -0.04em;
     white-space: nowrap;
+    animation: mq 30s linear infinite;
     color: transparent;
     -webkit-text-stroke: 1px rgba(191, 230, 223, 0.45);
+  }
+
+  @keyframes mq {
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   .ticker span {

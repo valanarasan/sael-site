@@ -9,7 +9,7 @@ const { label, items } = Astro.props;
 ---
 
 <section class="hl" aria-label={label}>
-  <ul class="wrap hl-in">
+  <ul class="wrap hl-in" data-motion="stagger-up">
     {items.map((item) => (
       <li>
         <span class="hi">

@@ -9,11 +9,11 @@ const { number, eyebrow, heading, steps, tracker } = Astro.props;
 ---
 
 <section class="sec flush-top" id="process" aria-labelledby="h-pro">
-  <div class="wrap">
+  <div class="wrap" data-motion-tracker>
     <SectionHeading id="h-pro" number={number} eyebrow={eyebrow} heading={heading} />
-    <ol class="steps">
+    <ol class="steps" data-motion="stagger-up" data-motion-distance="70">
       {steps.map((step, i) => (
-        <li>
+        <li data-step>
           <span class="sn" aria-hidden="true">
             {String(i + 1).padStart(2, '0')}
           </span>
@@ -28,7 +28,9 @@ const { number, eyebrow, heading, steps, tracker } = Astro.props;
       </span>
       <ol class="tk" aria-labelledby="tk-label">
         {tracker.stages.map((stage, i) => (
-          <li class:list={[i === 0 && 'on']}>{stage}</li>
+          <li class:list={[i === 0 && 'on']} data-stage>
+            {stage}
+          </li>
         ))}
       </ol>
     </div>

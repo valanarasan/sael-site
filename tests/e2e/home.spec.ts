@@ -9,8 +9,12 @@ test.describe('home page sections', () => {
   test('has one h1 and the sections in v5 order', async ({ page }) => {
     await expect(page.locator('h1')).toHaveCount(1);
     const ids = await page
-      .locator('main > section')
-      .evaluateAll((els) => els.map((el) => el.id || el.getAttribute('aria-label')));
+      .locator('main section')
+      .evaluateAll((els) =>
+        els
+          .filter((el) => !el.parentElement?.closest('section'))
+          .map((el) => el.id || el.getAttribute('aria-label')),
+      );
     expect(ids).toEqual([
       'home',
       'What every SAEL installation includes',
@@ -49,14 +53,17 @@ test.describe('home page sections', () => {
   test('every image has alt text and a size, and only the first hero image loads eagerly', async ({
     page,
   }) => {
+    // Marquee copies are hidden from screen readers and have empty alt text on purpose.
     const imgs = await page.locator('main img').evaluateAll((els) =>
-      els.map((img) => ({
-        alt: img.getAttribute('alt'),
-        width: img.getAttribute('width'),
-        height: img.getAttribute('height'),
-        loading: img.getAttribute('loading'),
-        priority: img.getAttribute('fetchpriority'),
-      })),
+      els
+        .filter((img) => !img.closest('[aria-hidden="true"]'))
+        .map((img) => ({
+          alt: img.getAttribute('alt'),
+          width: img.getAttribute('width'),
+          height: img.getAttribute('height'),
+          loading: img.getAttribute('loading'),
+          priority: img.getAttribute('fetchpriority'),
+        })),
     );
     expect(imgs.length).toBeGreaterThan(20);
     for (const img of imgs) {

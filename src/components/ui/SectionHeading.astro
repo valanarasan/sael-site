@@ -22,7 +22,7 @@ const { id, number, eyebrow, heading, layout = 'stack', class: className } = Ast
     {number !== undefined && ' · '}
     {eyebrow}
   </p>
-  <h2 id={id}>
+  <h2 id={id} data-split>
     <RichText segments={parseAccent(heading)} />
   </h2>
 </div>

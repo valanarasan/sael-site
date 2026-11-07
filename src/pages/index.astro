@@ -87,3 +87,10 @@ const { contact } = sections;
   />
   <DayNight number={next()} {...sections.dayNight} />
 </BaseLayout>
+
+<script>
+  // GSAP, ScrollTrigger and Lenis download only when the visitor allows motion.
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    void import('../lib/motion').then((m) => m.initMotion());
+  }
+</script>

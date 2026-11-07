@@ -52,7 +52,13 @@ const [first] = slides;
   <div class="h-win" data-hero-window>
     <div class="h-track" data-hero-track role="region" aria-label={slidesLabel} tabindex="0">
       {slides.map((slide, i) => (
-        <div class="h-slide" data-hero-slide>
+        <div
+          class="h-slide"
+          data-hero-slide
+          data-tag={slide.tag}
+          data-title={slide.title}
+          data-credit={`Photo · ${slide.credit}`}
+        >
           <Photo
             src={slide.image}
             alt={slide.alt}
@@ -74,7 +80,7 @@ const [first] = slides;
         <span class="tg" data-hero-tag>
           {first.tag}
         </span>
-        <span class="ticks" aria-hidden="true">
+        <span class="ticks" aria-hidden="true" data-hero-ticks>
           {slides.map((_, i) => (
             <i class:list={[i === 0 && 'on']} />
           ))}
