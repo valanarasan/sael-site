@@ -13,6 +13,9 @@ export default defineConfig({
   use: {
     baseURL,
     trace: 'on-first-retry',
+    // Functional and accessibility checks run on the finished, static page.
+    // tests/e2e/motion.spec.ts turns motion back on to test the animations themselves.
+    reducedMotion: 'reduce',
   },
   // The two widths CLAUDE.md asks us to check against v5.
   projects: [

@@ -37,6 +37,11 @@ const menuId = 'menu-sheet';
 <html lang="en-IN">
   <head>
     <meta charset="utf-8" />
+    <script is:inline>
+      // Before first paint: allow the hero intro unless the visitor prefers reduced motion.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+        document.documentElement.classList.add('motion-ok');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />

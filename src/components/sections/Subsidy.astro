@@ -49,7 +49,7 @@ const {
         class="sub-hd"
       />
       <p class="sub-in">{intro}</p>
-      <dl class="slabs">
+      <dl class="slabs" data-motion="stagger-left">
         {slabs.map((s) => (
           <div>
             <dt>{s.label}</dt>
@@ -57,7 +57,7 @@ const {
           </div>
         ))}
       </dl>
-      <ul class="handle">
+      <ul class="handle" data-motion="stagger-left">
         {handles.map((h) => (
           <li>{h}</li>
         ))}

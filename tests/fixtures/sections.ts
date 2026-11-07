@@ -154,6 +154,10 @@ export const sectionsFixture = {
     night: { image: fakeImage('night'), alt: 'A home at night', tag: 'Night', text: 'Battery.' },
     credit: 'Unsplash',
   },
+  progress: [
+    { id: 'home', label: 'Home' },
+    { id: 'faq', label: 'FAQs' },
+  ],
   blog: {
     eyebrow: 'Blog',
     heading: 'Solar, *explained*.',

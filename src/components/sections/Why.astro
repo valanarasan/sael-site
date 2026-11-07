@@ -13,7 +13,7 @@ const { number, eyebrow, heading, feature, tiles } = Astro.props;
 <section class="sec flush-top" id="capabilities" aria-labelledby="h-c">
   <div class="wrap">
     <SectionHeading id="h-c" number={number} eyebrow={eyebrow} heading={heading} />
-    <div class="bento">
+    <div class="bento" data-motion="flip">
       <div class="bx big">
         <Photo
           src={feature.image}

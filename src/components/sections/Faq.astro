@@ -31,7 +31,7 @@ const { number, eyebrow, heading, intro, items } = Astro.props;
         <RichText segments={intro} />
       </p>
     </div>
-    <div class="qa">
+    <div class="qa" data-motion="stagger-up" data-motion-distance="30">
       {items.map((item, i) => (
         <details name="faq" open={i === 0}>
           <summary>{item.question}</summary>

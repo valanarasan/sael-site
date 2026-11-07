@@ -33,7 +33,7 @@ const data: CalculatorData = {
 };
 ---
 
-<div class="calc on-dark" data-calculator>
+<div class="calc on-dark" data-calculator data-motion="tilt-up">
   <script type="application/json" data-island="calculator" set:html={toIslandJson(data)} />
   <div class="calc-h">
     <span class="lbl">{c.label}</span>

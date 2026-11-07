@@ -238,6 +238,11 @@ export const sectionsSchema = (image: ImageField) => {
       credit: z.string().max(120),
     }),
 
+    /** Short names for the progress pill (desktop), in page order, keyed by section id. */
+    progress: z
+      .array(z.object({ id: z.string().regex(/^[a-z][a-z-]*$/), label: z.string().min(1).max(24) }))
+      .min(1),
+
     blog: z.object({
       eyebrow,
       heading,

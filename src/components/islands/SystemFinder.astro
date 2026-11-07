@@ -25,7 +25,7 @@ const {
 } = Astro.props;
 ---
 
-<div class="finder on-dark" data-finder>
+<div class="finder on-dark" data-finder data-motion="tilt-up">
   <script type="application/json" data-island="finder" set:html={toIslandJson(results)} />
   <p class="lbl">{label}</p>
   <div class="fq">

@@ -485,6 +485,52 @@
     },
     "credit": "Photos · The Dimensions, Naksha Banwao / Unsplash"
   },
+  "progress": [
+    {
+      "id": "home",
+      "label": "Home"
+    },
+    {
+      "id": "systems",
+      "label": "Compare"
+    },
+    {
+      "id": "subsidy",
+      "label": "Subsidy"
+    },
+    {
+      "id": "process",
+      "label": "How it works"
+    },
+    {
+      "id": "capabilities",
+      "label": "Why SAEL"
+    },
+    {
+      "id": "engineering",
+      "label": "Engineering"
+    },
+    {
+      "id": "gallery",
+      "label": "Gallery"
+    },
+    {
+      "id": "work",
+      "label": "Projects"
+    },
+    {
+      "id": "faq",
+      "label": "FAQs"
+    },
+    {
+      "id": "contact",
+      "label": "Contact"
+    },
+    {
+      "id": "compare",
+      "label": "Day & night"
+    }
+  ],
   "blog": {
     "eyebrow": "SAEL Blog",
     "heading": "Solar, *explained*.",

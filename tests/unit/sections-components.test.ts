@@ -176,9 +176,11 @@ describe('Contact', () => {
 
   it('keeps the video muted, not autoplaying, and hidden from screen readers', async () => {
     const html = await render(Contact, props);
-    expect(html).toMatch(
-      /<video class="bg" muted loop playsinline preload="none" poster="[^"]+" aria-hidden="true"/,
-    );
+    const video = html.match(/<video[^>]*>/)?.[0] ?? '';
+    for (const attr of ['muted', 'loop', 'playsinline', 'preload="none"', 'aria-hidden="true"']) {
+      expect(video, attr).toContain(attr);
+    }
+    expect(video).toMatch(/poster="[^"]+"/);
     expect(html).not.toMatch(/<video[^>]*autoplay/);
   });
 
