@@ -1,0 +1,181 @@
+---
+/** Site footer: company summary, link columns, offices, big SAEL wordmark and credits. */
+import type { FooterProps } from '../../lib/view-models/chrome';
+import Logo from '../ui/Logo.astro';
+
+type Props = FooterProps;
+
+const { homeHref, logoAlt, summary, columns, offices, email, copyright, credits } = Astro.props;
+---
+
+<footer data-mbar-hide>
+  <div class="wrap">
+    <div class="fg">
+      <div class="fc">
+        <div class="brand">
+          <Logo href={homeHref} alt={logoAlt} height={72} />
+        </div>
+        <p>{summary}</p>
+      </div>
+      {columns.map((column) => (
+        <nav class="fc" aria-label={column.title}>
+          <h2>{column.title}</h2>
+          {column.links.map((link) => (
+            <a href={link.href}>{link.label}</a>
+          ))}
+        </nav>
+      ))}
+      <div class="fc">
+        <h2>Offices</h2>
+        {offices.map((office) => (
+          <p class="office">
+            <b>{office.name}</b>
+            {office.address && <> · {office.address}</>}
+            {office.phone && (
+              <>
+                {' · '}
+                <a class="inl" href={office.phone.href}>
+                  {office.phone.label}
+                </a>
+              </>
+            )}
+            {office.email && (
+              <>
+                {' · '}
+                <a class="inl" href={office.email.href}>
+                  {office.email.label}
+                </a>
+              </>
+            )}
+          </p>
+        ))}
+        <p class="office">
+          <a class="inl" href={email.href}>
+            {email.label}
+          </a>
+        </p>
+      </div>
+    </div>
+    <p class="wm" aria-hidden="true">
+      <span>S</span>
+      <span>A</span>
+      <span>E</span>
+      <span>L</span>
+    </p>
+    <div class="fb">
+      <span>{copyright}</span>
+    </div>
+    {credits && <p class="cred">{credits}</p>}
+  </div>
+</footer>
+
+<style>
+  footer {
+    padding-block: clamp(80px, 9vw, 120px) 30px;
+    border-top: 1px solid var(--line);
+  }
+
+  .fg {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1.4fr;
+    gap: 40px;
+  }
+
+  .brand {
+    margin-bottom: 14px;
+    padding: 5px 0; /* v5: the footer logo link picks up .fc a padding */
+  }
+
+  .fc h2 {
+    margin: 0 0 16px;
+    font: 500 12px var(--f-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .fc a {
+    display: block;
+    padding: 5px 0;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .fc a:hover {
+    color: var(--copper);
+  }
+
+  /* Links inside running text need more than colour to stand out (WCAG 1.4.1); v5 had colour only. */
+  .fc a.inl {
+    display: inline;
+    padding: 0;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: rgba(11, 31, 34, 0.35);
+    text-underline-offset: 3px;
+  }
+
+  .fc a.inl:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .fc p {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .office + .office {
+    margin-top: 10px;
+  }
+
+  .wm {
+    margin-top: clamp(60px, 8vw, 110px);
+    font: 800 clamp(100px, 24vw, 380px) / 0.76 var(--f-disp);
+    letter-spacing: -0.07em;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .wm span {
+    display: inline-block;
+  }
+
+  .fb {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 28px;
+    font: 500 11px var(--f-mono);
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .cred {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 110ch;
+  }
+
+  @media (max-width: 1020px) {
+    .fg {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 860px) {
+    footer {
+      padding-bottom: 96px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .fg {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

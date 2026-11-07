@@ -1,0 +1,151 @@
+---
+/** v5 button: fill rises from the bottom on hover; optional sliding arrow. Renders a link. */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'class'> {
+  href: string;
+  variant?: 'ink' | 'cop' | 'line' | 'paper';
+  size?: 'sm' | 'md';
+  arrow?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'ink',
+  size = 'md',
+  arrow = false,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<a href={href} class:list={['btn', `b-${variant}`, `s-${size}`, className]} {...rest}>
+  <slot />
+  {arrow && <span class="ar" aria-hidden="true"></span>}
+</a>
+
+<style>
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 50px;
+    padding: 0 24px;
+    border-radius: 12px;
+    border: 0;
+    cursor: pointer;
+    text-decoration: none;
+    font: 600 15px var(--f-disp);
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.5s var(--ease);
+  }
+
+  .s-sm {
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 14px;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0;
+    z-index: -1;
+    transition: height 0.55s var(--ease);
+  }
+
+  .btn:hover::before {
+    height: 100%;
+  }
+
+  .b-ink {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .b-ink::before {
+    background: var(--copper);
+  }
+
+  .b-ink:hover {
+    color: #fff;
+  }
+
+  .b-cop {
+    background: var(--copper);
+    color: #fff;
+  }
+
+  .b-cop::before {
+    background: var(--ink);
+  }
+
+  .b-cop:hover {
+    color: #fff;
+  }
+
+  .b-line {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1.5px var(--ink);
+  }
+
+  .b-line::before {
+    background: var(--ink);
+  }
+
+  .b-line:hover {
+    color: var(--paper);
+  }
+
+  .b-paper {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .b-paper::before {
+    background: var(--copper);
+  }
+
+  .b-paper:hover {
+    color: #fff;
+  }
+
+  .ar {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ar::before,
+  .ar::after {
+    content: '→';
+    /* Plus Jakarta Sans has no arrow; use the system font as v5 does, not the metric fallback. */
+    font-family: system-ui, sans-serif;
+    position: absolute;
+    inset: 0;
+    line-height: 18px;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .ar::after {
+    transform: translateX(-120%);
+  }
+
+  .btn:hover .ar::before {
+    transform: translateX(120%);
+  }
+
+  .btn:hover .ar::after {
+    transform: translateX(0);
+  }
+</style>
