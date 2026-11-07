@@ -1,0 +1,43 @@
+---
+/** Numbered eyebrow ("01 · Compare systems") and an h2 whose *accent* words are set in serif italic. */
+import { parseAccent } from '../../lib/text';
+import RichText from './RichText.astro';
+
+interface Props {
+  id: string;
+  number?: number;
+  eyebrow: string;
+  heading: string;
+  /** "stack" is v5's .hd2 block with space below; "inline" leaves layout to the parent. */
+  layout?: 'stack' | 'inline';
+  class?: string;
+}
+
+const { id, number, eyebrow, heading, layout = 'stack', class: className } = Astro.props;
+---
+
+<div class:list={[layout === 'stack' && 'hd2', className]}>
+  <p class="lbl">
+    {number !== undefined && <b>{String(number).padStart(2, '0')}</b>}
+    {number !== undefined && ' · '}
+    {eyebrow}
+  </p>
+  <h2 id={id}>
+    <RichText segments={parseAccent(heading)} />
+  </h2>
+</div>
+
+<style>
+  .hd2 {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 44px;
+  }
+
+  .hd2 h2 {
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 0.98;
+    max-width: 16ch;
+  }
+</style>

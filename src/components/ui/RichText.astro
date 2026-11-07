@@ -1,0 +1,29 @@
+---
+/**
+ * Renders text segments: plain text, the serif italic accent (<em class="s">) and links.
+ * Content never becomes raw HTML. External links open in a new tab with noopener noreferrer.
+ */
+import type { Segment } from '../../lib/text';
+
+interface Props {
+  segments: Segment[];
+}
+
+const { segments } = Astro.props;
+---
+
+{segments.map((s) =>
+  s.kind === 'accent' ? (
+    <em class="s">{s.text}</em>
+  ) : s.kind === 'link' ? (
+    s.external ? (
+      <a href={s.href} target="_blank" rel="noopener noreferrer">
+        {s.text}
+      </a>
+    ) : (
+      <a href={s.href}>{s.text}</a>
+    )
+  ) : (
+    s.text
+  ),
+)}
