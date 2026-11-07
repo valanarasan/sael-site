@@ -1,0 +1,27 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# test output
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.lighthouseci/
+
+# environment (keep .env.example committed)
+.env
+.env.*
+!.env.example
+
+# logs
+npm-debug.log*
+
+# OS / editors
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
