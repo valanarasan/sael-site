@@ -144,10 +144,50 @@ test.describe('with motion', () => {
     await expect(count).toHaveText('3', { timeout: 5000 });
   });
 
+  // Pinning the hero adds several screens above every section, after the browser has already jumped.
+  for (const [path, id] of [
+    ['/#contact', 'contact'],
+    ['/#faq', 'faq'],
+    ['/#systems', 'systems'],
+    ['/contact', 'contact'],
+    ['/projects', 'work'],
+  ] as const) {
+    test(`landing on ${path} stops at the section`, async ({ page }) => {
+      await page.goto(path);
+      await expect(page.locator('html')).toHaveClass(/motion-on/);
+      await page.waitForLoadState('networkidle');
+      const distance = () =>
+        page.locator(`#${id}`).evaluate((el) => Math.abs(el.getBoundingClientRect().top));
+      await expect.poll(distance).toBeLessThan(150);
+      await page.waitForTimeout(1000);
+      expect(await distance()).toBeLessThan(150);
+    });
+  }
+
+  test('does not pull a visitor back once they start scrolling', async ({ page }) => {
+    await page.goto('/#faq');
+    await expect(page.locator('html')).toHaveClass(/motion-on/);
+    await page.waitForLoadState('networkidle');
+    const top = () => page.locator('#faq').evaluate((el) => el.getBoundingClientRect().top);
+    await expect.poll(async () => Math.abs(await top())).toBeLessThan(150);
+    await page.mouse.move(100, 400);
+    await page.mouse.wheel(0, 900);
+    await expect.poll(top).toBeLessThan(-300);
+    // A resize makes the pinned hero measure itself again, which must not re-run the landing jump.
+    const size = page.viewportSize();
+    if (!size) throw new Error('no viewport');
+    await page.setViewportSize({ width: size.width, height: size.height + 40 });
+    await page.waitForTimeout(800);
+    expect(await top()).toBeLessThan(-150);
+  });
+
   test('plays the contact video only while it is on screen', async ({ page }) => {
     await page.goto('/');
     const video = page.locator('video[data-contact-video]');
     expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+    // Pinning the hero makes the page longer, so wait for it before scrolling to the section.
+    await expect(page.locator('html')).toHaveClass(/motion-on/);
+    await page.waitForLoadState('load');
     await page.locator('#contact').scrollIntoViewIfNeeded();
     await expect
       .poll(() => video.evaluate((v: HTMLVideoElement) => !v.paused), { timeout: 5000 })
