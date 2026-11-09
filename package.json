@@ -20,6 +20,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
+    "test:lighthouse": "lhci autorun",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -39,6 +40,7 @@
     "@astrojs/check": "0.9.12",
     "@axe-core/playwright": "4.14.0",
     "@eslint/js": "10.0.1",
+    "@lhci/cli": "0.15.1",
     "@playwright/test": "1.65.0",
     "@types/node": "24.19.2",
     "@vitest/coverage-v8": "5.1.0",
