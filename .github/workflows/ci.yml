@@ -44,7 +44,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
@@ -65,7 +65,7 @@ jobs:
       - run: npm run build
       - name: Mobile Lighthouse, served as a host would (HTTP/2 + gzip)
         run: npm run test:lighthouse
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: lighthouse-reports
