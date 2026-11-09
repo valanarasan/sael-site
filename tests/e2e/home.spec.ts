@@ -80,7 +80,12 @@ test.describe('home page sections', () => {
     const types = await page
       .locator('main picture source')
       .evaluateAll((els) => [...new Set(els.map((s) => s.getAttribute('type')))]);
-    expect(types.sort()).toEqual(['image/avif', 'image/webp']);
+    expect(types).toEqual(['image/avif']);
+    const fallbacks = await page
+      .locator('main picture img')
+      .evaluateAll((els) => els.map((img) => img.getAttribute('src') ?? ''));
+    expect(fallbacks.length).toBeGreaterThan(5);
+    expect(fallbacks.every((src) => src.endsWith('.webp'))).toBe(true);
   });
 
   test('keeps placeholder content visibly marked', async ({ page }) => {

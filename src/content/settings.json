@@ -24,7 +24,12 @@
       "phone": {
         "display": "+91 98807 03083",
         "e164": "+919880703083"
-      }
+      },
+      "street": "54/3, Hutchins Road, 2nd Cross",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "postalCode": "560084",
+      "country": "IN"
     },
     {
       "name": "Kerala",
@@ -32,7 +37,12 @@
       "phone": {
         "display": "+91 91130 83917",
         "e164": "+919113083917"
-      }
+      },
+      "street": "No. 4/330, Pallickaparambil, Karakkadu, Kunnamthanam PO",
+      "city": "Pathanamthitta",
+      "state": "Kerala",
+      "postalCode": "689581",
+      "country": "IN"
     },
     {
       "name": "New Zealand",

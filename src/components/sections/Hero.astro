@@ -4,6 +4,7 @@
  * Static for now: the window shows slide 1 with its caption. Step 7 adds the pinned
  * expand-and-slide animation. On phones the slides are a swipeable scroll-snap row.
  */
+import { HERO_PHOTO } from '../../lib/photo';
 import type { Sections } from '../../lib/schemas/sections';
 import { parseAccent } from '../../lib/text';
 import Button from '../ui/Button.astro';
@@ -62,9 +63,9 @@ const [first] = slides;
           <Photo
             src={slide.image}
             alt={slide.alt}
-            sizes="(max-width: 860px) 110vh, 100vw"
+            sizes={HERO_PHOTO.sizes}
             priority={i === 0}
-            maxWidth={2560}
+            maxWidth={HERO_PHOTO.maxWidth}
           />
         </div>
       ))}

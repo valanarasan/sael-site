@@ -10,7 +10,64 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   // Current SAEL domain (from v5). Used for canonical URLs and the sitemap; revisit when hosting is set up.
   site: 'https://saelenergy.com',
-  trailingSlash: 'ignore',
+  // One address per page: /blog, not /blog/. Matches the links, canonical tags and sitemap.
+  trailingSlash: 'never',
+
+  // Pages of the current WordPress site (saelenergy.com/wp-sitemap.xml) that have a home here, so
+  // old links and Google results keep working. Its leftovers (/hello-world, /sample-page, /footer,
+  // /a-homepage-section, /category/uncategorized) are left to return 404. Mapping to be confirmed
+  // by SAEL.
+  redirects: {
+    '/about': '/#capabilities',
+    '/who-we-are': '/#capabilities',
+    '/contact': '/#contact',
+    '/connect-with-us': '/#contact',
+    '/solar-roof-top': '/#systems',
+    '/epc': '/#process',
+    '/om': '/#process',
+    '/faqs': '/#faq',
+    '/projects': '/#work',
+    '/development-support-services': '/',
+    '/power-purchase': '/',
+    '/legal-disclaimer': '/',
+    '/site-map': '/',
+  },
+
+  // AVIF at 40 rather than the default 50: about 30% smaller for the LCP budget on phones, with
+  // only slight softening in fine detail. WebP and JPEG, the fallbacks, keep their defaults.
+  image: {
+    service: { entrypoint: 'astro/assets/services/sharp', config: { avif: { quality: 40 } } },
+  },
+
+  // Articles have no code samples, and Shiki's inline styles would break the Content Security Policy.
+  markdown: { syntaxHighlight: false },
+
+  security: {
+    // Hosts trusted in X-Forwarded-* headers behind a proxy. Without this the enquiry route sees the
+    // proxy's address, so the origin check fails and every visitor shares one rate limit.
+    allowedDomains: [
+      { hostname: 'saelenergy.com', protocol: 'https' },
+      { hostname: 'www.saelenergy.com', protocol: 'https' },
+    ],
+    // Printed as a <meta> tag on every page, with hashes for that page's inline scripts and styles.
+    // Only frame-ancestors can't go in a meta tag: see server/security-headers.mjs. Turnstile is the
+    // one third party: its script and its challenge frame.
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self'",
+        "font-src 'self'",
+        "media-src 'self'",
+        "connect-src 'self'",
+        'frame-src https://challenges.cloudflare.com',
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+      ],
+      scriptDirective: { resources: ["'self'", 'https://challenges.cloudflare.com'] },
+      styleDirective: { resources: ["'self'"] },
+    },
+  },
 
   // Fonts API: files are downloaded at build time and served from the site itself (no font CDN at runtime).
   // Only the weights and styles v5 uses, font-display: swap. latin-ext is included for the

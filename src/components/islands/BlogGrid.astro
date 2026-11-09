@@ -4,6 +4,7 @@
  * script hides cards outside the chosen topic and tells screen readers how many remain. Opening
  * /blog#<slug> (the chat links drafts this way) clears a filter that would hide that card.
  */
+import { LEAD_POST_PHOTO } from '../../lib/photo';
 import type { BlogTopic } from '../../lib/schemas/blog';
 import type { PostCardProps } from '../../lib/view-models/blog';
 import PostCard from '../ui/PostCard.astro';
@@ -54,7 +55,7 @@ const { posts, topics, labels } = Astro.props;
           priority={i === 0}
           sizes={
             i === 0
-              ? '(max-width: 640px) calc(100vw - 32px), (max-width: 1020px) 52vw, 40vw'
+              ? LEAD_POST_PHOTO.sizes
               : '(max-width: 640px) calc(100vw - 32px), (max-width: 1020px) 46vw, 30vw'
           }
         />

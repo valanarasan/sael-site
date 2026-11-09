@@ -35,7 +35,8 @@ const chrome = toChrome(settings, Astro.url.pathname, new Date().getFullYear());
 
 const pageTitle = title ? `${title} · ${settings.company.name}` : settings.seo.title;
 const pageDescription = description ?? settings.seo.description;
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+// A page that asks not to be indexed has no preferred address to point search engines at.
+const canonical = Astro.site && !noindex ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 const menuId = 'menu-sheet';
 
 const share = image ? await getImage({ src: image.src, ...SHARE_IMAGE }) : undefined;

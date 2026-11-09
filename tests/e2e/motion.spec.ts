@@ -186,6 +186,11 @@ test.describe('with reduced motion', () => {
     expect(
       await page.locator('video[data-contact-video]').evaluate((v: HTMLVideoElement) => v.paused),
     ).toBe(true);
+    const poster = page.locator('#contact .bg img');
+    await expect(poster).toBeVisible();
+    await expect
+      .poll(() => poster.evaluate((img: HTMLImageElement) => img.naturalWidth))
+      .toBeGreaterThan(0);
   });
 
   test('never shows the custom cursor', async ({ page }) => {

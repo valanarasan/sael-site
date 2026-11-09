@@ -264,6 +264,28 @@ content:
           - name: email
             label: Email address
             type: string
+          - name: street
+            label: 'For Google: street'
+            type: string
+            description: 'The address again, split up for search results. Fill in all five of these or leave them all empty; an office without them is not listed.'
+            options: { maxlength: 120 }
+          - name: city
+            label: 'For Google: town or city'
+            type: string
+            options: { maxlength: 60 }
+          - name: state
+            label: 'For Google: state'
+            type: string
+            options: { maxlength: 60 }
+          - name: postalCode
+            label: 'For Google: PIN or postcode'
+            type: string
+            options: { maxlength: 12 }
+          - name: country
+            label: 'For Google: country code'
+            type: string
+            description: 'Two capital letters, such as IN.'
+            options: { maxlength: 2 }
       - name: primaryCta
         label: Main button (top bar and mobile bar)
         component: link
@@ -1305,6 +1327,35 @@ content:
                   - name: whatsappMessage
                     component: whatsappMessage
                     description: 'The message already typed for the visitor. {title} becomes the article title.'
+      - name: section-not-found
+        label: Page not found text
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: notFound
+            label: false
+            type: object
+            required: true
+            fields:
+              - {
+                  name: title,
+                  label: Title,
+                  type: string,
+                  required: true,
+                  options: { maxlength: 80 },
+                }
+              - name: text
+                label: Text
+                component: tokenText
+                options: { maxlength: 400 }
+              - {
+                  name: backLabel,
+                  label: Back button,
+                  type: string,
+                  required: true,
+                  options: { maxlength: 40 },
+                }
 
   - name: blog
     label: Blog articles

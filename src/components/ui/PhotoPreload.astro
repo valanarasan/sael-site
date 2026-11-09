@@ -1,0 +1,32 @@
+---
+/**
+ * Preload hint for a page's main photo, for the <head>. AVIF only: browsers that can't use it
+ * ignore the hint and fall back to the <picture> as usual.
+ */
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import { photoWidths } from '../../lib/photo';
+
+interface Props {
+  src: ImageMetadata;
+  sizes: string;
+  maxWidth?: number;
+}
+
+const { src, sizes, maxWidth } = Astro.props;
+const image = await getImage({
+  src,
+  widths: photoWidths(src.width, maxWidth),
+  sizes,
+  format: 'avif',
+});
+---
+
+<link
+  rel="preload"
+  as="image"
+  type="image/avif"
+  imagesrcset={image.srcSet.attribute}
+  imagesizes={sizes}
+  fetchpriority="high"
+/>
