@@ -2,6 +2,15 @@ import { expect, test, type Page } from '@playwright/test';
 
 const isDesktop = (page: Page) => (page.viewportSize()?.width ?? 0) > 860;
 
+/**
+ * Pinning the hero makes the page several screens longer, which moves every section. On a real
+ * network that can happen after a test has scrolled, so wait for it before scrolling to a section.
+ */
+async function pinningDone(page: Page) {
+  await expect(page.locator('html')).toHaveClass(/motion-on/);
+  await page.waitForLoadState('load');
+}
+
 /** Wheels down until smooth scrolling really reaches the bottom, so every effect has run. */
 async function scrollThrough(page: Page) {
   const atBottom = () =>
@@ -131,7 +140,7 @@ test.describe('with motion', () => {
 
   test('the gallery row is not left scrolled after its cards slide in', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('html')).toHaveClass(/motion-on/);
+    await pinningDone(page);
     await page.locator('#gallery').scrollIntoViewIfNeeded();
     await page.waitForTimeout(2600);
     expect(await page.locator('[data-gallery]').evaluate((el) => el.scrollLeft)).toBe(0);
@@ -140,6 +149,7 @@ test.describe('with motion', () => {
   test('counts the offices up to 3', async ({ page }) => {
     await page.goto('/');
     const count = page.locator('.band [data-count]');
+    await pinningDone(page);
     await count.scrollIntoViewIfNeeded();
     await expect(count).toHaveText('3', { timeout: 5000 });
   });
@@ -185,9 +195,7 @@ test.describe('with motion', () => {
     await page.goto('/');
     const video = page.locator('video[data-contact-video]');
     expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
-    // Pinning the hero makes the page longer, so wait for it before scrolling to the section.
-    await expect(page.locator('html')).toHaveClass(/motion-on/);
-    await page.waitForLoadState('load');
+    await pinningDone(page);
     await page.locator('#contact').scrollIntoViewIfNeeded();
     await expect
       .poll(() => video.evaluate((v: HTMLVideoElement) => !v.paused), { timeout: 5000 })
@@ -198,13 +206,17 @@ test.describe('with motion', () => {
     test.skip(!isDesktop(page), 'mouse only');
     await page.goto('/');
     const dot = page.locator('[data-cursor-dot]');
+    await pinningDone(page);
     await page.locator('#gallery').scrollIntoViewIfNeeded();
-    const box = await page.locator('[data-gallery-item]').first().boundingBox();
-    if (!box) throw new Error('no gallery item');
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await page.mouse.move(box.x + box.width / 2 + 5, box.y + box.height / 2);
+    // The cards slide in as the section arrives, so keep aiming until the pointer lands on one.
+    await expect(async () => {
+      const box = await page.locator('[data-gallery-item]').first().boundingBox();
+      if (!box) throw new Error('no gallery item');
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await page.mouse.move(box.x + box.width / 2 + 5, box.y + box.height / 2);
+      await expect(dot).toHaveClass(/big/, { timeout: 500 });
+    }).toPass({ timeout: 8000 });
     await expect(dot).toHaveClass(/on/);
-    await expect(dot).toHaveClass(/big/);
     await expect(dot).toHaveText('Drag');
   });
 });
