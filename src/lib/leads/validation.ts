@@ -3,6 +3,7 @@
  * re-checked here. Interests and bill bands come from sections.json, so they are passed in.
  */
 import { z } from 'astro/zod';
+import { MESSAGES } from './messages';
 import { normaliseIndianMobile } from './phone';
 import type { Lead } from './types';
 
@@ -23,16 +24,7 @@ export type LeadValidation =
   | { ok: false; reason: 'spam' }
   | { ok: false; reason: 'invalid'; errors: Partial<Record<LeadField | 'form', string>> };
 
-export const MESSAGES = {
-  name: 'Enter your name (letters only, 2 to 80 characters).',
-  phone: 'Enter a 10-digit mobile number.',
-  interest: "Choose what you're interested in.",
-  district: 'Enter your district, or a 6-digit PIN code.',
-  bill: 'Choose your monthly bill from the list.',
-  message: 'Keep the message under 1,000 characters.',
-  consent: 'Please agree to be contacted about your enquiry.',
-  form: 'Something went wrong with the form. Please try again.',
-} as const;
+export { MESSAGES };
 
 const squash = (s: string) => s.trim().replace(/\s+/g, ' ');
 

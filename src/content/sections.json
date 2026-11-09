@@ -463,7 +463,17 @@
       "submit": "Request a callback",
       "thankYou": "Thank you. A SAEL consultant will call you to book your free visit.",
       "whatsappLabel": "Continue on WhatsApp",
-      "whatsappMessage": "Hi SAEL, I just requested a callback on your website."
+      "whatsappMessage": "Hi SAEL, I just requested a callback on your website.",
+      "sending": "Sending…",
+      "sentPage": {
+        "title": "Thank you",
+        "backLabel": "Back to the home page"
+      },
+      "problemPage": {
+        "title": "We couldn't send your enquiry",
+        "text": "Please go back and check your name and mobile number, or call us on {phone}. You can also write to {email}.",
+        "backLabel": "Back to the form"
+      }
     }
   },
   "dayNight": {

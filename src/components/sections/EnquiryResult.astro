@@ -1,0 +1,64 @@
+---
+/** Simple result page for the enquiry form when it was sent without JavaScript. */
+import type { Segment } from '../../lib/text';
+import Button from '../ui/Button.astro';
+import RichText from '../ui/RichText.astro';
+
+interface Props {
+  title: string;
+  text: Segment[];
+  back: { label: string; href: string };
+  whatsapp?: { label: string; href: string };
+}
+
+const { title, text, back, whatsapp } = Astro.props;
+---
+
+<section class="res" aria-labelledby="res-title">
+  <div class="wrap">
+    <h1 id="res-title">{title}</h1>
+    <p>
+      <RichText segments={text} />
+    </p>
+    <div class="acts">
+      {whatsapp && (
+        <Button href={whatsapp.href} variant="ink" target="_blank" rel="noopener noreferrer">
+          {whatsapp.label}
+        </Button>
+      )}
+      <Button href={back.href} variant="line">
+        {back.label}
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .res {
+    padding: clamp(150px, 16vw, 210px) 0 clamp(90px, 10vw, 150px);
+  }
+
+  h1 {
+    font: 800 clamp(44px, 6vw, 88px) / 0.98 var(--f-disp);
+    letter-spacing: -0.045em;
+    max-width: 14ch;
+  }
+
+  p {
+    margin-top: 22px;
+    max-width: 52ch;
+    font-size: 18px;
+    color: var(--ink-2);
+  }
+
+  p :global(a) {
+    text-decoration: underline;
+  }
+
+  .acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+</style>
