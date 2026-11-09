@@ -1,0 +1,1764 @@
+# Pages CMS setup: the browser forms SAEL uses to edit src/content (https://pagescms.org/docs).
+#
+# Kept in step with the Zod schemas in src/lib/schemas by tests/unit/pages-config.test.ts, so a
+# rule added there has to be added here too. Editor instructions: docs/editor-guide.md.
+#
+# Things to know before changing this file:
+# - Photo paths are relative to the content file that uses them, which is what Astro's image()
+#   needs. Files directly in src/content use the "images" media source (../assets/images);
+#   files one folder deeper (blog, projects) use "images-deep" (../../assets/images).
+#   Both sources point at the same folder.
+# - settings.content.merge must stay true: each home-page section is its own form on the same
+#   file (sections.json), and merging is what keeps the other sections when one is saved.
+# - A `list` written as an object must include `collapsible`, or Pages CMS rejects the config.
+# - Pages CMS removes empty values when it saves. A Zod field that isn't optional must therefore
+#   be `required: true` here, and an optional text field can't have `minlength` or a `pattern`
+#   (both would reject the empty value).
+
+settings:
+  content:
+    merge: true
+  commit:
+    templates:
+      create: 'content: create {path} (via Pages CMS)'
+      update: 'content: update {path} (via Pages CMS)'
+      delete: 'content: delete {path} (via Pages CMS)'
+      rename: 'content: rename {oldPath} to {newPath} (via Pages CMS)'
+
+media:
+  - name: images
+    label: Photos
+    input: src/assets/images
+    output: ../assets/images
+    rename: safe
+    extensions: [jpg, jpeg, png, webp, avif]
+  - name: images-deep
+    label: Photos (blog and projects view)
+    input: src/assets/images
+    output: ../../assets/images
+    rename: safe
+    extensions: [jpg, jpeg, png, webp, avif]
+  - name: videos
+    label: Videos
+    input: public/video
+    output: /video
+    rename: safe
+    extensions: [mp4]
+
+components:
+  link:
+    type: object
+    required: true
+    fields:
+      - name: label
+        label: Button or link text
+        type: string
+        required: true
+        options: { maxlength: 40 }
+      - name: href
+        label: Goes to
+        type: string
+        required: true
+        description: 'A page such as /blog, or a home-page section such as /#contact.'
+        pattern:
+          regex: '^(\/|#)[\w\-/#]*$'
+          message: 'Use a page like /blog or a section like /#contact.'
+  eyebrow:
+    label: Small label above the heading
+    type: string
+    required: true
+    options: { maxlength: 60 }
+  heading:
+    label: Heading
+    type: string
+    required: true
+    description: 'Wrap words in *asterisks* to set them in the serif italic style.'
+    options: { maxlength: 120 }
+    pattern:
+      regex: '^[^*]*(\*[^*]*\*[^*]*)*$'
+      message: 'Asterisks must come in pairs, like: all *around* us.'
+  paragraph:
+    label: Text
+    type: text
+    required: true
+    options: { maxlength: 600 }
+  tokenText:
+    type: text
+    required: true
+    description: 'You can write {phone}, {email}, {whatsapp}, {offices} or {blog}. They fill in from Settings, so a number is only ever typed once.'
+    options: { maxlength: 600 }
+    pattern:
+      regex: '^(?:[^{}]|\{(?:phone|email|whatsapp|offices|blog)\})*$'
+      message: 'Only {phone}, {email}, {whatsapp}, {offices} and {blog} can go in curly brackets.'
+  screenReaderLabel:
+    label: Label for screen readers
+    type: string
+    required: true
+    description: "Not shown on the page. It's read aloud to people using a screen reader."
+  photo:
+    label: Photo
+    type: image
+    required: true
+    options: { media: images }
+  alt:
+    label: Photo description
+    type: string
+    required: true
+    description: 'Describe what the photo shows, for people who cannot see it. Required.'
+    options: { minlength: 3, maxlength: 200 }
+  placeholder:
+    label: Still a placeholder
+    type: boolean
+    description: 'Keeps the "Content from SAEL" tag visible. Turn off once the real text is in.'
+  stat:
+    type: object
+    fields:
+      - name: value
+        label: Figure
+        type: string
+        required: true
+        options: { maxlength: 20 }
+      - name: label
+        label: What it measures
+        type: string
+        required: true
+        options: { maxlength: 60 }
+      - name: placeholder
+        label: Still a placeholder
+        type: boolean
+        description: 'Keeps the "Figure from SAEL" tag visible. Turn off once the real figure is in.'
+  systemResult:
+    type: object
+    required: true
+    fields:
+      - name: name
+        label: System name
+        type: string
+        required: true
+      - name: why
+        label: Why we suggest it
+        type: text
+        required: true
+  whatsappMessage:
+    label: Prefilled WhatsApp message
+    type: text
+    required: true
+    description: 'The message already typed for the visitor when WhatsApp opens.'
+    options: { maxlength: 300 }
+
+content:
+  - name: settings
+    label: Settings
+    type: file
+    path: src/content/settings.json
+    format: json
+    fields:
+      - name: seo
+        label: Search results and link previews
+        type: object
+        required: true
+        fields:
+          - name: title
+            label: Default page title
+            type: string
+            required: true
+            options: { maxlength: 70 }
+          - name: description
+            label: Default description
+            type: text
+            required: true
+            description: '50 to 170 characters. Shown under the title in Google.'
+            options: { minlength: 50, maxlength: 170 }
+      - name: company
+        label: Company
+        type: object
+        required: true
+        fields:
+          - name: name
+            label: Short name
+            type: string
+            required: true
+          - name: legalName
+            label: Legal name
+            type: string
+            required: true
+          - name: tagline
+            label: Tagline
+            type: string
+            required: true
+          - name: summary
+            label: Summary in the footer
+            type: text
+            required: true
+            options: { maxlength: 300 }
+      - name: contact
+        label: Main contact details
+        type: object
+        required: true
+        fields:
+          - name: phone
+            label: Phone
+            type: object
+            required: true
+            fields:
+              - name: display
+                label: Number as shown on the site
+                type: string
+                required: true
+                description: 'For example +91 98807 03083.'
+                options: { minlength: 6, maxlength: 24 }
+              - name: e164
+                label: Number for tap-to-call
+                type: string
+                required: true
+                description: 'No spaces, starting with the country code. For example +919880703083.'
+                pattern:
+                  regex: '^\+[1-9]\d{7,14}$'
+                  message: 'Use international format with no spaces, like +919880703083.'
+          - name: whatsapp
+            label: WhatsApp number
+            type: string
+            required: true
+            description: 'Digits only, starting with the country code, no plus sign. For example 919880703083.'
+            pattern:
+              regex: '^[1-9]\d{9,14}$'
+              message: 'Digits only with the country code, like 919880703083.'
+          - name: email
+            label: Email address
+            type: string
+            required: true
+      - name: offices
+        label: Offices
+        type: object
+        required: true
+        list:
+          min: 1
+          collapsible: { collapsed: true, summary: '{name}' }
+        fields:
+          - name: name
+            label: Office name
+            type: string
+            required: true
+            options: { maxlength: 40 }
+          - name: address
+            label: Address
+            type: text
+            options: { maxlength: 200 }
+          - name: phone
+            label: Phone
+            type: object
+            fields:
+              - name: display
+                label: Number as shown on the site
+                type: string
+                required: true
+                options: { minlength: 6, maxlength: 24 }
+              - name: e164
+                label: Number for tap-to-call
+                type: string
+                required: true
+                description: 'No spaces, starting with the country code.'
+                pattern:
+                  regex: '^\+[1-9]\d{7,14}$'
+                  message: 'Use international format with no spaces, like +919880703083.'
+          - name: email
+            label: Email address
+            type: string
+      - name: primaryCta
+        label: Main button (top bar and mobile bar)
+        component: link
+      - name: nav
+        label: Menus
+        type: object
+        required: true
+        fields:
+          - name: header
+            label: Top bar links
+            component: link
+            list: { min: 1, max: 7, collapsible: { collapsed: true, summary: '{label}' } }
+          - name: menu
+            label: Full menu links
+            component: link
+            list: { min: 1, max: 10, collapsible: { collapsed: true, summary: '{label}' } }
+      - name: footer
+        label: Footer
+        type: object
+        required: true
+        fields:
+          - name: columns
+            label: Link columns
+            type: object
+            list: { max: 3, collapsible: { collapsed: true, summary: '{title}' } }
+            fields:
+              - name: title
+                label: Column title
+                type: string
+                required: true
+                options: { maxlength: 30 }
+              - name: links
+                label: Links
+                component: link
+                list: { min: 1, collapsible: { collapsed: true, summary: '{label}' } }
+          - name: credits
+            label: Photo and source credits
+            type: text
+            options: { maxlength: 600 }
+
+  - name: home
+    label: Home page
+    type: group
+    items:
+      - name: section-hero
+        label: Hero
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: hero
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: headline
+                label: Big headline
+                type: string
+                required: true
+                description: 'One line per entry. Wrap words in *asterisks* for the serif italic style.'
+                list: { min: 1, max: 3, collapsible: false }
+                options: { maxlength: 40 }
+                pattern:
+                  regex: '^[^*]*(\*[^*]*\*[^*]*)*$'
+                  message: 'Asterisks must come in pairs, like: all *around* us.'
+              - name: intro
+                label: Intro text
+                component: paragraph
+              - name: primaryCta
+                label: First button
+                component: link
+              - name: secondaryCta
+                label: Second button
+                component: link
+              - name: fact
+                label: Fact beside the headline
+                type: object
+                required: true
+                fields:
+                  - name: value
+                    label: Figure
+                    type: string
+                    required: true
+                    options: { maxlength: 20 }
+                  - name: label
+                    label: What it measures
+                    type: string
+                    required: true
+                    options: { maxlength: 60 }
+              - name: slidesLabel
+                component: screenReaderLabel
+                options: { maxlength: 60 }
+              - name: slides
+                label: Slides
+                type: object
+                required: true
+                description: 'The first photo loads first, so keep your strongest image at the top.'
+                list: { min: 1, max: 6, collapsible: { collapsed: true, summary: '{title}' } }
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+                  - name: tag
+                    label: Small tag
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+                  - name: title
+                    label: Caption
+                    type: string
+                    required: true
+                    options: { maxlength: 60 }
+                  - name: credit
+                    label: Photo credit
+                    type: string
+                    required: true
+                    options: { maxlength: 60 }
+
+      - name: section-highlights
+        label: Highlights
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: highlights
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: label
+                component: screenReaderLabel
+              - name: items
+                label: Highlights
+                type: object
+                required: true
+                list: { min: 1, max: 4, collapsible: { collapsed: true, summary: '{title}' } }
+                fields:
+                  - name: icon
+                    label: Icon
+                    type: select
+                    required: true
+                    options:
+                      values:
+                        - { value: home, label: House }
+                        - { value: rupee, label: Rupee }
+                        - { value: wrench, label: Wrench }
+                        - { value: clock, label: Clock }
+                  - name: title
+                    label: Title
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+                  - name: text
+                    label: Text
+                    type: string
+                    required: true
+                    options: { maxlength: 60 }
+
+      - name: section-systems
+        label: Compare systems and finder
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: systems
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: table
+                label: Comparison table
+                type: object
+                required: true
+                fields:
+                  - name: label
+                    component: screenReaderLabel
+                  - name: columns
+                    label: Column headings
+                    type: object
+                    required: true
+                    fields:
+                      - { name: onGrid, label: On-grid, type: string, required: true }
+                      - { name: offGrid, label: Off-grid, type: string, required: true }
+                      - { name: hybrid, label: Hybrid, type: string, required: true }
+                  - name: rows
+                    label: Rows
+                    type: object
+                    required: true
+                    list: { min: 1, collapsible: { collapsed: true, summary: '{label}' } }
+                    fields:
+                      - name: label
+                        label: Row name
+                        type: string
+                        required: true
+                        options: { maxlength: 40 }
+                      - name: onGrid
+                        label: On-grid
+                        type: string
+                        required: true
+                        description: 'Use — when it does not apply.'
+                        options: { maxlength: 40 }
+                      - name: offGrid
+                        label: Off-grid
+                        type: string
+                        required: true
+                        description: 'Use — when it does not apply.'
+                        options: { maxlength: 40 }
+                      - name: hybrid
+                        label: Hybrid
+                        type: string
+                        required: true
+                        description: 'Use — when it does not apply.'
+                        options: { maxlength: 40 }
+                      - name: tick
+                        label: Show ticks
+                        type: boolean
+                        description: 'Shows a tick before every value that is not —.'
+              - name: finder
+                label: System finder
+                type: object
+                required: true
+                fields:
+                  - name: label
+                    component: screenReaderLabel
+                  - {
+                      name: gridQuestion,
+                      label: Question about the grid,
+                      type: string,
+                      required: true,
+                    }
+                  - {
+                      name: cutsQuestion,
+                      label: Question about power cuts,
+                      type: string,
+                      required: true,
+                    }
+                  - { name: 'yes', label: '"Yes" answer', type: string, required: true }
+                  - { name: 'no', label: '"No" answer', type: string, required: true }
+                  - { name: rarely, label: '"Rarely" answer', type: string, required: true }
+                  - { name: often, label: '"Often" answer', type: string, required: true }
+                  - {
+                      name: resultLabel,
+                      label: Label above the result,
+                      type: string,
+                      required: true,
+                    }
+                  - name: results
+                    label: Results
+                    type: object
+                    required: true
+                    fields:
+                      - { name: onGrid, label: On-grid result, component: systemResult }
+                      - { name: hybrid, label: Hybrid result, component: systemResult }
+                      - { name: offGrid, label: Off-grid result, component: systemResult }
+                  - name: more
+                    label: Note with a link
+                    type: object
+                    required: true
+                    fields:
+                      - { name: text, label: Text, type: string, required: true }
+                      - { name: link, label: Link, component: link }
+                  - name: cta
+                    label: Button
+                    component: link
+
+      - name: section-subsidy
+        label: Subsidy section text
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: subsidy
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: intro
+                label: Intro text
+                component: paragraph
+              - name: handles
+                label: Short points
+                type: string
+                required: true
+                description: 'The rates themselves are under "Subsidy rates".'
+                list: { max: 6, collapsible: false }
+                options: { maxlength: 60 }
+              - name: calculator
+                label: Calculator
+                type: object
+                required: true
+                fields:
+                  - name: label
+                    component: screenReaderLabel
+                  - { name: sizeLabel, label: System size label, type: string, required: true }
+                  - { name: stateLabel, label: State label, type: string, required: true }
+                  - name: stateTopUpLabel
+                    label: Top-up label for "Other states"
+                    type: string
+                    required: true
+                  - name: namedStateTopUpLabel
+                    label: Top-up label for a named state
+                    type: string
+                    required: true
+                    description: 'Keep {state}: it becomes the state name.'
+                    pattern:
+                      regex: '\{state\}'
+                      message: 'Keep {state} in the text.'
+                  - {
+                      name: centralTotalLabel,
+                      label: Central subsidy label,
+                      type: string,
+                      required: true,
+                    }
+                  - {
+                      name: combinedTotalLabel,
+                      label: Combined total label,
+                      type: string,
+                      required: true,
+                    }
+                  - name: note
+                    label: Note under the result
+                    type: text
+                    required: true
+                    options: { maxlength: 240 }
+                  - name: cta
+                    label: Button
+                    component: link
+
+      - name: section-process
+        label: How it works
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: process
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: steps
+                label: Steps
+                type: object
+                required: true
+                list: { min: 2, max: 8, collapsible: { collapsed: true, summary: '{title}' } }
+                fields:
+                  - name: title
+                    label: Title
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+                  - name: text
+                    label: Text
+                    type: text
+                    required: true
+                    options: { maxlength: 200 }
+              - name: tracker
+                label: Progress tracker
+                type: object
+                required: true
+                fields:
+                  - name: label
+                    component: screenReaderLabel
+                  - name: stages
+                    label: Stages
+                    type: string
+                    required: true
+                    list: { min: 2, max: 8, collapsible: false }
+                    options: { maxlength: 40 }
+
+      - name: section-why
+        label: Why SAEL
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: why
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: feature
+                label: Large photo tile
+                type: object
+                required: true
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+                  - name: credit
+                    label: Photo credit
+                    type: string
+                    required: true
+                    options: { maxlength: 60 }
+                  - name: title
+                    label: Title
+                    type: string
+                    required: true
+                    options: { maxlength: 120 }
+              - name: tiles
+                label: Text tiles
+                type: object
+                list: { max: 4, collapsible: { collapsed: true, summary: '{title}' } }
+                fields:
+                  - name: title
+                    label: Title
+                    type: string
+                    required: true
+                    options: { maxlength: 60 }
+                  - name: text
+                    label: Text
+                    type: text
+                    required: true
+                    options: { maxlength: 200 }
+                  - name: placeholder
+                    component: placeholder
+
+      - name: section-engineering
+        label: Engineering
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: engineering
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: body
+                component: paragraph
+              - name: photo
+                label: Main photo
+                type: object
+                required: true
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+              - name: stats
+                label: Figures
+                component: stat
+                list: { max: 3, collapsible: { collapsed: true, summary: '{label}' } }
+              - name: stripLabel
+                component: screenReaderLabel
+              - name: strip
+                label: Moving photo strip
+                type: object
+                required: true
+                list: { min: 2, max: 12, collapsible: { collapsed: true, summary: '{alt}' } }
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+
+      - name: section-gallery
+        label: Gallery
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: gallery
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: items
+                label: Photos
+                type: object
+                required: true
+                list: { min: 1, collapsible: { collapsed: true, summary: '{title}' } }
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+                  - name: title
+                    label: Title
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+                  - name: place
+                    label: Place
+                    type: string
+                    required: true
+                    options: { maxlength: 60 }
+              - name: controls
+                label: Button and viewer labels
+                type: object
+                required: true
+                description: 'Mostly read aloud by screen readers.'
+                fields:
+                  - {
+                      name: previous,
+                      label: Previous button,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - {
+                      name: next,
+                      label: Next button,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - {
+                      name: open,
+                      label: Open photo,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - {
+                      name: viewer,
+                      label: Photo viewer,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - {
+                      name: close,
+                      label: Close viewer,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 20 },
+                    }
+                  - {
+                      name: previousPhoto,
+                      label: Previous photo,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - {
+                      name: nextPhoto,
+                      label: Next photo,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - name: credit
+                    label: Text before the place in the caption
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+
+      - name: section-numbers
+        label: Numbers band
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: numbers
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: label
+                component: screenReaderLabel
+              - name: stats
+                label: Figures
+                component: stat
+                required: true
+                list: { min: 1, max: 4, collapsible: { collapsed: true, summary: '{label}' } }
+              - name: ticker
+                label: Moving text
+                type: string
+                required: true
+                list: { min: 1, collapsible: false }
+                options: { maxlength: 30 }
+
+      - name: section-projects
+        label: Projects section text
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: projects
+            label: false
+            type: object
+            required: true
+            description: 'The projects themselves are under "Projects".'
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+
+      - name: section-audience
+        label: Who it's for
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: audience
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: label
+                component: screenReaderLabel
+              - name: tabs
+                label: Tabs
+                type: object
+                required: true
+                list: { min: 2, max: 6, collapsible: { collapsed: true, summary: '{label}' } }
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+                  - name: label
+                    label: Tab name
+                    type: string
+                    required: true
+                    options: { maxlength: 30 }
+                  - name: text
+                    label: Text
+                    type: text
+                    required: true
+                    options: { maxlength: 240 }
+
+      - name: section-faq
+        label: FAQs section text
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: faq
+            label: false
+            type: object
+            required: true
+            description: 'The questions themselves are under "FAQs".'
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: intro
+                label: Intro text
+                component: tokenText
+                options: { maxlength: 240 }
+
+      - name: section-contact
+        label: Contact form
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: contact
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: intro
+                label: Intro text
+                component: paragraph
+              - name: background
+                label: Video poster
+                type: object
+                required: true
+                description: 'Shows until the video plays, and instead of it for people who turn off motion.'
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+              - name: video
+                label: Background video
+                type: file
+                required: true
+                description: 'An MP4 file. Keep it short and small: it plays on phones too.'
+                options: { media: videos }
+              - name: form
+                label: Form
+                type: object
+                required: true
+                fields:
+                  - { name: name, label: Name field, type: string, required: true }
+                  - { name: phone, label: Mobile number field, type: string, required: true }
+                  - { name: place, label: District or PIN field, type: string, required: true }
+                  - { name: bill, label: Monthly bill field, type: string, required: true }
+                  - name: billOptions
+                    label: Monthly bill choices
+                    type: string
+                    required: true
+                    list: { min: 2, collapsible: false }
+                    options: { maxlength: 30 }
+                  - { name: interest, label: Interest field, type: string, required: true }
+                  - name: interests
+                    label: Interest choices
+                    type: string
+                    required: true
+                    description: 'Enquiries can only be sent with one of these. Changes apply straight away.'
+                    list: { min: 1, collapsible: false }
+                    options: { maxlength: 60 }
+                  - { name: message, label: Message field, type: string, required: true }
+                  - name: placeholders
+                    label: Hint text inside the fields
+                    type: object
+                    required: true
+                    fields:
+                      - {
+                          name: name,
+                          label: Name,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 40 },
+                        }
+                      - {
+                          name: phone,
+                          label: Mobile number,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 40 },
+                        }
+                      - {
+                          name: place,
+                          label: District or PIN,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 40 },
+                        }
+                      - {
+                          name: bill,
+                          label: Monthly bill,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 40 },
+                        }
+                      - {
+                          name: message,
+                          label: Message,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 60 },
+                        }
+                  - name: consent
+                    label: Consent checkbox text
+                    type: string
+                    required: true
+                    options: { maxlength: 200 }
+                  - name: privacy
+                    label: Privacy notice
+                    type: object
+                    required: true
+                    fields:
+                      - name: text
+                        label: Text
+                        type: text
+                        required: true
+                        options: { maxlength: 600 }
+                      - name: placeholder
+                        component: placeholder
+                  - name: submit
+                    label: Send button
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+                  - name: sending
+                    label: Send button while sending
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+                  - name: thankYou
+                    label: Thank-you message
+                    type: text
+                    required: true
+                    options: { maxlength: 200 }
+                  - name: whatsappLabel
+                    label: WhatsApp button after sending
+                    type: string
+                    required: true
+                    options: { maxlength: 40 }
+                  - name: whatsappMessage
+                    component: whatsappMessage
+                  - name: sentPage
+                    label: Thank-you page (browsers without JavaScript)
+                    type: object
+                    required: true
+                    fields:
+                      - {
+                          name: title,
+                          label: Title,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 60 },
+                        }
+                      - {
+                          name: backLabel,
+                          label: Back button,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 40 },
+                        }
+                  - name: problemPage
+                    label: Problem page (browsers without JavaScript)
+                    type: object
+                    required: true
+                    fields:
+                      - {
+                          name: title,
+                          label: Title,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 80 },
+                        }
+                      - name: text
+                        label: Text
+                        component: tokenText
+                        options: { maxlength: 400 }
+                      - {
+                          name: backLabel,
+                          label: Back button,
+                          type: string,
+                          required: true,
+                          options: { maxlength: 40 },
+                        }
+
+      - name: section-day-night
+        label: Day and night slider
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: dayNight
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: text
+                component: paragraph
+              - name: sliderLabel
+                component: screenReaderLabel
+              - name: day
+                label: Day side
+                type: object
+                required: true
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+                  - { name: tag, label: Small tag, type: string, required: true }
+                  - { name: text, label: Text, type: string, required: true }
+              - name: night
+                label: Night side
+                type: object
+                required: true
+                fields:
+                  - name: image
+                    component: photo
+                  - name: alt
+                    component: alt
+                  - { name: tag, label: Small tag, type: string, required: true }
+                  - { name: text, label: Text, type: string, required: true }
+              - name: credit
+                label: Photo credit
+                type: string
+                required: true
+                options: { maxlength: 120 }
+
+      - name: section-progress
+        label: Section names (progress pill)
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: progress
+            label: Sections
+            type: object
+            required: true
+            description: 'The short names shown in the pill at the bottom left on desktop.'
+            list: { min: 1, collapsible: { collapsed: true, summary: '{label}' } }
+            fields:
+              - name: id
+                label: Section on the page
+                type: string
+                required: true
+                readonly: true
+                pattern:
+                  regex: '^[a-z][a-z-]*$'
+                  message: 'Lower-case letters and hyphens only.'
+              - name: label
+                label: Short name
+                type: string
+                required: true
+                options: { maxlength: 24 }
+
+      - name: section-blog
+        label: Blog page text
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: blog
+            label: false
+            type: object
+            required: true
+            fields:
+              - name: seoTitle
+                label: Browser tab and search title
+                type: string
+                required: true
+                options: { maxlength: 60 }
+              - name: seoDescription
+                label: Search description
+                type: text
+                required: true
+                description: '50 to 170 characters.'
+                options: { minlength: 50, maxlength: 170 }
+              - name: feedTitle
+                label: RSS feed title
+                type: string
+                required: true
+                options: { maxlength: 80 }
+              - name: eyebrow
+                component: eyebrow
+              - name: heading
+                component: heading
+              - name: intro
+                label: Intro text
+                component: paragraph
+              - name: filterLabel
+                component: screenReaderLabel
+              - { name: allLabel, label: '"All" filter button', type: string, required: true }
+              - { name: comingSoon, label: Text on unpublished cards, type: string, required: true }
+              - name: readingTime
+                label: Reading time
+                type: string
+                required: true
+                description: 'Keep {minutes}: it becomes the number.'
+                pattern:
+                  regex: '\{minutes\}'
+                  message: 'Keep {minutes} in the text.'
+              - name: filterStatus
+                label: Read aloud when a filter changes
+                type: object
+                required: true
+                fields:
+                  - { name: one, label: For one article, type: string, required: true }
+                  - name: other
+                    label: For several articles
+                    type: string
+                    required: true
+                    description: 'Keep {count}: it becomes the number.'
+                    pattern:
+                      regex: '\{count\}'
+                      message: 'Keep {count} in the text.'
+              - name: article
+                label: Article pages
+                type: object
+                required: true
+                fields:
+                  - {
+                      name: backLabel,
+                      label: Back link,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - {
+                      name: byLabel,
+                      label: '"By" label',
+                      type: string,
+                      required: true,
+                      options: { maxlength: 20 },
+                    }
+                  - {
+                      name: publishedLabel,
+                      label: '"Published" label',
+                      type: string,
+                      required: true,
+                      options: { maxlength: 30 },
+                    }
+                  - {
+                      name: updatedLabel,
+                      label: '"Updated" label',
+                      type: string,
+                      required: true,
+                      options: { maxlength: 30 },
+                    }
+                  - name: draftNotice
+                    label: Notice on draft previews
+                    type: text
+                    required: true
+                    options: { maxlength: 200 }
+                  - name: relatedHeading
+                    label: Related articles heading
+                    component: heading
+                  - {
+                      name: whatsappLabel,
+                      label: WhatsApp button,
+                      type: string,
+                      required: true,
+                      options: { maxlength: 40 },
+                    }
+                  - name: whatsappMessage
+                    component: whatsappMessage
+                    description: 'The message already typed for the visitor. {title} becomes the article title.'
+
+  - name: blog
+    label: Blog articles
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    filename:
+      template: '{primary}.md'
+      field: create
+    view:
+      fields: [title, topic, draft, publishDate]
+      primary: title
+      sort: [publishDate, title]
+      default:
+        sort: publishDate
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+        options: { minlength: 5, maxlength: 110 }
+      - name: draft
+        label: Draft (not published yet)
+        type: boolean
+        default: true
+        description: 'Drafts show as "Article coming soon" cards. To publish, turn this off and fill in the summary and publish date.'
+      - name: description
+        label: Summary
+        type: text
+        description: '50 to 170 characters. Needed to publish. Shown under the title and in Google.'
+        options: { maxlength: 170 }
+      - name: topic
+        label: Topic
+        type: select
+        required: true
+        options:
+          values:
+            - Subsidy & schemes
+            - Solar basics
+            - Monsoon
+            - Performance
+            - O&M & AMC
+      - name: order
+        label: Position among coming-soon cards
+        type: number
+        description: 'Optional. 1 comes first within a topic. Published articles sort by date instead.'
+        options: { min: 1, max: 99 }
+      - name: cover
+        label: Cover photo
+        type: image
+        required: true
+        options: { media: images-deep }
+      - name: coverAlt
+        component: alt
+      - name: publishDate
+        label: Publish date
+        type: date
+        default: ''
+        description: 'Needed to publish.'
+        options: { format: yyyy-MM-dd }
+      - name: updatedDate
+        label: Last updated
+        type: date
+        default: ''
+        description: 'Optional. Only when an article has changed meaningfully.'
+        options: { format: yyyy-MM-dd }
+      - name: author
+        label: Author
+        type: string
+        description: 'Optional. Leave empty to credit SAEL Energy.'
+        options: { maxlength: 60 }
+      - name: body
+        label: Article
+        type: rich-text
+        options:
+          format: markdown
+          media: images-deep
+
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    format: json
+    filename:
+      template: '{primary}.json'
+      field: create
+    view:
+      fields: [title, layout, order, draft]
+      primary: title
+      sort: [order, title]
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: title
+        label: Project name
+        type: string
+        required: true
+        description: 'South India projects only.'
+        options: { maxlength: 80 }
+      - name: layout
+        label: Size of the card
+        type: select
+        required: true
+        options:
+          values:
+            - { value: feature, label: Large featured card }
+            - { value: card, label: Card with a photo }
+            - { value: mini, label: One-line figure }
+      - name: size
+        label: Plant size
+        type: string
+        description: 'For example 4.5 MW. Leave empty if it is not public.'
+        options: { maxlength: 20 }
+      - name: kind
+        label: Type of work
+        type: string
+        required: true
+        description: 'For example solar, or Rooftop & ground-mount.'
+        options: { maxlength: 60 }
+      - name: location
+        label: Location
+        type: string
+        options: { maxlength: 80 }
+      - name: year
+        label: Year
+        type: number
+        options: { min: 2000, max: 2100 }
+      - name: summary
+        label: Summary
+        type: text
+        options: { maxlength: 240 }
+      - name: image
+        label: Photo
+        type: image
+        options: { media: images-deep }
+      - name: alt
+        label: Photo description
+        type: string
+        description: 'Needed when there is a photo. Describe what it shows.'
+        options: { maxlength: 200 }
+      - name: credit
+        label: Photo credit
+        type: string
+        options: { maxlength: 80 }
+      - name: order
+        label: Position
+        type: number
+        description: 'Lower numbers come first.'
+      - name: draft
+        label: Hide from the site
+        type: boolean
+
+  - name: faqs
+    label: FAQs
+    type: file
+    path: src/content/faqs.json
+    format: json
+    list: true
+    fields:
+      - name: question
+        label: Question
+        type: string
+        required: true
+        options: { minlength: 5, maxlength: 160 }
+      - name: answer
+        label: Answer
+        type: text
+        required: true
+        options: { minlength: 10, maxlength: 1200 }
+
+  - name: subsidy
+    label: Subsidy rates
+    type: file
+    path: src/content/subsidy.json
+    format: json
+    fields:
+      - name: central
+        label: Central subsidy
+        type: object
+        required: true
+        fields:
+          - name: name
+            label: Scheme name
+            type: string
+            required: true
+          - name: slabs
+            label: Slabs
+            type: object
+            required: true
+            description: 'Each slab must start where the one before it ends.'
+            list:
+              { min: 1, collapsible: { collapsed: true, summary: 'From {fromKw} to {toKw} kW' } }
+            fields:
+              - name: fromKw
+                label: From (kW)
+                type: number
+                required: true
+                options: { min: 0 }
+              - name: toKw
+                label: Up to (kW)
+                type: number
+                required: true
+                options: { min: 0 }
+              - name: perKw
+                label: Rupees per kW
+                type: number
+                required: true
+                options: { min: 0, max: 10000000 }
+          - name: cap
+            label: Maximum central subsidy (rupees)
+            type: number
+            required: true
+            options: { min: 0, max: 10000000 }
+      - name: defaultStateId
+        label: State selected at first
+        type: string
+        required: true
+        description: 'The two-letter code of a state in the list below.'
+        pattern:
+          regex: '^[A-Z]{2}$'
+          message: 'Two capital letters, like KA.'
+      - name: fallbackStateId
+        label: State code for "Other states"
+        type: string
+        required: true
+        description: 'The two-letter code of the "Other states" entry below.'
+        pattern:
+          regex: '^[A-Z]{2}$'
+          message: 'Two capital letters, like XX.'
+      - name: states
+        label: States
+        type: object
+        required: true
+        description: 'To add a state, add an entry. Leave the rupee fields empty for a state that only needs a note.'
+        list: { min: 1, collapsible: { collapsed: true, summary: '{name}' } }
+        fields:
+          - name: id
+            label: Two-letter code
+            type: string
+            required: true
+            pattern:
+              regex: '^[A-Z]{2}$'
+              message: 'Two capital letters, like KA.'
+          - name: name
+            label: State name
+            type: string
+            required: true
+            options: { maxlength: 40 }
+          - name: perKw
+            label: Top-up in rupees per kW
+            type: number
+            options: { min: 0, max: 10000000 }
+          - name: capKw
+            label: Top-up stops at this many kW
+            type: number
+            description: 'Only with a top-up per kW.'
+            options: { min: 0 }
+          - name: cap
+            label: Maximum top-up (rupees)
+            type: number
+            description: 'Only with a top-up per kW.'
+            options: { min: 0, max: 10000000 }
+          - name: note
+            label: Note under the result
+            type: text
+            options: { maxlength: 240 }
+
+  - name: chat
+    label: Chat assistant
+    type: file
+    path: src/content/chat.json
+    format: json
+    fields:
+      - name: intents
+        label: Answers
+        type: object
+        required: true
+        description: 'To add an answer, add an entry. No code changes are needed.'
+        list: { min: 1, collapsible: { collapsed: true, summary: '{id}' } }
+        fields:
+          - name: id
+            label: Short name
+            type: string
+            required: true
+            description: 'Lower-case letters, numbers and hyphens. Must be different from the others.'
+            pattern:
+              regex: '^[a-z][a-z0-9-]*$'
+              message: 'Lower-case letters, numbers and hyphens.'
+          - name: keywords
+            label: Words that trigger this answer
+            type: string
+            required: true
+            list: { min: 1, collapsible: false }
+            options: { minlength: 2, maxlength: 40 }
+          - name: answer
+            label: Answer
+            component: tokenText
+          - name: links
+            label: Links under the answer
+            component: link
+            required: false
+            list: { max: 3, collapsible: { collapsed: true, summary: '{label}' } }
+          - name: related
+            label: Blog articles to suggest
+            type: reference
+            options:
+              collection: blog
+              multiple: true
+              max: 3
+              search: title
+              value: '{name}'
+              label: '{title}'
+          - name: whatsapp
+            label: Prefilled WhatsApp message
+            type: text
+            description: 'Optional. Leave empty for no WhatsApp button.'
+            options: { maxlength: 300 }
+      - name: chips
+        label: Suggested questions
+        type: object
+        required: true
+        list: { min: 1, max: 10, collapsible: { collapsed: true, summary: '{label}' } }
+        fields:
+          - name: label
+            label: Button text
+            type: string
+            required: true
+            options: { maxlength: 30 }
+          - name: message
+            label: Question it asks
+            type: string
+            description: 'Leave empty to make this button open WhatsApp instead.'
+            options: { maxlength: 120 }
+      - name: greeting
+        label: Greeting
+        component: tokenText
+        options: { maxlength: 400 }
+      - name: fallback
+        label: When no answer matches
+        type: object
+        required: true
+        fields:
+          - name: answer
+            label: Reply
+            component: tokenText
+            options: { maxlength: 300 }
+          - name: whatsapp
+            component: whatsappMessage
+      - name: whatsappChip
+        label: Reply for the WhatsApp button
+        type: object
+        required: true
+        fields:
+          - name: answer
+            label: Reply
+            type: text
+            required: true
+            options: { maxlength: 200 }
+          - name: whatsapp
+            component: whatsappMessage
+          - name: buttonLabel
+            label: Button text
+            type: string
+            required: true
+            options: { maxlength: 30 }
+      - name: subsidyFollowUp
+        label: Subsidy size follow-up
+        type: object
+        required: true
+        description: '{kw} and {amount} are filled in by the chat.'
+        fields:
+          - name: intentId
+            label: Answer this follows
+            type: string
+            required: true
+            readonly: true
+          - name: answer
+            label: Reply
+            type: text
+            required: true
+            description: 'Keep {amount}: it becomes the subsidy figure.'
+            pattern:
+              regex: '\{amount\}'
+              message: 'Keep {amount} in the text.'
+          - name: capNote
+            label: Note when the size is above the cap
+            type: text
+            required: true
+            options: { maxlength: 200 }
+          - name: confirm
+            label: Closing line
+            type: text
+            required: true
+            options: { maxlength: 200 }
+          - name: whatsapp
+            component: whatsappMessage
+          - name: buttonLabel
+            label: Button text
+            type: string
+            required: true
+            options: { maxlength: 30 }
+      - name: title
+        label: Panel title
+        type: string
+        required: true
+        options: { maxlength: 40 }
+      - name: subtitle
+        label: Panel subtitle
+        type: string
+        required: true
+        options: { maxlength: 60 }
+      - name: openLabel
+        label: Button that opens the chat
+        type: string
+        required: true
+        options: { maxlength: 30 }
+      - name: inputLabel
+        label: Label for the question box
+        type: string
+        required: true
+        options: { maxlength: 40 }
+      - name: inputPlaceholder
+        label: Hint inside the question box
+        type: string
+        required: true
+        options: { maxlength: 40 }
+      - name: note
+        label: Small note under the chat
+        type: text
+        required: true
+        options: { maxlength: 200 }
+      - name: whatsappLabel
+        label: WhatsApp button
+        type: string
+        required: true
+        options: { maxlength: 40 }
+      - name: closeLabel
+        label: Close button
+        type: string
+        required: true
+        options: { maxlength: 30 }
+      - name: sendLabel
+        label: Send button
+        type: string
+        required: true
+        options: { maxlength: 20 }
+      - name: chipsLabel
+        component: screenReaderLabel
+        options: { maxlength: 40 }
+      - name: readLabel
+        label: Text before article links
+        type: string
+        required: true
+        description: 'For example "Read:".'
+        options: { maxlength: 20 }

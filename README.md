@@ -1,7 +1,7 @@
 # SAEL Energy website
 
 Production build of the SAEL Energy Solution LLP website, in Astro 7 + TypeScript.
-The approved design is `reference/v5/` (read-only). Project rules: `CLAUDE.md`. Plans: `docs/`.
+The approved design is `reference/v5/` (read-only). Project rules: `CLAUDE.md`. Plans: `docs/`. Editing content after handover: `docs/editor-guide.md`.
 
 ## Setup
 

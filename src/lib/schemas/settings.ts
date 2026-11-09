@@ -46,7 +46,8 @@ export const settingsSchema = z.object({
   footer: z.object({
     columns: z
       .array(z.object({ title: z.string().min(1).max(30), links: z.array(linkSchema).min(1) }))
-      .max(3),
+      .max(3)
+      .default([]),
     credits: z.string().max(600).optional(),
   }),
 });

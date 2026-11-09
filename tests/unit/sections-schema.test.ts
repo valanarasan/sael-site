@@ -66,4 +66,29 @@ describe('sectionsSchema', () => {
   it('needs a 50–170 character description for the blog page', () => {
     expect(withChange((s) => (s.blog.seoDescription = 'Too short')).success).toBe(false);
   });
+
+  it('only accepts an MP4 from the videos folder as the contact video', () => {
+    expect(withChange((s) => (s.contact.video = '/video/new-loop.mp4')).success).toBe(true);
+    expect(withChange((s) => (s.contact.video = 'https://example.com/a.mp4')).success).toBe(false);
+    expect(withChange((s) => (s.contact.video = '/video/a.mov')).success).toBe(false);
+  });
+
+  it('survives lists being emptied: Pages CMS removes empty lists when it saves', () => {
+    const r = schema.safeParse(
+      (() => {
+        const copy = structuredClone(sectionsFixture) as unknown as Record<
+          string,
+          Record<string, unknown>
+        >;
+        delete copy.subsidy?.handles;
+        delete copy.why?.tiles;
+        delete copy.engineering?.stats;
+        return copy;
+      })(),
+    );
+    expect(r.success).toBe(true);
+    expect(r.data?.subsidy.handles).toEqual([]);
+    expect(r.data?.why.tiles).toEqual([]);
+    expect(r.data?.engineering.stats).toEqual([]);
+  });
 });

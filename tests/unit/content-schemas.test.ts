@@ -196,6 +196,14 @@ describe('chatSchema', () => {
     expect(r.data?.intents[1]?.links).toEqual([]);
   });
 
+  it('accepts article file names, which is how Pages CMS stores a picked article', () => {
+    const picked = structuredClone(valid);
+    (picked.intents[0] as { related: string[] }).related = ['pm-surya-ghar.md'];
+    const r = schema.safeParse(picked);
+    ok(r);
+    expect(r.data?.intents[0]?.related).toEqual([{ collection: 'blog', id: 'pm-surya-ghar' }]);
+  });
+
   it('rejects duplicate intent ids', () => {
     const bad = structuredClone(valid);
     bad.intents.push({ id: 'contact', keywords: ['email'], answer: 'Write to {email}.' });
