@@ -472,7 +472,7 @@
       },
       "problemPage": {
         "title": "We couldn't send your enquiry",
-        "text": "Please go back and check your name and mobile number, or call us on {phone}. You can also write to {email}.",
+        "text": "This can happen if a detail needs correcting or if our system is having trouble. Please go back, check your name and mobile number and try again, or call us on {phone}. You can also write to {email}.",
         "backLabel": "Back to the form"
       }
     }
