@@ -25,6 +25,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { MAX_KW, MIN_KW } from '../lib/chat';
 import { mailtoHref, telHref, whatsappHref } from '../lib/contact';
 import { getFaqs, getProjects, getSections, getSettings, getSubsidyRules } from '../lib/content';
+import Loader from '../components/ui/Loader.astro';
 import PhotoPreload from '../components/ui/PhotoPreload.astro';
 import { jsonLdString, toLocalBusinessJsonLd } from '../lib/json-ld';
 import { HERO_PHOTO } from '../lib/photo';
@@ -70,6 +71,7 @@ const localBusiness = jsonLdString(
 <BaseLayout image={mainSlide && { src: mainSlide.image, alt: mainSlide.alt }}>
   <script slot="head" is:inline type="application/ld+json" set:html={localBusiness} />
   {mainSlide && <PhotoPreload slot="head" src={mainSlide.image} {...HERO_PHOTO} />}
+  <Loader {...sections.loader} />
   <Hero {...sections.hero} />
   <Highlights {...sections.highlights} />
   <Systems number={next()} {...sections.systems} />

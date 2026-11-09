@@ -49,8 +49,23 @@ const shareUrl = share ? new URL(share.src, Astro.site ?? Astro.url).href : unde
     <meta charset="utf-8" />
     <script is:inline>
       // Before first paint: allow the hero intro unless the visitor prefers reduced motion.
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('motion-ok');
+        // The SAEL loader: once per browser session, on the home page, and not for someone landing
+        // on a particular section. If storage is blocked the site simply opens without it.
+        try {
+          if (
+            location.pathname === '/' &&
+            !location.hash &&
+            !sessionStorage.getItem('sael-loader-seen')
+          ) {
+            sessionStorage.setItem('sael-loader-seen', '1');
+            document.documentElement.classList.add('loader-on');
+          }
+        } catch {
+          // Storage is blocked: no loader.
+        }
+      }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{pageTitle}</title>

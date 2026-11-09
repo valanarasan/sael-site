@@ -163,6 +163,7 @@ export const sectionsFixture = {
     { id: 'faq', label: 'FAQs' },
   ],
   notFound: { title: 'Lost', text: 'Call {phone}.', backLabel: 'Home' },
+  loader: { word: 'ACME', tagline: 'Fixture tagline' },
   blog: {
     seoTitle: 'Blog',
     seoDescription: 'Fixture description of the blog page that is long enough to pass the schema.',

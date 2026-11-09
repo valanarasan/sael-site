@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import Audience from '../../src/components/sections/Audience.astro';
 import Contact from '../../src/components/sections/Contact.astro';
 import Faq from '../../src/components/sections/Faq.astro';
+import Loader from '../../src/components/ui/Loader.astro';
 import Projects from '../../src/components/sections/Projects.astro';
 import Subsidy from '../../src/components/sections/Subsidy.astro';
 import Systems from '../../src/components/sections/Systems.astro';
@@ -130,6 +131,17 @@ describe('Faq', () => {
     expect(html).toMatch(/<details name="faq" open>\s*<summary>First\?<\/summary>/);
     expect(html).toMatch(/<details name="faq">\s*<summary>Second\?<\/summary>/);
     expect(html).toContain('<a href="tel:+919000000001">+91 90000 00001</a>');
+  });
+});
+
+describe('Loader', () => {
+  it('splits the word into letters, shows the tagline and is hidden from screen readers', async () => {
+    const html = await render(Loader, sections.loader);
+    expect(html).toMatch(/<div class="loader" aria-hidden="true" data-loader>/);
+    expect(html.match(/<span data-loader-letter>/g)).toHaveLength(4);
+    expect(html).toContain('<span data-loader-letter>A</span>');
+    expect(html).toContain('Fixture tagline');
+    expect(html).toContain('<span data-loader-count>000</span>');
   });
 });
 
