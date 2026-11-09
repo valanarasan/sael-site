@@ -180,8 +180,17 @@ describe('Contact', () => {
     for (const attr of ['muted', 'loop', 'playsinline', 'preload="none"', 'aria-hidden="true"']) {
       expect(video, attr).toContain(attr);
     }
-    expect(video).toMatch(/poster="[^"]+"/);
     expect(html).not.toMatch(/<video[^>]*autoplay/);
+  });
+
+  it('puts a lazy photo under the video, so its poster does not load with the page', async () => {
+    const html = await render(Contact, props);
+    expect(html).not.toMatch(/<video[^>]*poster=/);
+    const background = html.match(/<div class="bg"[\s\S]*?<\/video>/)?.[0] ?? '';
+    expect(background).toContain('aria-hidden="true"');
+    // Astro prints an empty alt as a bare attribute, which HTML reads the same as alt="".
+    expect(background).toMatch(/<img[^>]*\salt(=""|\s)/);
+    expect(background).toMatch(/<img[^>]*loading="lazy"/);
   });
 
   it('opens WhatsApp in a new tab safely and lists only offices with phones', async () => {

@@ -5,7 +5,9 @@
  */
 import BlogGrid from '../../components/islands/BlogGrid.astro';
 import BlogIntro from '../../components/sections/BlogIntro.astro';
+import PhotoPreload from '../../components/ui/PhotoPreload.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LEAD_POST_PHOTO } from '../../lib/photo';
 import { getPosts, getSections } from '../../lib/content';
 import { toPostCard, topicsInUse } from '../../lib/view-models/blog';
 
@@ -16,6 +18,7 @@ const [first] = cards;
 ---
 
 <BaseLayout title={blog.seoTitle} description={blog.seoDescription} image={first?.cover}>
+  {first && <PhotoPreload slot="head" src={first.cover.src} {...LEAD_POST_PHOTO} />}
   <link
     slot="head"
     rel="alternate"

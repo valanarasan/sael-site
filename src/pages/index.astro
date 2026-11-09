@@ -23,6 +23,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { MAX_KW, MIN_KW } from '../lib/chat';
 import { mailtoHref, telHref, whatsappHref } from '../lib/contact';
 import { getFaqs, getProjects, getSections, getSettings, getSubsidyRules } from '../lib/content';
+import PhotoPreload from '../components/ui/PhotoPreload.astro';
+import { HERO_PHOTO } from '../lib/photo';
 import { fillTokens } from '../lib/text';
 import { toProjectsView } from '../lib/view-models/projects';
 import { toCalculatorView, toSlabRows, toStateOptions } from '../lib/view-models/subsidy';
@@ -46,6 +48,7 @@ const [mainSlide] = sections.hero.slides;
 ---
 
 <BaseLayout image={mainSlide && { src: mainSlide.image, alt: mainSlide.alt }}>
+  {mainSlide && <PhotoPreload slot="head" src={mainSlide.image} {...HERO_PHOTO} />}
   <Hero {...sections.hero} />
   <Highlights {...sections.highlights} />
   <Systems number={next()} {...sections.systems} />

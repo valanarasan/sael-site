@@ -5,6 +5,7 @@
  */
 import { fillPlain } from '../../lib/text';
 import type { PostCardProps } from '../../lib/view-models/blog';
+import { LEAD_POST_PHOTO } from '../../lib/photo';
 import Photo from './Photo.astro';
 
 interface Props {
@@ -45,7 +46,7 @@ const linked = !post.comingSoon;
       src={post.cover.src}
       alt={post.cover.alt}
       sizes={sizes}
-      maxWidth={1280}
+      maxWidth={LEAD_POST_PHOTO.maxWidth}
       priority={priority}
     />
   </div>

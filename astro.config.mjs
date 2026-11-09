@@ -12,6 +12,12 @@ export default defineConfig({
   site: 'https://saelenergy.com',
   trailingSlash: 'ignore',
 
+  // AVIF at 40 rather than the default 50: about 30% smaller for the LCP budget on phones, with
+  // only slight softening in fine detail. WebP and JPEG, the fallbacks, keep their defaults.
+  image: {
+    service: { entrypoint: 'astro/assets/services/sharp', config: { avif: { quality: 40 } } },
+  },
+
   // Fonts API: files are downloaded at build time and served from the site itself (no font CDN at runtime).
   // Only the weights and styles v5 uses, font-display: swap. latin-ext is included for the
   // rupee sign (U+20B9); browsers only download it on pages that use one of its characters.
