@@ -221,6 +221,37 @@ test.describe('with motion', () => {
   });
 });
 
+test.describe('custom cursor over the day/night slider', () => {
+  test.use({ reducedMotion: 'no-preference' });
+
+  test('steps aside there and comes back elsewhere', async ({ page }) => {
+    test.skip(!isDesktop(page), 'mouse only');
+    await page.addInitScript(() => sessionStorage.setItem('sael-loader-seen', '1'));
+    await page.goto('/');
+    await pinningDone(page);
+    const dot = page.locator('[data-cursor-dot]');
+    const slider = page.locator('[data-compare]');
+    await slider.scrollIntoViewIfNeeded();
+    await expect(async () => {
+      const box = await slider.boundingBox();
+      if (!box) throw new Error('no slider');
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await page.mouse.move(box.x + box.width / 2 + 5, box.y + box.height / 2);
+      await expect(dot).not.toHaveClass(/on/, { timeout: 500 });
+    }).toPass({ timeout: 8000 });
+    await expect(dot).not.toHaveClass(/big/);
+
+    await page.locator('footer').scrollIntoViewIfNeeded();
+    await expect(async () => {
+      const box = await page.locator('footer').boundingBox();
+      if (!box) throw new Error('no footer');
+      await page.mouse.move(box.x + 40, box.y + 40);
+      await page.mouse.move(box.x + 45, box.y + 45);
+      await expect(dot).toHaveClass(/on/, { timeout: 500 });
+    }).toPass({ timeout: 8000 });
+  });
+});
+
 test.describe('with reduced motion', () => {
   test('never downloads GSAP, never pins, and shows everything at once', async ({ page }) => {
     const urls: string[] = [];

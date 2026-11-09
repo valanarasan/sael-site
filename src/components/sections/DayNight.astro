@@ -11,7 +11,7 @@ type Props = Sections['dayNight'] & { number: number };
 const { number, eyebrow, heading, text, sliderLabel, day, night, credit } = Astro.props;
 ---
 
-<section class="sec" id="compare" aria-labelledby="h-dn">
+<section class="sec" id="compare" aria-labelledby="h-dn" data-cursor-hide>
   <div class="wrap">
     <div class="cmp-head">
       <SectionHeading
@@ -24,7 +24,7 @@ const { number, eyebrow, heading, text, sliderLabel, day, night, credit } = Astr
       />
       <p>{text}</p>
     </div>
-    <div class="cmp" data-compare data-cursor="⇆">
+    <div class="cmp" data-compare>
       <Photo
         src={day.image}
         alt={day.alt}
