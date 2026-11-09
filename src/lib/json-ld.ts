@@ -8,6 +8,66 @@ export function jsonLdString(data: Record<string, unknown>): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
 
+export interface LocalBusinessInput {
+  url: string;
+  name: string;
+  legalName: string;
+  description: string;
+  logoUrl: string;
+  imageUrl: string;
+  telephone: string;
+  email: string;
+  locations: {
+    name: string;
+    telephone: string;
+    email: string;
+    address: { street: string; city: string; state: string; postalCode: string; country: string };
+  }[];
+}
+
+/**
+ * The company, plus one LocalBusiness per office. Only facts from the content: no opening hours,
+ * map coordinates, prices or ratings until SAEL provides them.
+ */
+export function toLocalBusinessJsonLd(input: LocalBusinessInput): Record<string, unknown> {
+  const organizationId = `${input.url}#organization`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': organizationId,
+        name: input.name,
+        legalName: input.legalName,
+        url: input.url,
+        logo: input.logoUrl,
+        telephone: input.telephone,
+        email: input.email,
+      },
+      ...input.locations.map((location, index) => ({
+        '@type': 'LocalBusiness',
+        '@id': `${input.url}#location-${index + 1}`,
+        name: `${input.name} ${location.name}`,
+        description: input.description,
+        url: input.url,
+        image: input.imageUrl,
+        logo: input.logoUrl,
+        telephone: location.telephone,
+        email: location.email,
+        parentOrganization: { '@id': organizationId },
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: location.address.street,
+          addressLocality: location.address.city,
+          addressRegion: location.address.state,
+          postalCode: location.address.postalCode,
+          addressCountry: location.address.country,
+        },
+      })),
+    ],
+  };
+}
+
 export interface BlogPostingInput {
   url: string;
   title: string;

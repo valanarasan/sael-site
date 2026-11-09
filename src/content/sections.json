@@ -567,5 +567,10 @@
       "whatsappLabel": "Ask on WhatsApp",
       "whatsappMessage": "Hi SAEL, I just read \"{title}\" on your blog and have a question."
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "This page has moved or no longer exists. Our home page has everything on solar and subsidies, or you can call us on {phone}.",
+    "backLabel": "Back to the home page"
   }
 }

@@ -96,6 +96,8 @@ The rates also appear in written text. If a rate changes, search these for the o
 
 **Add a project.** Go to **Projects** and add an entry. South India projects only. Lower **Position** numbers come first.
 
+**Move an office.** Go to **Settings**, open the office under **Offices** and change **Address**. Then update the five **For Google** fields just below it, because Google reads those rather than the address shown on the site.
+
 ## Special writing rules
 
 A few fields have their own small rules. The form tells you if one isn't followed.

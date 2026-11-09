@@ -10,7 +10,28 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   // Current SAEL domain (from v5). Used for canonical URLs and the sitemap; revisit when hosting is set up.
   site: 'https://saelenergy.com',
-  trailingSlash: 'ignore',
+  // One address per page: /blog, not /blog/. Matches the links, canonical tags and sitemap.
+  trailingSlash: 'never',
+
+  // Pages of the current WordPress site (saelenergy.com/wp-sitemap.xml) that have a home here, so
+  // old links and Google results keep working. Its leftovers (/hello-world, /sample-page, /footer,
+  // /a-homepage-section, /category/uncategorized) are left to return 404. Mapping to be confirmed
+  // by SAEL.
+  redirects: {
+    '/about': '/#capabilities',
+    '/who-we-are': '/#capabilities',
+    '/contact': '/#contact',
+    '/connect-with-us': '/#contact',
+    '/solar-roof-top': '/#systems',
+    '/epc': '/#process',
+    '/om': '/#process',
+    '/faqs': '/#faq',
+    '/projects': '/#work',
+    '/development-support-services': '/',
+    '/power-purchase': '/',
+    '/legal-disclaimer': '/',
+    '/site-map': '/',
+  },
 
   // AVIF at 40 rather than the default 50: about 30% smaller for the LCP budget on phones, with
   // only slight softening in fine detail. WebP and JPEG, the fallbacks, keep their defaults.

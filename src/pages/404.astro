@@ -1,0 +1,19 @@
+---
+/** Shown for any address that doesn't exist, including the old WordPress leftovers. */
+import EnquiryResult from '../components/sections/EnquiryResult.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSections, getSettings } from '../lib/content';
+import { fillTokens } from '../lib/text';
+import { tokenValues } from '../lib/view-models/tokens';
+
+const [sections, settings] = await Promise.all([getSections(), getSettings()]);
+const { notFound } = sections;
+---
+
+<BaseLayout title={notFound.title} noindex>
+  <EnquiryResult
+    title={notFound.title}
+    text={fillTokens(notFound.text, tokenValues(settings))}
+    back={{ label: notFound.backLabel, href: '/' }}
+  />
+</BaseLayout>

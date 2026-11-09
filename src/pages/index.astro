@@ -3,6 +3,8 @@
  * Home page. Fetches content through the repository, maps it with the view models and passes
  * each section only the props it renders. Section numbers follow page order.
  */
+import { getImage } from 'astro:assets';
+import logo from '../assets/brand/sael-logo.png';
 import Cursor from '../components/islands/Cursor.astro';
 import ProgressPill from '../components/islands/ProgressPill.astro';
 import Audience from '../components/sections/Audience.astro';
@@ -24,9 +26,12 @@ import { MAX_KW, MIN_KW } from '../lib/chat';
 import { mailtoHref, telHref, whatsappHref } from '../lib/contact';
 import { getFaqs, getProjects, getSections, getSettings, getSubsidyRules } from '../lib/content';
 import PhotoPreload from '../components/ui/PhotoPreload.astro';
+import { jsonLdString, toLocalBusinessJsonLd } from '../lib/json-ld';
 import { HERO_PHOTO } from '../lib/photo';
+import { SHARE_IMAGE } from '../lib/share-image';
 import { fillTokens } from '../lib/text';
 import { toProjectsView } from '../lib/view-models/projects';
+import { toLocalBusinessInput } from '../lib/view-models/seo';
 import { toCalculatorView, toSlabRows, toStateOptions } from '../lib/view-models/subsidy';
 import { tokenValues } from '../lib/view-models/tokens';
 
@@ -45,9 +50,25 @@ const next = () => ++sectionNumber;
 const tokens = tokenValues(settings);
 const { contact } = sections;
 const [mainSlide] = sections.hero.slides;
+
+const base = Astro.site ?? Astro.url;
+const [logoImage, shareImage] = await Promise.all([
+  getImage({ src: logo, width: 120, format: 'png' }),
+  mainSlide ? getImage({ src: mainSlide.image, ...SHARE_IMAGE }) : undefined,
+]);
+const localBusiness = jsonLdString(
+  toLocalBusinessJsonLd(
+    toLocalBusinessInput(settings, {
+      url: new URL('/', base).href,
+      logoUrl: new URL(logoImage.src, base).href,
+      imageUrl: new URL((shareImage ?? logoImage).src, base).href,
+    }),
+  ),
+);
 ---
 
 <BaseLayout image={mainSlide && { src: mainSlide.image, alt: mainSlide.alt }}>
+  <script slot="head" is:inline type="application/ld+json" set:html={localBusiness} />
   {mainSlide && <PhotoPreload slot="head" src={mainSlide.image} {...HERO_PHOTO} />}
   <Hero {...sections.hero} />
   <Highlights {...sections.highlights} />

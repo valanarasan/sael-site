@@ -15,6 +15,13 @@ export const officeSchema = z.object({
   address: z.string().min(1).max(200).optional(),
   phone: phoneSchema.optional(),
   email: z.email().optional(),
+  /** The address again, split up for search engines. An office needs all five to be listed. */
+  street: z.string().max(120).optional(),
+  city: z.string().max(60).optional(),
+  state: z.string().max(60).optional(),
+  postalCode: z.string().max(12).optional(),
+  /** Two-letter country code, such as IN. */
+  country: z.string().max(2).optional(),
 });
 
 export const settingsSchema = z.object({

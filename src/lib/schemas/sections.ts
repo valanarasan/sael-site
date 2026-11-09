@@ -14,6 +14,12 @@ export const sectionsSchema = (image: ImageField) => {
   const pic = photo(image);
 
   return z.object({
+    /** The 404 page. The text may use {phone} and {email}. */
+    notFound: z.object({
+      title: z.string().min(1).max(80),
+      text: tokenText.max(400),
+      backLabel: z.string().min(1).max(40),
+    }),
     hero: z.object({
       eyebrow,
       /** One entry per line of the big headline. */
