@@ -1,13 +1,18 @@
 // @ts-check
 import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 import { defineConfig, fontProviders } from 'astro/config';
 
+// Vercel sets this during its builds. The test site runs there; everything else, tests included,
+// stays on Node. See "Deploying" in the README.
+const onVercel = Boolean(process.env.VERCEL);
+
 // Static output: every page is pre-built, except the enquiry endpoint (src/pages/api/enquiry.ts),
-// which runs on demand. That one route needs a server adapter. Hosting is undecided, so the
-// standalone Node adapter is used for now; switching host means swapping this one adapter.
+// which runs on demand. That one route needs a server adapter. The final host is undecided, so the
+// standalone Node adapter stays the default; switching host means swapping this one adapter.
 export default defineConfig({
   output: 'static',
-  adapter: node({ mode: 'standalone' }),
+  adapter: onVercel ? vercel() : node({ mode: 'standalone' }),
   // Current SAEL domain (from v5). Used for canonical URLs and the sitemap; revisit when hosting is set up.
   site: 'https://saelenergy.com',
   // One address per page: /blog, not /blog/. Matches the links, canonical tags and sitemap.
@@ -48,6 +53,8 @@ export default defineConfig({
     allowedDomains: [
       { hostname: 'saelenergy.com', protocol: 'https' },
       { hostname: 'www.saelenergy.com', protocol: 'https' },
+      // The test site's addresses. Only on Vercel, where its own proxy sets these headers.
+      ...(onVercel ? [{ hostname: '**.vercel.app', protocol: 'https' }] : []),
     ],
     // Printed as a <meta> tag on every page, with hashes for that page's inline scripts and styles.
     // Only frame-ancestors can't go in a meta tag: see server/security-headers.mjs. Turnstile is the
