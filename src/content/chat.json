@@ -80,7 +80,7 @@
         "78,000"
       ],
       "answer": "Homes with on-grid or hybrid rooftop solar get the PM Surya Ghar central subsidy: ₹30,000 per kW for the first 2 kW and ₹18,000 for the 3rd kW, up to ₹78,000. Some states add a top-up. Tell me your system size in kW (for example \"3 kW\") and I'll work it out.",
-      "related": ["pm-surya-ghar"],
+      "related": ["pm-surya-ghar.md"],
       "whatsapp": "Hi SAEL, I'd like to check my PM Surya Ghar subsidy eligibility."
     },
     {
@@ -105,7 +105,7 @@
           "href": "/#systems"
         }
       ],
-      "related": ["types-of-solar-plants"],
+      "related": ["types-of-solar-plants.md"],
       "whatsapp": "Hi SAEL, which solar system is right for my home?"
     },
     {
@@ -122,7 +122,7 @@
         "inverter"
       ],
       "answer": "An on-grid system switches off during a power cut, for safety. A hybrid or off-grid system switches to its battery and keeps fans, lights and the fridge running. Batteries come in lithium or tubular.",
-      "related": ["monsoon-no-sun"],
+      "related": ["monsoon-no-sun.md"],
       "whatsapp": "Hi SAEL, I need solar with battery backup for power cuts."
     },
     {
@@ -168,7 +168,7 @@
         "crack"
       ],
       "answer": "Dust, shading and loose connections all eat into output. Our AMC covers cleaning, checks and repairs so the system keeps yielding.",
-      "related": ["dirty-solar-panels", "underperforming-signs"],
+      "related": ["dirty-solar-panels.md", "underperforming-signs.md"],
       "whatsapp": "Hi SAEL, I'd like to ask about AMC and cleaning for my solar plant."
     },
     {

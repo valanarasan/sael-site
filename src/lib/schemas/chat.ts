@@ -6,6 +6,10 @@ export type BlogRefField = () => z.ZodType<{ collection: 'blog'; id: string }>;
 
 const prefill = z.string().min(1).max(300);
 
+/** Pages CMS stores a picked article as its file name ("om-amc.md"); the slug is what's needed. */
+const withoutMarkdownExtension = (value: unknown) =>
+  typeof value === 'string' ? value.replace(/\.md$/, '') : value;
+
 /**
  * One chat answer. The matcher (src/lib/chat) scores each intent by its keywords; the best match
  * answers. New answers are new entries here, not code changes.
@@ -19,7 +23,7 @@ export const intentSchema = (blogRef: BlogRefField) =>
     /** Links shown under the answer, e.g. to a home-page section. */
     links: z.array(linkSchema).max(3).default([]),
     /** Blog articles shown as "Read: …" links. */
-    related: z.array(blogRef()).max(3).default([]),
+    related: z.array(z.preprocess(withoutMarkdownExtension, blogRef())).max(3).default([]),
     /** Message prefilled when the visitor taps "Continue on WhatsApp". No button when left out. */
     whatsapp: prefill.optional(),
   });

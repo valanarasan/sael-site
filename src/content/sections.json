@@ -435,6 +435,7 @@
       "image": "../assets/images/cta-poster.jpg",
       "alt": "Rooftop solar panels in sunlight"
     },
+    "video": "/video/rooftop-loop.mp4",
     "form": {
       "name": "Name",
       "phone": "Mobile number",

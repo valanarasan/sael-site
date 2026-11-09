@@ -121,6 +121,7 @@ export const sectionsFixture = {
     heading: 'Book *now*',
     intro: 'Leave your number.',
     background: pic('bg'),
+    video: '/video/fixture.mp4',
     form: {
       name: 'Name',
       phone: 'Mobile',

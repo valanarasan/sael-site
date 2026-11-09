@@ -94,7 +94,7 @@ export const sectionsSchema = (image: ImageField) => {
       heading,
       intro: paragraph,
       /** The slab figures themselves come from subsidy.json. */
-      handles: z.array(z.string().min(1).max(60)).max(6),
+      handles: z.array(z.string().min(1).max(60)).max(6).default([]),
       calculator: z.object({
         label: z.string().min(1),
         sizeLabel: z.string().min(1),
@@ -135,7 +135,8 @@ export const sectionsSchema = (image: ImageField) => {
             placeholder: z.boolean().default(false),
           }),
         )
-        .max(4),
+        .max(4)
+        .default([]),
     }),
 
     engineering: z.object({
@@ -143,7 +144,7 @@ export const sectionsSchema = (image: ImageField) => {
       heading,
       body: paragraph,
       photo: pic,
-      stats: z.array(statSchema).max(3),
+      stats: z.array(statSchema).max(3).default([]),
       stripLabel: z.string().min(1),
       strip: z.array(pic).min(2).max(12),
     }),
@@ -198,6 +199,10 @@ export const sectionsSchema = (image: ImageField) => {
       heading,
       intro: paragraph,
       background: pic,
+      /** Background video in public/video; `background` is its poster image. */
+      video: z
+        .string()
+        .regex(/^\/video\/[\w.-]+\.mp4$/, 'Choose an MP4 file from the videos folder'),
       form: z.object({
         name: z.string().min(1),
         phone: z.string().min(1),
