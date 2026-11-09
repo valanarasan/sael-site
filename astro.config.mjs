@@ -18,6 +18,36 @@ export default defineConfig({
     service: { entrypoint: 'astro/assets/services/sharp', config: { avif: { quality: 40 } } },
   },
 
+  // Articles have no code samples, and Shiki's inline styles would break the Content Security Policy.
+  markdown: { syntaxHighlight: false },
+
+  security: {
+    // Hosts trusted in X-Forwarded-* headers behind a proxy. Without this the enquiry route sees the
+    // proxy's address, so the origin check fails and every visitor shares one rate limit.
+    allowedDomains: [
+      { hostname: 'saelenergy.com', protocol: 'https' },
+      { hostname: 'www.saelenergy.com', protocol: 'https' },
+    ],
+    // Printed as a <meta> tag on every page, with hashes for that page's inline scripts and styles.
+    // Only frame-ancestors can't go in a meta tag: see server/security-headers.mjs. Turnstile is the
+    // one third party: its script and its challenge frame.
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self'",
+        "font-src 'self'",
+        "media-src 'self'",
+        "connect-src 'self'",
+        'frame-src https://challenges.cloudflare.com',
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+      ],
+      scriptDirective: { resources: ["'self'", 'https://challenges.cloudflare.com'] },
+      styleDirective: { resources: ["'self'"] },
+    },
+  },
+
   // Fonts API: files are downloaded at build time and served from the site itself (no font CDN at runtime).
   // Only the weights and styles v5 uses, font-display: swap. latin-ext is included for the
   // rupee sign (U+20B9); browsers only download it on pages that use one of its characters.

@@ -33,15 +33,14 @@ export default defineConfig({
     ? {}
     : {
         webServer: {
-          // --ignore-lock keeps `astro preview` in the foreground. Without it, Astro 7 runs the
-          // server in the background when it detects an AI agent, and Playwright sees it exit.
-          command: `npm run build && npm run preview -- --port ${PORT} --ignore-lock`,
+          // The real production server, so the tests see the same headers visitors will.
+          command: 'npm run build && npm start',
           url: baseURL,
           reuseExistingServer: !process.env.CI,
           timeout: 180_000,
           // The enquiry endpoint runs with in-memory stand-ins: nothing is emailed or written to
           // the real sheet. The rate limit is raised so tests don't trip it (it's unit-tested).
-          env: { LEADS_DRIVER: 'memory', ENQUIRY_RATE_LIMIT_MAX: '1000' },
+          env: { PORT: String(PORT), LEADS_DRIVER: 'memory', ENQUIRY_RATE_LIMIT_MAX: '1000' },
         },
       }),
 });

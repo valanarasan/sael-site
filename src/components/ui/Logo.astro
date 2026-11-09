@@ -7,21 +7,20 @@ interface Props {
   href: string;
   alt: string;
   /** Rendered height in CSS pixels (v5: 54 in the header, 72 in the footer). */
-  height: number;
+  height: 54 | 72;
   eager?: boolean;
 }
 
 const { href, alt, height, eager = false } = Astro.props;
 ---
 
-<a class="logo" href={href} aria-label={`${alt}, home`}>
+<a class:list={['logo', `logo-${height}`]} href={href} aria-label={`${alt}, home`}>
   <Image
     src={logo}
     alt={alt}
     height={height}
     densities={[1, 2]}
     loading={eager ? 'eager' : 'lazy'}
-    style={`height:${height}px`}
   />
 </a>
 
@@ -38,5 +37,14 @@ const { href, alt, height, eager = false } = Astro.props;
   .logo :global(img) {
     display: block;
     width: auto;
+  }
+
+  /* Classes, not a style attribute: the Content Security Policy blocks style attributes. */
+  .logo-54 :global(img) {
+    height: 54px;
+  }
+
+  .logo-72 :global(img) {
+    height: 72px;
   }
 </style>
