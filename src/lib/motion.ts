@@ -64,6 +64,33 @@ function initSmoothScroll(): void {
   document.addEventListener('motion:resume', () => lenis?.start());
 }
 
+/**
+ * Landing on "/#faq": the browser jumps there before the hero is pinned, and pinning then adds
+ * several screens above the section. So jump again now and each time ScrollTrigger re-measures the
+ * page while it settles, until the visitor takes over. Native scroll, because Lenis caps a jump at
+ * the page length it measured earlier; it picks up the new position by itself.
+ */
+function keepLandingSection(): void {
+  if (!location.hash) return;
+  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (!target) return;
+
+  const jump = () =>
+    window.scrollTo({
+      top: target.getBoundingClientRect().top + window.scrollY,
+      behavior: 'instant',
+    });
+  const USER_INPUT = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
+  const stop = () => {
+    ScrollTrigger.removeEventListener('refresh', jump);
+    USER_INPUT.forEach((type) => window.removeEventListener(type, stop));
+  };
+
+  jump();
+  ScrollTrigger.addEventListener('refresh', jump);
+  USER_INPUT.forEach((type) => window.addEventListener(type, stop, { passive: true }));
+}
+
 // --- split headings ------------------------------------------------------------------------------
 
 /** Wraps each word in <span class="w"><i>…</i></span> so it can rise from a mask. */
@@ -448,6 +475,7 @@ export function initMotion(): void {
   initEffects();
   initCountUps();
   initTracker();
+  keepLandingSection();
   window.addEventListener('load', () => ScrollTrigger.refresh());
   void document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }
