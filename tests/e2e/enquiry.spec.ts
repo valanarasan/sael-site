@@ -255,6 +255,8 @@ test.describe('result pages', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
       "We couldn't send your enquiry",
     );
+    // Every failed post lands here, outages included, so it must not blame the visitor's details.
+    await expect(page.locator('main')).toContainText('our system is having trouble');
     await expect(page.locator('main').getByRole('link', { name: /^\+91/ })).toHaveAttribute(
       'href',
       /^tel:\+91/,
