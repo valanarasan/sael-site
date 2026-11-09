@@ -35,7 +35,17 @@ CI (`.github/workflows/ci.yml`) runs audit, check, lint, coverage, build, Playwr
 
 ## Deploying
 
-Hosting isn't decided yet. Whichever host is chosen:
+The test site runs on Vercel. The final host isn't decided yet.
+
+**Vercel test site**
+
+- Builds on Vercel pick the Vercel adapter automatically (`astro.config.mjs`). Local runs and tests stay on Node.
+- `vercel.json` sends the security headers plus `X-Robots-Tag: noindex, nofollow`, so search engines leave the test site out. A unit test keeps its list in step with `server/security-headers.mjs`.
+- Set `LEADS_DRIVER=memory` in the project's environment variables. The form then shows its thank-you page, but **enquiries are discarded and nobody is emailed**. Replace it with the live settings in `.env.example` to test real leads.
+- The rate limit counts per running function, not across the whole site, so it needs a shared store before any real traffic.
+- **Before going live here:** remove the `X-Robots-Tag` entry and replace `LEADS_DRIVER=memory` with the live settings.
+
+**Whichever final host is chosen**
 
 - **Node host:** run `npm run build`, then `npm start` with `HOST` and `PORT` set. `server/start.mjs` adds the security headers.
 - **Any other host:** swap the adapter in `astro.config.mjs`, and copy the headers in `server/security-headers.mjs` into the host's settings. The rest of the Content Security Policy travels with each page as a meta tag.
