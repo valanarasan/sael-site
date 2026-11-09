@@ -110,9 +110,55 @@ function initSplitHeadings(): void {
   });
 }
 
+// --- loader --------------------------------------------------------------------------------------
+
+/** v5's hero intro starts this long after the loader does: curtain gone at 2.7 s, plus 0.35 s. */
+const HERO_AFTER_LOADER = 3.05;
+
+/**
+ * The loader that is on screen waiting to play, if any. Call before html.motion-on is added. If
+ * this script arrived after the CSS fallback already hid the panel, the moment has passed, so the
+ * loader is switched off rather than brought back.
+ */
+function waitingLoader(): HTMLElement | null {
+  const root = document.documentElement;
+  const loader = document.querySelector<HTMLElement>('[data-loader]');
+  if (!loader || !root.classList.contains('loader-on')) return null;
+  if (getComputedStyle(loader).visibility !== 'hidden') return loader;
+  root.classList.remove('loader-on');
+  return null;
+}
+
+/** Letters rise, the bar fills, the curtain lifts. Scrolling waits until the page is revealed. */
+function playLoader(loader: HTMLElement): void {
+  const bar = loader.querySelector<HTMLElement>('[data-loader-bar]');
+  const count = loader.querySelector<HTMLElement>('[data-loader-count]');
+  const progress = { value: 0 };
+  lenis?.stop();
+  gsap
+    .timeline({ onComplete: () => lenis?.start() })
+    .to($$('[data-loader-letter]', loader), { y: 0, duration: 0.9, ease: EASE, stagger: 0.07 })
+    .to(
+      progress,
+      {
+        value: 100,
+        duration: 1.3,
+        ease: 'power2.inOut',
+        onUpdate: () => {
+          if (count) count.textContent = String(Math.round(progress.value)).padStart(3, '0');
+          if (bar) bar.style.transform = `scaleX(${progress.value / 100})`;
+        },
+      },
+      '<.2',
+    )
+    .to(loader, { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, '+=.1')
+    .set(loader, { display: 'none' });
+}
+
 // --- hero ----------------------------------------------------------------------------------------
 
-function initHero(): void {
+/** `delay` holds the intro back until the loader has lifted; 0 when there is no loader. */
+function initHero(delay: number): void {
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   if (!hero) return;
   const copy = hero.querySelector<HTMLElement>('[data-hero-copy]');
@@ -126,10 +172,18 @@ function initHero(): void {
   const h1 = hero.querySelector('h1');
   if (!copy || !win || !track) return;
 
-  // Intro. The photo is visible from the first paint (it is the LCP element); the copy rises in.
+  // Intro. Without the loader the photo is visible from the first paint (it is the LCP element) and
+  // the copy rises in. After the loader, the photo window also opens on desktop, as in v5.
   const words = h1 ? splitWords(h1) : [];
   const firstImg = slides[0]?.querySelector('img');
-  const intro = gsap.timeline({ onComplete: () => hero.classList.add('intro-done') });
+  const intro = gsap.timeline({ delay, onComplete: () => hero.classList.add('intro-done') });
+  if (delay && window.matchMedia(DESKTOP).matches) {
+    intro.from(
+      win,
+      { clipPath: 'inset(50vh 4vw 50vh 52vw round 28px)', duration: 1.4, ease: EASE },
+      0,
+    );
+  }
   if (firstImg) intro.from(firstImg, { scale: 1.3, duration: 2, ease: EASE }, 0);
   intro.fromTo(
     [
@@ -385,9 +439,11 @@ export function initMotion(): void {
   if (started) return;
   started = true;
   gsap.registerPlugin(ScrollTrigger);
+  const loader = waitingLoader();
   document.documentElement.classList.add('motion-on');
   initSmoothScroll();
-  initHero();
+  if (loader) playLoader(loader);
+  initHero(loader ? HERO_AFTER_LOADER : 0);
   initSplitHeadings();
   initEffects();
   initCountUps();

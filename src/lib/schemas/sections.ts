@@ -20,6 +20,11 @@ export const sectionsSchema = (image: ImageField) => {
       text: tokenText.max(400),
       backLabel: z.string().min(1).max(40),
     }),
+    /** The full-screen opening animation on the home page. */
+    loader: z.object({
+      word: z.string().min(1).max(12),
+      tagline: z.string().min(1).max(40),
+    }),
     hero: z.object({
       eyebrow,
       /** One entry per line of the big headline. */

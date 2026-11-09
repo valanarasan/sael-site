@@ -18,6 +18,11 @@ async function scrollThrough(page: Page) {
 test.describe('with motion', () => {
   test.use({ reducedMotion: 'no-preference' });
 
+  // These check the effects themselves, as on a return visit. The loader has its own tests below.
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => sessionStorage.setItem('sael-loader-seen', '1'));
+  });
+
   test('loads GSAP and runs without errors through the whole page', async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
@@ -209,5 +214,140 @@ test.describe('if the motion script fails to load', () => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveClass(/motion-ok/);
     await expect(page.locator('[data-hero-copy]')).toHaveCSS('opacity', '1', { timeout: 4000 });
+  });
+
+  test('the loader still gets out of the way', async ({ page }) => {
+    await page.route(/\/motion\.[\w-]+\.js$/, (route) => route.abort());
+    await page.goto('/');
+    await expect(page.locator('[data-loader]')).toBeVisible();
+    await expect(page.locator('[data-loader]')).toBeHidden({ timeout: 4000 });
+  });
+
+  test('a script arriving after that does not bring the loader back', async ({ page }) => {
+    await page.route(/\/motion\.[\w-]+\.js$/, async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 3500));
+      await route.continue();
+    });
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveClass(/motion-on/, { timeout: 6000 });
+    await expect(page.locator('html')).not.toHaveClass(/loader-on/);
+    await expect(page.locator('[data-loader]')).toBeHidden();
+    await expect(page.locator('[data-hero-copy]')).toHaveCSS('opacity', '1');
+  });
+});
+
+test.describe('the opening loader', () => {
+  test.use({ reducedMotion: 'no-preference' });
+  const loader = (page: Page) => page.locator('[data-loader]');
+
+  test('plays on the first home visit, then reveals the hero', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto('/');
+    await expect(loader(page)).toBeVisible();
+    await expect(page.locator('[data-loader-count]')).toHaveText('100', { timeout: 4000 });
+    await expect(loader(page)).toBeHidden({ timeout: 4000 });
+    await expect(page.locator('[data-hero]')).toHaveClass(/intro-done/, { timeout: 6000 });
+    await expect(page.locator('[data-hero-copy]')).toHaveCSS('opacity', '1');
+    expect(errors).toEqual([]);
+  });
+
+  test('holds scrolling back until the page is revealed', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveClass(/motion-on/);
+    await page.mouse.wheel(0, 1500);
+    await page.waitForTimeout(300);
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(loader(page)).toBeHidden({ timeout: 4000 });
+    await expect
+      .poll(async () => {
+        await page.mouse.wheel(0, 500);
+        return page.evaluate(() => window.scrollY);
+      })
+      .toBeGreaterThan(0);
+  });
+
+  test('leaves the pinned hero working on desktop', async ({ page }) => {
+    test.skip(!isDesktop(page), 'desktop only');
+    await page.goto('/');
+    await expect(page.locator('[data-hero]')).toHaveClass(/intro-done/, { timeout: 8000 });
+    const title = page.locator('[data-hero-title]');
+    const first = await title.textContent();
+    for (let i = 0; i < 12; i++) {
+      await page.mouse.wheel(0, 400);
+      await page.waitForTimeout(80);
+    }
+    await expect(title).not.toHaveText(first ?? '');
+    await expect(page.locator('[data-hero-window]')).toHaveCSS(
+      'clip-path',
+      /inset\(0px( round 0px)?\)|none/,
+    );
+  });
+
+  test('does not play again in the same session', async ({ page }) => {
+    await page.goto('/');
+    await expect(loader(page)).toBeVisible();
+    await page.reload();
+    await expect(page.locator('html')).not.toHaveClass(/loader-on/);
+    await expect(loader(page)).toBeHidden();
+    await page.goto('/blog');
+    await page.goto('/');
+    await expect(loader(page)).toBeHidden();
+  });
+
+  test('plays in a new session', async ({ browser, baseURL }) => {
+    for (let session = 0; session < 2; session++) {
+      const context = await browser.newContext({ reducedMotion: 'no-preference' });
+      const page = await context.newPage();
+      await page.goto(`${baseURL}/`);
+      await expect(page.locator('[data-loader]')).toBeVisible();
+      await context.close();
+    }
+  });
+
+  test('waits for the home page when a visitor lands on the blog first', async ({ page }) => {
+    await page.goto('/blog');
+    await expect(page.locator('html')).not.toHaveClass(/loader-on/);
+    await page.goto('/');
+    await expect(loader(page)).toBeVisible();
+  });
+
+  test('stays out of the way of someone landing on a section', async ({ page }) => {
+    await page.goto('/#contact');
+    await expect(page.locator('html')).not.toHaveClass(/loader-on/);
+    await expect(loader(page)).toBeHidden();
+  });
+
+  test('shows nothing if the browser blocks session storage', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(window, 'sessionStorage', {
+        get: () => {
+          throw new DOMException('Blocked', 'SecurityError');
+        },
+      });
+    });
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveClass(/motion-ok/);
+    await expect(loader(page)).toBeHidden();
+  });
+});
+
+test.describe('the opening loader never shows', () => {
+  test('with reduced motion', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).not.toHaveClass(/loader-on/);
+    await expect(page.locator('[data-loader]')).toBeHidden();
+  });
+
+  test('without JavaScript', async ({ browser, baseURL }) => {
+    const context = await browser.newContext({
+      javaScriptEnabled: false,
+      reducedMotion: 'no-preference',
+    });
+    const page = await context.newPage();
+    await page.goto(`${baseURL}/`);
+    await expect(page.locator('[data-loader]')).toBeHidden();
+    await expect(page.locator('h1')).toBeVisible();
+    await context.close();
   });
 });

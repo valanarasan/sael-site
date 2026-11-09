@@ -1327,6 +1327,31 @@ content:
                   - name: whatsappMessage
                     component: whatsappMessage
                     description: 'The message already typed for the visitor. {title} becomes the article title.'
+      - name: section-loader
+        label: Opening animation
+        type: file
+        path: src/content/sections.json
+        format: json
+        fields:
+          - name: loader
+            label: false
+            type: object
+            required: true
+            fields:
+              - {
+                  name: word,
+                  label: Big word,
+                  type: string,
+                  required: true,
+                  options: { maxlength: 12 },
+                }
+              - {
+                  name: tagline,
+                  label: Small line under it,
+                  type: string,
+                  required: true,
+                  options: { maxlength: 40 },
+                }
       - name: section-not-found
         label: Page not found text
         type: file
