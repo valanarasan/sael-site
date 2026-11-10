@@ -371,6 +371,33 @@ test.describe('the opening loader', () => {
     expect(Math.min(...samples.slice(shownAt))).toBeGreaterThan(0.99);
   });
 
+  // The intro used to wait until the curtain was gone, leaving an empty hero on screen for most of
+  // a second. The copy now starts rising while the curtain is still on its way up.
+  test('starts the intro before the curtain has finished lifting', async ({ page }) => {
+    await page.addInitScript(() => {
+      const w = window as unknown as { __copyWhenLifted: number | null };
+      w.__copyWhenLifted = null;
+      const sample = () => {
+        const curtain = document.querySelector('[data-loader]');
+        const line = document.querySelector('[data-hero-copy] > .lbl');
+        if (document.documentElement.classList.contains('motion-on') && curtain && line) {
+          if (getComputedStyle(curtain).display === 'none') {
+            w.__copyWhenLifted = Number(getComputedStyle(line).opacity);
+            return;
+          }
+        }
+        requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    await page.goto('/');
+    await expect(loader(page)).toBeHidden({ timeout: 8000 });
+    const copy = await page.evaluate(
+      () => (window as unknown as { __copyWhenLifted: number | null }).__copyWhenLifted,
+    );
+    expect(copy).toBeGreaterThan(0.2);
+  });
+
   test('holds scrolling back until the page is revealed', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveClass(/motion-on/);

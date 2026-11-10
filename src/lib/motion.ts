@@ -169,8 +169,13 @@ async function initSplitHeadings(): Promise<void> {
 
 // --- loader --------------------------------------------------------------------------------------
 
-/** v5's hero intro starts this long after the loader does: curtain gone at 2.7 s, plus 0.35 s. */
-const HERO_AFTER_LOADER = 3.05;
+/**
+ * When the hero intro starts, in seconds after the loader does. The curtain lifts from 1.6 s to
+ * 2.7 s, but its ease clears most of the screen by about 2.3 s. v5 waited until 3.05 s, which left
+ * an empty hero on screen for most of a second. Starting at 2.25 s, the copy rises in while the
+ * curtain is still on its way up.
+ */
+const HERO_AFTER_LOADER = 2.25;
 
 /**
  * The loader that is on screen waiting to play, if any. Call before html.motion-on is added. If
