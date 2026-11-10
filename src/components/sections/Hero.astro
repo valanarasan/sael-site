@@ -65,6 +65,7 @@ const [first] = slides;
             alt={slide.alt}
             sizes={HERO_PHOTO.sizes}
             priority={i === 0}
+            lowPriority={i > 0}
             maxWidth={HERO_PHOTO.maxWidth}
           />
         </div>

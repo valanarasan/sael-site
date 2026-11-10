@@ -17,11 +17,25 @@ interface Props {
   class?: string;
   /** First hero image only: loads eagerly with fetchpriority="high". */
   priority?: boolean;
+  /**
+   * Counts as on screen but isn't seen first (the hero slides behind the first): fetchpriority="low",
+   * so the first photo and the fonts download ahead of it.
+   */
+  lowPriority?: boolean;
   /** Largest width to generate; defaults to the original's width. */
   maxWidth?: number;
 }
 
-const { src, alt, sizes, class: className, priority = false, maxWidth } = Astro.props;
+const {
+  src,
+  alt,
+  sizes,
+  class: className,
+  priority = false,
+  lowPriority = false,
+  maxWidth,
+} = Astro.props;
+const fetchPriority = priority ? 'high' : lowPriority ? 'low' : 'auto';
 ---
 
 <Picture
@@ -34,6 +48,6 @@ const { src, alt, sizes, class: className, priority = false, maxWidth } = Astro.
   class={className}
   loading={priority ? 'eager' : 'lazy'}
   decoding={priority ? 'sync' : 'async'}
-  fetchpriority={priority ? 'high' : 'auto'}
+  fetchpriority={fetchPriority}
   pictureAttributes={{ class: 'pic-contents' }}
 />

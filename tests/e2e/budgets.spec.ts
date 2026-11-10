@@ -129,6 +129,42 @@ test.describe('main photo loading', () => {
     });
   }
 
+  // The slides sit on top of each other, so the browser counts them all as on screen. Asked for
+  // at the same priority, they slowed the first photo (the LCP element) on phones.
+  test("the hero's other slides wait behind the first photo", async ({ page }) => {
+    await page.goto('/');
+    const hints = await page
+      .locator('[data-hero-slide] img')
+      .evaluateAll((imgs) => imgs.map((img) => img.getAttribute('fetchpriority')));
+    expect(hints.length).toBeGreaterThan(1);
+    expect(hints[0]).toBe('high');
+    expect(hints.slice(1).every((hint) => hint === 'low')).toBe(true);
+  });
+
+  test('the chat avatar waits until the chat is opened', async ({ page }) => {
+    const avatar = () => page.waitForRequest((r) => r.url().endsWith('/apple-touch-icon.png'));
+    const requested: string[] = [];
+    page.on('request', (r) => requested.push(r.url()));
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    expect(requested.some((url) => url.endsWith('/apple-touch-icon.png'))).toBe(false);
+    const loading = avatar();
+    await page.getByRole('button', { name: 'Ask SAEL' }).click();
+    await loading;
+  });
+
+  // Plus Jakarta Sans is one variable file per subset; one file per weight was up to ten files.
+  test('the home page downloads at most six font files', async ({ page }) => {
+    const fonts: string[] = [];
+    page.on('request', (r) => {
+      if (r.resourceType() === 'font') fonts.push(r.url());
+    });
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    expect(fonts.length).toBeGreaterThan(0);
+    expect(new Set(fonts).size).toBeLessThanOrEqual(6);
+  });
+
   test('the contact poster waits until the section is near', async ({ page }) => {
     const photos: string[] = [];
     page.on('request', (request) => {
