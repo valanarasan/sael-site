@@ -84,7 +84,7 @@ export default defineConfig({
       provider: fontProviders.fontsource(),
       name: 'Plus Jakarta Sans',
       cssVariable: '--font-jakarta',
-      weights: [400, 500, 600, 700, 800],
+      weights: ['400 800'],
       styles: ['normal'],
       subsets: ['latin', 'latin-ext'],
       display: 'swap',

@@ -20,6 +20,32 @@ const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = doc
   ...root.querySelectorAll<T>(sel),
 ];
 
+/** Hands the main thread back to the browser for a moment (to paint, or to answer a tap). */
+const yieldToMain = () =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
+
+/** Under the 50 ms that counts as a long task on a slow phone, with room to spare. */
+const SLICE_MS = 30;
+/** Also a cap on items per slice: a fast device never reaches SLICE_MS, but a slow one might. */
+const SLICE_ITEMS = 4;
+
+/** Runs `work` on each item, handing the main thread back after SLICE_ITEMS or SLICE_MS. */
+async function inSlices<T>(items: readonly T[], work: (item: T) => void): Promise<void> {
+  let sliceStart = performance.now();
+  let done = 0;
+  for (const item of items) {
+    if (done === SLICE_ITEMS || performance.now() - sliceStart > SLICE_MS) {
+      await yieldToMain();
+      sliceStart = performance.now();
+      done = 0;
+    }
+    work(item);
+    done += 1;
+  }
+}
+
 /**
  * Animates in once when `trigger` scrolls into view. CSS transitions are switched off while
  * GSAP animates (they fight each other), and GSAP's inline styles are cleared at the end so
@@ -124,9 +150,13 @@ function splitWords(el: Element): HTMLElement[] {
   return words;
 }
 
-function initSplitHeadings(): void {
-  $$('[data-split]').forEach((h) => {
-    const words = splitWords(h);
+/**
+ * Every heading is split before any animation is made: each new ScrollTrigger measures the page, and
+ * splitting in between would make the browser lay the whole page out again for each heading.
+ */
+async function initSplitHeadings(): Promise<void> {
+  const split = $$('[data-split]').map((h) => ({ h, words: splitWords(h) }));
+  await inSlices(split, ({ h, words }) => {
     gsap.from(words, {
       yPercent: 105,
       duration: 1,
@@ -412,16 +442,16 @@ const EFFECTS: Record<string, (el: HTMLElement) => void> = {
     revealOnce(el.children, el, { yPercent: 100, duration: 1.2, stagger: 0.08 }, 'top 95%'),
 };
 
-function initEffects(): void {
-  $$('[data-motion]').forEach((el) => {
+function initEffects(): Promise<void> {
+  return inSlices($$('[data-motion]'), (el) => {
     const effect = EFFECTS[el.dataset.motion ?? ''];
     if (effect) effect(el);
   });
 }
 
 /** Whole numbers marked data-count count up from 0, in Indian digit grouping. */
-function initCountUps(): void {
-  $$('[data-count]').forEach((el) => {
+function initCountUps(): Promise<void> {
+  return inSlices($$('[data-count]'), (el) => {
     const to = Number(el.dataset.count);
     if (!Number.isFinite(to)) return;
     const counter = { v: 0 };
@@ -462,20 +492,44 @@ function initTracker(): void {
 
 let started = false;
 
+/**
+ * Everything below the hero, set up a step and a slice at a time. Done in a single go, it was one
+ * long task that held up the page on slow phones; it is all off screen at first, so it can wait.
+ */
+const BELOW_THE_FOLD: (() => Promise<void> | void)[] = [
+  initSplitHeadings,
+  initEffects,
+  initCountUps,
+  initTracker,
+];
+
+async function initBelowTheFold(): Promise<void> {
+  for (const step of BELOW_THE_FOLD) {
+    await yieldToMain();
+    await step();
+  }
+  // Positions were measured as each step ran; one pass now settles them together.
+  ScrollTrigger.refresh();
+}
+
 export function initMotion(): void {
   if (started) return;
   started = true;
+  void start();
+}
+
+async function start(): Promise<void> {
+  // The libraries have just been parsed and run; let the browser breathe before setting up the hero.
+  // Everything from "motion-on" to the hero's starting state stays in one task, so nothing flashes.
+  await yieldToMain();
   gsap.registerPlugin(ScrollTrigger);
   const loader = waitingLoader();
   document.documentElement.classList.add('motion-on');
   initSmoothScroll();
   if (loader) playLoader(loader);
   initHero(loader ? HERO_AFTER_LOADER : 0);
-  initSplitHeadings();
-  initEffects();
-  initCountUps();
-  initTracker();
   keepLandingSection();
+  void initBelowTheFold();
   window.addEventListener('load', () => ScrollTrigger.refresh());
   void document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }

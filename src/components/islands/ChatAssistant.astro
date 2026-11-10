@@ -65,7 +65,16 @@ const panelId = 'chat-panel';
 
   <dialog class="cb" data-lenis-prevent id={panelId} aria-labelledby="chat-title" data-chat-panel>
     <div class="cb-h">
-      <img class="av" src="/apple-touch-icon.png" alt="" width="40" height="40" />
+      <!-- Lazy: the panel starts closed, so the avatar waits until the chat is opened. -->
+      <img
+        class="av"
+        src="/apple-touch-icon.png"
+        alt=""
+        width="40"
+        height="40"
+        loading="lazy"
+        decoding="async"
+      />
       <div>
         <b id="chat-title">{title}</b>
         <small>{subtitle}</small>

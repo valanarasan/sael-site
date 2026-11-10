@@ -45,14 +45,17 @@ const { homeHref, logoAlt, links, cta, menuId } = Astro.props;
   // Solid background after a little scroll; hide when scrolling down past the hero, show on scroll up.
   const bar = document.querySelector<HTMLElement>('[data-top-bar]');
   if (bar) {
-    let lastY = window.scrollY;
+    // null until the first frame: the first reading only sets the background, never hides the bar.
+    let lastY: number | null = null;
     let queued = false;
     const update = () => {
       queued = false;
       const y = window.scrollY;
       bar.classList.toggle('solid', y > 40);
-      if (y > 500 && y > lastY + 6) bar.classList.add('hide');
-      else if (y < lastY - 6) bar.classList.remove('hide');
+      if (lastY !== null) {
+        if (y > 500 && y > lastY + 6) bar.classList.add('hide');
+        else if (y < lastY - 6) bar.classList.remove('hide');
+      }
       lastY = y;
     };
     // Keyboard users tabbing into a hidden bar must see it.
@@ -67,7 +70,10 @@ const { homeHref, logoAlt, links, cta, menuId } = Astro.props;
       },
       { passive: true },
     );
-    update();
+    // First reading in the next frame, not now: reading scrollY while the page is still loading
+    // makes the browser lay the whole page out on the spot, in one long task.
+    queued = true;
+    requestAnimationFrame(update);
   }
 </script>
 
