@@ -229,30 +229,6 @@ function initHero(delay: number): void {
   const h1 = hero.querySelector('h1');
   if (!copy || !win || !track) return;
 
-  // Intro. Without the loader the photo is visible from the first paint (it is the LCP element) and
-  // the copy rises in. After the loader, the photo window also opens on desktop, as in v5.
-  const words = h1 ? splitWords(h1) : [];
-  const firstImg = slides[0]?.querySelector('img');
-  const intro = gsap.timeline({ delay, onComplete: () => hero.classList.add('intro-done') });
-  if (delay && window.matchMedia(DESKTOP).matches) {
-    intro.from(
-      win,
-      { clipPath: 'inset(50vh 4vw 50vh 52vw round 28px)', duration: 1.4, ease: EASE },
-      0,
-    );
-  }
-  if (firstImg) intro.from(firstImg, { scale: 1.3, duration: 2, ease: EASE }, 0);
-  intro.fromTo(
-    [
-      ...$$(':scope > .lbl, :scope > .intro, :scope > .h-row, :scope > .h-meta > div', copy),
-      ...words,
-    ],
-    { yPercent: 60, y: 20, opacity: 0 },
-    { yPercent: 0, y: 0, opacity: 1, duration: 1, ease: EASE, stagger: 0.06 },
-    0.15,
-  );
-  gsap.set(copy, { opacity: 1 });
-
   // Caption follows the slide in view.
   let shown = 0;
   const setCaption = (i: number) => {
@@ -328,6 +304,42 @@ function initHero(delay: number): void {
       setCaption(Math.round(track.scrollLeft / Math.max(1, track.clientWidth)));
     track.addEventListener('scroll', onScroll, { passive: true });
     return () => track.removeEventListener('scroll', onScroll);
+  });
+
+  // Intro. Without the loader the photo is visible from the first paint (it is the LCP element) and
+  // the copy rises in. After the loader, the photo window also opens on desktop, as in v5.
+  // Made after the pinned timeline, so that timeline takes the finished hero as its starting point
+  // (what scrolling back to the top returns to), not the intro's closed window.
+  const words = h1 ? splitWords(h1) : [];
+  const firstImg = slides[0]?.querySelector('img');
+  const intro = gsap.timeline({ paused: true, onComplete: () => hero.classList.add('intro-done') });
+  if (delay && window.matchMedia(DESKTOP).matches) {
+    intro.from(
+      win,
+      { clipPath: 'inset(50vh 4vw 50vh 52vw round 28px)', duration: 1.4, ease: EASE },
+      0,
+    );
+  }
+  if (firstImg) intro.from(firstImg, { scale: 1.3, duration: 2, ease: EASE }, 0);
+  intro.fromTo(
+    [
+      ...$$(':scope > .lbl, :scope > .intro, :scope > .h-row, :scope > .h-meta > div', copy),
+      ...words,
+    ],
+    { yPercent: 60, y: 20, opacity: 0 },
+    { yPercent: 0, y: 0, opacity: 1, duration: 1, ease: EASE, stagger: 0.06 },
+    0.15,
+  );
+  gsap.set(copy, { opacity: 1 });
+
+  // While it waits for the loader, the intro holds its starting state. Each ScrollTrigger refresh
+  // puts the pinned hero back to its finished look to measure it, so draw the start again after
+  // each one; otherwise the curtain lifts on a finished hero that then plays its intro again.
+  const showStart = () => intro.progress(1, true).progress(0, true);
+  ScrollTrigger.addEventListener('refresh', showStart);
+  gsap.delayedCall(delay, () => {
+    ScrollTrigger.removeEventListener('refresh', showStart);
+    intro.play(0);
   });
 }
 

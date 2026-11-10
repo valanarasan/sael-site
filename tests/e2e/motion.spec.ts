@@ -335,6 +335,42 @@ test.describe('the opening loader', () => {
     expect(errors).toEqual([]);
   });
 
+  // A ScrollTrigger refresh used to put the hero back to its finished look while the loader was up,
+  // so the curtain lifted on a finished hero that then jumped back and played its intro again.
+  test('lifts onto the hero waiting to start, and plays the intro once', async ({ page }) => {
+    await page.addInitScript(() => {
+      const samples: number[] = [];
+      (window as unknown as { __copy: number[] }).__copy = samples;
+      const sample = () => {
+        const line = document.querySelector('[data-hero-copy] > .lbl');
+        if (document.documentElement.classList.contains('motion-on') && line)
+          samples.push(Number(getComputedStyle(line).opacity));
+        requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    await page.goto('/');
+    await expect(page.locator('[data-loader-count]')).toHaveText('100', { timeout: 4000 });
+    if (isDesktop(page)) {
+      // The photo window is still closed: no more than a sliver of the screen's height.
+      const open = await page
+        .locator('[data-hero-window]')
+        .evaluate(
+          (el) =>
+            el.getBoundingClientRect().height -
+            parseFloat(getComputedStyle(el).clipPath.split('(')[1] ?? '0') * 2,
+        );
+      expect(open).toBeLessThan(60);
+    }
+    await expect(page.locator('[data-hero]')).toHaveClass(/intro-done/, { timeout: 8000 });
+    const samples = await page.evaluate(() => (window as unknown as { __copy: number[] }).__copy);
+    expect(samples[0]).toBe(0);
+    const shownAt = samples.findIndex((o) => o > 0.99);
+    expect(shownAt).toBeGreaterThan(0);
+    // Once fully shown it stays shown: no second intro.
+    expect(Math.min(...samples.slice(shownAt))).toBeGreaterThan(0.99);
+  });
+
   test('holds scrolling back until the page is revealed', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveClass(/motion-on/);
