@@ -82,6 +82,13 @@ test.describe('header', () => {
     await page.mouse.wheel(0, 300);
     await expect(bar).toHaveClass(/solid/);
   });
+
+  // It reads the scroll position one frame after load (reading it during load forced a full
+  // layout), so check the background is still right when the page opens part-way down.
+  test('is solid when the page opens part-way down', async ({ page }) => {
+    await page.goto('/#faq');
+    await expect(page.locator('[data-top-bar]')).toHaveClass(/solid/);
+  });
 });
 
 test.describe('mobile action bar', () => {
